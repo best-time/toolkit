@@ -1,3 +1,7 @@
+git status
+
+git log
+
 git add filename
 
 git commit -m "desc"
