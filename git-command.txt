@@ -1,0 +1,5 @@
+git add name
+
+git commit -m "desc"
+
+git push -u origin master
