@@ -1,5 +1,7 @@
-git add name
+git add filename
 
 git commit -m "desc"
 
 git push -u origin master
+
+git rm filename
