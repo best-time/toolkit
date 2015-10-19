@@ -8,8 +8,8 @@ git add filename
 
 git commit -m "desc"
 
+git pull origin
+
 git push -u origin master
 
 git rm filename
-
-git
