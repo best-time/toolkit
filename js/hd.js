@@ -1,7 +1,7 @@
 ! function() {
     // "use strict";
     var root = this;
-    var previousHD = root._hd;
+    var previousHD = root._sole;
 
     var ArrayProto = Array.prototype,
         ObjProto = Object.prototype;
@@ -13,19 +13,19 @@
         toString = ObjProto.toString,
         hasOwnProperty = ObjProto.hasOwnProperty;
 
-    var _hd = function(obj) {
-        if (obj instanceof _hd) return obj;
-        if (!(this instanceof _hd)) return new _hd(obj);
+    var _sole = function(obj) {
+        if (obj instanceof _sole) return obj;
+        if (!(this instanceof _sole)) return new _sole(obj);
         this._wrapped = obj;
     };
 
     if (typeof exports != 'undefined' && !exports.nodeType) {
         if (typeof module != 'undefined' && !module.nodeType && module.exports) {
-            exports = module.exports = _hd;
+            exports = module.exports = _sole;
         }
-        exports._hd = _hd;
+        exports.__ = _sole;
     } else {
-        root._hd = _hd;
+        root.__ = _sole;
     }
 
     // Internal function that returns an efficient (for current engines) version
@@ -92,7 +92,7 @@
     };
 
 
-    _hd.each = function(obj, iteratee, context) {
+    _sole.each = function(obj, iteratee, context) {
         iteratee = optimizeCb(iteratee, context);
         var i, length;
         if (isArrayLike(obj)) {
@@ -109,7 +109,7 @@
     };
 
     // Return the results of applying the iteratee to each element.
-    _hd.map = function(obj, iteratee, context) {
+    _sole.map = function(obj, iteratee, context) {
         iteratee = cb(iteratee, context);
         var keys = !isArrayLike(obj) && _.keys(obj),
             length = (keys || obj).length,
@@ -123,16 +123,16 @@
 
     /*---------------------------------------
     ===================================================
-    	工具
+        工具
     */
 
     //返回当前时间的时间戳(毫秒)
-    _hd.now = Date.now || function() {
+    _sole.now = Date.now || function() {
         return new Date().getTime();
     };
 
     //返回min-max之间的一个随机整数, 包括min,不包括max值
-    _hd.random = function(min, max) {
+    _sole.random = function(min, max) {
         if (max == null) {
             max = min;
             min = 0;
@@ -141,30 +141,238 @@
     };
 
     //判断对象上是否含有变量key这个属性
-    _hd.has = function(obj, key) {
+    _sole.has = function(obj, key) {
         return obj != null && hasOwnProperty.call(obj, key);
     };
 
-    _hd.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
-        _hd['is' + name] = function(obj) {
+    _sole.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error', 'Array'], function(name) {
+        _sole['is' + name] = function(obj) {
             return toString.call(obj) === '[object ' + name + ']';
         };
     });
 
-    _hd.isFinite = function(obj) {
+    _sole.isFinite = function(obj) {
         return isFinite(obj) && !isNaN(parseFloat(obj));
     };
 
-    _hd.isNaN = function(obj) {
+    _sole.isNaN = function(obj) {
         return _.isNumber(obj) && isNaN(obj);
     };
 
-    _hd.isBoolean = function(obj) {
+    _sole.isBoolean = function(obj) {
         return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
     };
-    //避免_hd变量的冲突
-    _hd.noConflict = function() {
-        root._hd = previousHD;
+
+    _sole.trim = function(str) {
+        if (!this.isString(str)) return;
+        return str.replace(/^(\s*)|(\s*$)/g, '')
+    }
+
+    //是否是闰年
+    _sole.isLeapYear = function(year) {
+        if (!this.isNumber(year)) return;
+        return year % ((year % 100) ? 4 : 100) ? false : true;
+    }
+
+    //随机生成颜色代码
+    _sole.getRandomColor = function() {
+        return ('000000' + Math.floor(Math.random() * 0x1000000).toString(16)).slice(-6);
+    }
+
+    _sole.objToArray = function() {
+        return Array.prototype.slice.call(arguments);
+    }
+
+    /*
+        获取当前时间, 格式如: "2015-5-7 9:04:10"  "2015-7-12 1:10:41"
+        temp.toLocaleDateString() 返回格式 2015/7/12
+        temp.toLocaleTimeString() 返回格式 "下午1:12:18"
+    */
+    _sole.getFormatTime = function() {
+        var temp = new Date();
+        var regex = /\//g;
+        return (temp.toLocaleDateString() + ' ' +
+            temp.toLocaleTimeString().slice(2)).replace(regex, '-');
+    }
+
+    //数组去重(此方法高效,比其他方法占用更多内存)
+    _sole.arrayUnique = function(arr) {
+        if (!this.isArray(arr)) return;
+        var n = {},
+            r = []; //n为hash表，r为临时数组
+        for (var i = 0; i < arr.length; i++) {
+            if (!n[arr[i]]) { //如果hash表中没有当前项
+                n[arr[i]] = true; //存入hash表
+                r.push(arr[i]); //把当前数组的当前项push到临时数组里面
+            }
+        }
+        return r;
+    }
+
+    //随机打乱数组
+    _sole.disturbArray = function(arr) {
+        if (!this.isArray(arr)) return;
+        var arr = arr.sort(function(a, b) {
+            return Math.random() > .5 ? -1 : 1;
+        })
+        return arr;
+    }
+
+
+    //获取某年某月的总天数
+    _sole.getDaysInYearAndMonth = function(year, month) {
+        var year = parseInt(year, 10),
+            month = parseInt(month, 10);
+
+        if (year && month) {
+            return new Date(year, month, 0).getDate();
+        }
+        return;
+    }
+
+    _sole.isPhone = function(str) {
+        if (!this.isString(str) && !this.isNumber(str)) return;
+        var regu = /^(13[0-9])|(147)|(15[0-3])|(15[6-9])|(18[0-3])|(18[5-9])\d{8}$/;
+        return regu.test(str);
+    }
+
+    _sole.isEmail = function(str) {
+        if (!this.isString(str)) return;
+        var regu = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
+        return regu.test(str);
+    }
+
+    _sole.isUrl = function(str) {
+        if (!this.isString(str)) return;
+        var regu = /^((http|https):\/\/)+(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/;
+        return regu.test(str);
+    }
+
+    /*
+      判断身份证号码格式函数 公民身份号码是特征组合码， 
+      排列顺序从左至右依次为：六位数字地址码，
+                              八位数字出生日期码，
+                              三位数字顺序码
+                              一位数字校验码
+    */
+    _sole.isChinaIDCard = function(StrNo) {
+        if (!this.isString(StrNo)) return;
+        StrNo = StrNo.toString();
+        if (StrNo.length == 15) {
+            if (!isValidDate("19" + StrNo.substr(6, 2), StrNo.substr(8, 2), StrNo.substr(10, 2))) {
+                return false;
+            }
+        } else if (StrNo.length == 18) {
+            if (!isValidDate(StrNo.substr(6, 4), StrNo.substr(10, 2), StrNo.substr(12, 2))) {
+                return false;
+            }
+        } else {
+            // alert("输入的身份证号码必须为15位或者18位！");
+            return false;
+        }
+
+        if (StrNo.length == 18) {
+            var a, b, c;
+            if (!isNumber(StrNo.substr(0, 17))) {
+                //alert("身份证号码错误,前17位不能含有英文字母！");
+                return false;
+            }
+            a = parseInt(StrNo.substr(0, 1)) * 7 + parseInt(StrNo.substr(1, 1)) * 9 + parseInt(StrNo.substr(2, 1)) * 10;
+            a = a + parseInt(StrNo.substr(3, 1)) * 5 + parseInt(StrNo.substr(4, 1)) * 8 + parseInt(StrNo.substr(5, 1)) * 4;
+            a = a + parseInt(StrNo.substr(6, 1)) * 2 + parseInt(StrNo.substr(7, 1)) * 1 + parseInt(StrNo.substr(8, 1)) * 6;
+            a = a + parseInt(StrNo.substr(9, 1)) * 3 + parseInt(StrNo.substr(10, 1)) * 7 + parseInt(StrNo.substr(11, 1)) * 9;
+            a = a + parseInt(StrNo.substr(12, 1)) * 10 + parseInt(StrNo.substr(13, 1)) * 5 + parseInt(StrNo.substr(14, 1)) * 8;
+            a = a + parseInt(StrNo.substr(15, 1)) * 4 + parseInt(StrNo.substr(16, 1)) * 2;
+            b = a % 11;
+            if (b == 2) { // 最后一位为校验位
+                c = StrNo.substr(17, 1).toUpperCase(); // 转为大写X
+            } else {
+                c = parseInt(StrNo.substr(17, 1));
+            }
+            switch (b) {
+                case 0:
+                    if (c != 1) { /*alert("身份证好号码校验位错:最后一位应该为:1");*/
+                        return false;
+                    }
+                    break;
+                case 1:
+                    if (c != 0) { /*alert("身份证好号码校验位错:最后一位应该为:0");*/
+                        return false;
+                    }
+                    break;
+                case 2:
+                    if (c != "X") { /*alert("身份证好号码校验位错:最后一位应该为:X");*/
+                        return false;
+                    }
+                    break;
+                case 3:
+                    if (c != 9) { /*alert("身份证好号码校验位错:最后一位应该为:9");*/
+                        return false;
+                    }
+                    break;
+                case 4:
+                    if (c != 8) { /*alert("身份证好号码校验位错:最后一位应该为:8");*/
+                        return false;
+                    }
+                    break;
+                case 5:
+                    if (c != 7) { /*alert("身份证好号码校验位错:最后一位应该为:7");*/
+                        return false;
+                    }
+                    break;
+                case 6:
+                    if (c != 6) { /*alert("身份证好号码校验位错:最后一位应该为:6");*/
+                        return false;
+                    }
+                    break;
+                case 7:
+                    if (c != 5) { /*alert("身份证好号码校验位错:最后一位应该为:5");*/
+                        return false;
+                    }
+                    break;
+                case 8:
+                    if (c != 4) { /*alert("身份证好号码校验位错:最后一位应该为:4");*/
+                        return false;
+                    }
+                    break;
+                case 9:
+                    if (c != 3) { /*alert("身份证好号码校验位错:最后一位应该为:3");*/
+                        return false;
+                    }
+                    break;
+                case 10:
+                    if (c != 2) { /*alert("身份证好号码校验位错:最后一位应该为:2");*/
+                        return false;
+                    }
+            }
+        } else { // 15位身份证号
+            if (!isNumber(StrNo)) { /*alert("身份证号码错误,前15位不能含有英文字母！");*/
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isValidDate(iY, iM, iD) {
+        if (iY > 2200 || iY < 1900 || !isNumber(iY)) {
+            //alert("输入身份证号,年度"+iY+"非法！");
+            return false;
+        }
+        if (iM > 12 || iM <= 0 || !isNumber(iM)) {
+            //alert("输入身份证号,月份"+iM+"非法！");
+            return false;
+        }
+        if (iD > 31 || iD <= 0 || !isNumber(iD)) {
+            //alert("输入身份证号,日期"+iD+"非法！");
+            return false;
+        }
+        return true;
+    }
+
+
+    //避免_sole变量的冲突
+    _sole.noConflict = function() {
+        root._sole = previousHD;
         return this;
     };
 }()
