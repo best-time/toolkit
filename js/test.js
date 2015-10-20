@@ -65,3 +65,27 @@
     // }(this, function() {
     //     // console.log(this);
     // }))
+
+    var arrs = [{
+        name: "yy",
+        age: 21
+    }, {
+        name: "yy",
+        age: 12
+    }, {
+        name: "yy",
+        age: 24
+    }, {
+        name: "yy",
+        age: 20.1
+    }]
+
+    function bb(arrs, age) {
+        arrs.sort(function(a, b) {
+            return a[age] > b[age];
+        })
+    }
+    bb(arrs, "age")
+    console.log(arrs);
+    arrs.reverse();
+    console.log(arrs);
