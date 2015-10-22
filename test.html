@@ -8,7 +8,7 @@
     <script src="js/hd.js"></script>
     <script src="js/test.js"></script>
     <script>
-    console.log(__.now());
+    // console.log(__.now());
     // console.log(_sole.isFunction(1));
     // console.log(_sole.isArray([]));
     // console.log(__.isLeapYear(1999))
@@ -17,11 +17,82 @@
     // console.log(__.arrayUnique([1, 3, 5, 3, 4]))
     // console.log(__.getDaysInYearAndMonth(2015, 1));
     // console.log(__.isPhone("13888884561"))
-    console.log(__.disturbArray([1, 2, 3, 4, 5, 1]))
+    // console.log(__.disturbArray([1, 2, 3, 4, 5, 1]))
     </script>
 </head>
+<style type="text/css">
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#box {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: #eee;
+}
+
+#head {
+    height: 40px;
+    background: orange;
+}
+</style>
 
 <body>
+    <div id="box">
+        <div id="head"></div>
+        <div id="con"></div>
+        <div id="foot"></div>
+    </div>
 </body>
+<script type="text/javascript">
+function tc(dTitle, drag) {
+    var disX = disY = 0;
+    var isDrag = false;
+    dTitle.onmousedown = function(evt) {
+        evt = evt || window.event;
+        isDrag = true;
+
+        disX = evt.clientX - drag.offsetLeft;
+        disY = evt.clientY - drag.offsetTop;
+
+        return false;
+    }
+
+    drag.onmousemove = function(evt) {
+        evt = evt || window.event;
+        if (!isDrag) return false;
+
+        drag.style.margin = 0;
+        var left = evt.clientX - disX,
+            top = evt.clientY - disY;
+        //限制弹框范围
+        if (left < 0) {
+            left = 0;
+        }
+        if (top < 0) {
+            top = 0;
+        }
+        if (left > window.screen.width - drag.clientWidth) {
+            left = window.screen.width - drag.clientWidth;
+        }
+        if (top > document.body.top - drag.clientHeight) {
+            top = document.body.width - drag.clientHeight;
+        }
+        drag.style.left = left + 'px';
+        drag.style.top = top + 'px';
+
+        return false;
+    }
+
+    drag.onmouseup = function() {
+        isDrag = false;
+    }
+}
+var o1 = document.getElementById("head");
+var o2 = document.getElementById("box")
+tc(o1, o2)
+</script>
 
 </html>

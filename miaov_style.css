@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+
+* { padding: 0; margin: 0; }
+li { list-style: none; }
+body { background: #eee; }
+
+.drag_layer { width: 450px; height: 270px; border: 1px solid #aaaaaa; padding: 3px; position: absolute; top: 0px; left: 0px; background: #fff; overflow:hidden; }
+.drag_layer h2 { height: 25px; line-height: 25px; padding-left: 10px; font-size: 14px; color: #333; background: url(images/title_bg.gif) repeat-x; border: 1px solid #aaaaaa; cursor: move; position: relative; }
+.drag_layer .close { width: 21px; height: 20px; background: url(images/close.gif) no-repeat 0 bottom; position: absolute; top: 2px; right: 3px; }
+.drag_layer .close:hover { background: url(images/close.gif) no-repeat 0 0; }
+.drag_layer .content { padding: 10px; overflow:auto; }
+.drag_layer .content p { font-size: 12px; line-height: 18px; color: #666; text-indent: 28px; padding-bottom: 10px; font-family: arial; }
+
+.drag { width: 14px; height: 14px; overflow: hidden; background: url(images/drag_ico.gif) no-repeat 1px 1px; cursor: nw-resize; position: absolute; top: 262px; right: 0; z-index: 2; }
+.bar_t { width: 410px; height: 4px; position: absolute; top: -2px; left: -2px; z-index: 1; cursor: n-resize; overflow: hidden; }
+.bar_b { width: 410px; height: 4px; position: absolute; bottom: -2px; left: -2px; z-index: 1; cursor: n-resize; overflow: hidden; }
+.bar_r { width: 4px; height: 110px; position: absolute; right: -2px; top: -2px; z-index: 1; cursor: e-resize; }
+.bar_l { width: 4px; height: 110px; position: absolute; left: -2px; top: -2px; z-index: 1; cursor: e-resize; }

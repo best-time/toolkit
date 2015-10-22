@@ -1,4 +1,22 @@
 ! function() {
+
+    /**
+     * note:
+     * sort reverse() 直接在原始数组上排序或翻转,不需要第二个变量
+     *
+     * Date 和 new Date() 区别:
+     * Date()直接返回当前时间字符串，不管参数是number还是任何string
+     *
+     *new Date()在参数正常的情况只会返回当前时间的字符串(且是当前时区的时间)
+        new Date()在解析一个具体的时间的时候，对参数有较严格的格式要求，
+        格式不正确的时候会直接返回Invalid Date，
+        比如将number类的时间戳转换成string类的时候也会导致解析出错
+        虽然new Date()的返回值是字符串，然而两个new Date()的结果字符串是可以直接相减的，
+        结果为相差的毫秒数。
+     *
+     * 
+     */
+
     // "use strict";
     var root = this;
     var previousHD = root._sole;
@@ -369,6 +387,17 @@
         return true;
     }
 
+    //测试代码效率的函数
+    _sole.getEfficiency = function(dateString, times, func) {
+        var startTime = window.performance.now(); //此函数精度较高
+        for (var i = 0; i < times; i++) {
+            func(dateString);
+        };
+        var endTime = window.performance.now();
+        var gapTime = endTime - startTime;
+        console.log('一共耗时:' + gapTime + 'ms');
+        return gapTime;
+    }
 
     //避免_sole变量的冲突
     _sole.noConflict = function() {
