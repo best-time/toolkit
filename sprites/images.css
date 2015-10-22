@@ -1,0 +1,29 @@
+/* glue: 0.11.1 hash: 3872639145 */
+        .sprite-images-toolbar,
+.sprite-images-toolbar_img {
+            background-image: url('images.png');
+            background-repeat: no-repeat;
+        }
+        
+        .sprite-images-toolbar {
+            background-position: 0 0;
+            width: 172px;
+            height: 912px;
+        }
+        
+        .sprite-images-toolbar_img {
+            background-position: -172px 0;
+            width: 172px;
+            height: 416px;
+        }
+        
+        @media screen and (-webkit-min-device-pixel-ratio: 1.0), screen and (min--moz-device-pixel-ratio: 1.0), screen and (-o-min-device-pixel-ratio: 100/100), screen and (min-device-pixel-ratio: 1.0), screen and (min-resolution: 1.0dppx) {
+            .sprite-images-toolbar,
+    .sprite-images-toolbar_img {
+                background-image: url('images.png');
+                -webkit-background-size: 344px 912px;
+                -moz-background-size: 344px 912px;
+                background-size: 344px 912px;
+            }
+        }
+        
