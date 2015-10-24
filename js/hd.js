@@ -14,6 +14,8 @@
         虽然new Date()的返回值是字符串，然而两个new Date()的结果字符串是可以直接相减的，
         结果为相差的毫秒数。
      *
+     * 从计算效率上来说，
+     * Date.prototype.getTime()≈Date.prototype.valueOf()>+Date≈Number(Date)>>Date.parse()
      * 
      */
 
@@ -265,6 +267,32 @@
         var regu = /^((http|https):\/\/)+(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/;
         return regu.test(str);
     }
+
+    //实现对象拷贝
+    _sole.extend = function(target, source) {
+        for (var i in source) {
+            if (source.hasOwnProperty(i)) {
+                target[p] = source[i];
+            }
+        }
+        return target;
+    }
+
+    /**
+     * ie相关判断
+     */
+    isIE = function() {
+        return !!window.ActiveXObject;
+    };
+    isIE6 = function() {
+        return isIE() && !window.XMLHttpRequest;
+    };
+    isIE7 = function() {
+        return isIE() && !isIE6() && !isIE8();
+    };
+    isIE8 = function() {
+        return isIE() && !!document.documentMode;
+    };
 
     /*
       判断身份证号码格式函数 公民身份号码是特征组合码， 

@@ -34,12 +34,13 @@
             var tag_start = '<!--';
             var tag_end = '-->';
         }
-        this.tmpl = function tmpl(str, data) { //alert(document.getElementById(str).innerHTML);
+        this.tmpl = function(str, data) {
+            //alert(document.getElementById(str).innerHTML);
             // Figure out if we're getting a template, or if we need to
             // load the template - and be sure to cache the result.
+
             var fn = !/\W/.test(str) ?
-                cache[str] = cache[str] ||
-                tmpl(document.getElementById(str).innerHTML) :
+                cache[str] = cache[str] || tmpl(document.getElementById(str).innerHTML) :
 
                 // Generate a reusable function that will serve as a template
                 // generator (and which will be cached).
@@ -53,7 +54,7 @@
                     str
                     .replace(/[\r\t\n]/g, " ")
                     .split(tag_start).join("\t")
-                    .replace(new RegExp("((^|" + tag_end + ")[^\\t]*)'", "g"), "$1\r")
+                    .replace(/"((^|" + tag_end + ")[^\\t]*)'/g, "$1\r")
                     .replace(new RegExp("\\t=(.*?)" + tag_end, "g"), "',$1,'")
                     .split("\t").join("');")
                     .split(tag_end).join("p.push('")
@@ -61,6 +62,7 @@
 
             // Provide some basic currying to the user
             if (data) {
+                console.log(fn)
                 document.getElementById(str).innerHTML = fn(data)
             } else {
                 return fn;
@@ -94,6 +96,20 @@
     //     }]
     // };
     // tmpl("tpl", data);
+    function bb(obj) {
+        var p = [],
+            print = function() {
+                p.push.apply(p, arguments);
+            };
+        with(obj) {
+            p.push('         <br>         ');
+            for (i = 0; i < users.length; ++i) {
+                p.push('         Name:         ', users[i].name, '         <br>         ');
+            }
+            p.push('     ');
+        }
+        return p.join('');
+    }
     </script>
 </body>
 
