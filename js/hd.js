@@ -171,6 +171,11 @@
         };
     });
 
+    _sole.isObject = function(obj) {
+        var type = typeof obj;
+        return type === 'function' || type === 'object' && !!obj;
+    };
+
     _sole.isFinite = function(obj) {
         return isFinite(obj) && !isNaN(parseFloat(obj));
     };

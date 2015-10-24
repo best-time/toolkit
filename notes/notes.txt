@@ -15,3 +15,6 @@ call 在大多数情况下比 apply性能好
 
 var _has = {}.hasOwnProperty;
 if(_has.call(obj, 'xxx')) //查看某个对象上是否有xxx属性
+
+跳过了 _.findIndex和 _.findLastIndex 
+******************看到_.first  方法  2015年10月25日00:44:25

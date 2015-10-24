@@ -3,3 +3,7 @@ pluck
 mutate
 
 iterate  迭代 重复, 反复
+
+predicate
+
+flatten  变平
