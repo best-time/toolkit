@@ -7,3 +7,5 @@ iterate  迭代 重复, 反复
 predicate
 
 flatten  变平
+
+intersection 相交 十字路口 交点

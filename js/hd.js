@@ -284,6 +284,25 @@
     }
 
     /**
+     *  二分查找
+     *  items 必须是排序好的 数组
+     *
+     */
+    _sole.binarySearch = function(items, value) {
+        var startIndex = 0;
+        var stopIndex = items.length - 1;
+        var middle = (stopIndex + startIndex) >>> 1; //相当于 Math.floor(val/2)
+        while (items[middle] != value && startIndex < stopIndex) {
+            if (value < items[middle]) {
+                stopIndex = middle - 1; // 调整查找范围 
+            } else if (value > items[middle]) {
+                startIndex = middle + 1;
+            }
+            middle = (stopIndex + startIndex) >>> 1; //重新计算中项索引
+        }
+        return (items[middle] != value) ? -1 : middle;
+    };
+    /**
      * ie相关判断
      */
     isIE = function() {

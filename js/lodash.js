@@ -1900,6 +1900,7 @@
          * @private
          * @param {Array} [values] The values to cache.
          */
+		
         function SetCache(values) {
             var index = -1,
                 length = values ? values.length : 0;
@@ -2430,6 +2431,7 @@
          * @returns {Array} Returns the new flattened array.
          */
         function baseFlatten(array, isDeep, isStrict, result) {
+		
             result || (result = []);
 
             var index = -1,
@@ -5493,7 +5495,7 @@
          * // => [2]
          */
         var intersection = rest(function(arrays) {
-            var mapped = arrayMap(arrays, toArrayLikeObject);
+            var mapped = arrayMap(arrays, toArrayLikeObject);console.log(mapped)
             return (mapped.length && mapped[0] === arrays[0]) ? baseIntersection(mapped) : [];
         });
 
@@ -5630,7 +5632,7 @@
          * console.log(array);
          * // => [1, 1]
          */
-        function pullAll(array, values) {
+        function pullAll(array, values) {console.log(array); console.debug(values)
             return (array && array.length && values && values.length) ? basePullAll(array, values) : array;
         }
 
@@ -8550,10 +8552,12 @@
          * say('hello', 'fred', 'barney', 'pebbles');
          * // => 'hello fred, barney, & pebbles'
          */
+		 
         function rest(func, start) {
             if (typeof func != 'function') {
                 throw new TypeError(FUNC_ERROR_TEXT);
             }
+			
             start = nativeMax(start === undefined ? (func.length - 1) : toInteger(start), 0);
             return function() {
                 var args = arguments,
