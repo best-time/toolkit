@@ -1,4 +1,4 @@
-pluck
+﻿pluck
 
 mutate
 
@@ -9,3 +9,11 @@ predicate
 flatten  变平
 
 intersection 相交 十字路口 交点
+
+obtain
+parse
+factory
+syntax
+notation
+
+
