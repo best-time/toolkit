@@ -2794,7 +2794,7 @@
          */
         function baseIteratee(value) {
             var type = typeof value;
-            if (type == 'function') {
+            if (type == 'function') { 
                 return value;
             }
             if (value == null) {
@@ -5632,7 +5632,7 @@
          * console.log(array);
          * // => [1, 1]
          */
-        function pullAll(array, values) {console.log(array); console.debug(values)
+        function pullAll(array, values) {
             return (array && array.length && values && values.length) ? basePullAll(array, values) : array;
         }
 

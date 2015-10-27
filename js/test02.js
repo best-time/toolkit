@@ -57,23 +57,55 @@ var arr4 = [1, 11, 21, 23, 35, 42, 56];
 //         console.log(i); // 输出 : 0 1 2 4
 //     }
 
-// var ar2 = [1, 2, 3, 4, 5]
-// _.pull(ar2, 2, 3);
-// console.log(ar2) // [1, 4, 5]
-function calculate(number) {
-    return number / 3;
+var ar2 = [1, 2, 3, 4, 5]
+_.pull(ar2, 2, 3);
+// console.log(ar2); // [1, 4, 5]
+// function calculate(number) {
+//     return number / 3;
+// }
+
+// function getHalfOf(num1, num2, num3) {
+//     function calculate(number) {
+//         return number / 2;
+//     }
+
+//     var result = "";
+//     result += calculate(num1) + " ";
+//     result += calculate(num2) + " ";
+//     result += calculate(num3);
+//     return result;
+// }
+// var resultString = getHalfOf(10, 20, 30);
+// alert(resultString); // 输出 "5 10 15"
+
+// var cc = b(c);
+// console.debug(cc(1, 2));
+
+function c(arr, v) {
+    var a = 3;
 }
 
-function getHalfOf(num1, num2, num3) {
-    function calculate(number) {
-        return number / 2;
+function b(par) {
+    // alert(par)
+    if (typeof par != 'function') {
+        alert(1)
     }
-
-    var result = "";
-    result += calculate(num1) + " ";
-    result += calculate(num2) + " ";
-    result += calculate(num3);
-    return result;
+    return function() {
+        var args = arguments;
+        console.log(args)
+        return 2
+    }
 }
-var resultString = getHalfOf(10, 20, 30);
-alert(resultString); // 输出 "5 10 15"
+
+// var res = b(c)
+// alert(res())
+var array = [1, 2, 11, 4];
+var evens = _.remove(array, function(n) {
+    return n % 2 == 0;
+});
+
+console.log(array);
+// => [1, 3]
+
+console.log(evens);
+// => [2, 4]

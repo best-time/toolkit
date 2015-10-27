@@ -16,4 +16,9 @@ factory
 syntax
 notation
 
-
+retrieve
+implicit
+explicit
+fusion
+execution
+invoke

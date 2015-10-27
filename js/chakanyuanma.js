@@ -1,39 +1,79 @@
-//var ar2 = [1, 2, 3, 4, 5]
-//_.pull(ar2, 2, 3); // [1, 4, 5]
-var pull = rest(pullAll);
+ /* var array = [1, 2, 3, 4];
+  * var evens = _.remove(array, function(n) {
+  *   return n % 2 == 0;
+  * });
+  *
+  * console.log(array);
+  * // => [1, 3]
+  *
+  * console.log(evens);
+  * // => [2, 4]
+  */
+ function remove(array, predicate) {
+     var index = -1,
+         indexes = [],
+         length = array.length;
 
-function pullAll(array, values) {
-    return (array && array.length && values && values.length) ? basePullAll(array, values) : array;
-}
+     predicate = getIteratee(predicate, 3); // baseIteratee
+     while (++index < length) {
+         var value = array[index];
+         if (predicate(value, index, array)) {
+             result.push(value);
+             indexes.push(index);
+         }
+     }
+     basePullAt(array, indexes); //[1, 2, 11, 4] /[1,11]
+     return result;
+ }
 
-function rest(func, start) {
-    if (typeof func != 'function') {
-        throw new TypeError(FUNC_ERROR_TEXT);
-    }
-    start = nativeMax(start === undefined ? (func.length - 1) : toInteger(start), 0);
-    return function() {
-        var args = arguments,
-            index = -1,
-            length = nativeMax(args.length - start, 0),
-            array = Array(length);
+ function isKey(value, object) {
+     if (typeof value == 'number') {
+         return true;
+     }
+     return !isArray(value) &&
+         (reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+             (object != null && value in Object(object)));
+ }
 
-        while (++index < length) {
-            array[index] = args[start + index];
-        }
-        switch (start) {
-            case 0:
-                return func.call(this, array);
-            case 1:
-                return func.call(this, args[0], array);
-            case 2:
-                return func.call(this, args[0], args[1], array);
-        }
-        var otherArgs = Array(start + 1);
-        index = -1;
-        while (++index < start) {
-            otherArgs[index] = args[index];
-        }
-        otherArgs[start] = array;
-        return func.apply(this, otherArgs);
-    };
-}
+ function basePullAt(array, indexes) {
+     var length = 2,
+         lastIndex = 1; //3
+
+     while (length--) {
+         var index = indexes[length];
+         if (lastIndex == length || index != previous) {
+             var previous = index;
+             if (isIndex(index)) {
+                 splice.call(array, index, 1);
+             } else if (!isKey(index, array)) {
+                 var path = baseToPath(index),
+                     object = parent(array, path);
+
+                 if (object != null) {
+                     delete object[last(path)];
+                 }
+             } else {
+                 delete array[index];
+             }
+         }
+     }
+     return array;
+ }
+
+ function getIteratee() {
+     return baseIteratee(arguments[0], arguments[1]);
+ }
+
+ function baseIteratee(value) {
+     var type = typeof value;
+     if (type == 'function') {
+         return value;
+     }
+     if (value == null) {
+         return identity;
+     }
+     if (type == 'object') {
+         return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+     }
+     return property(value);
+ }
