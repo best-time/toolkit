@@ -98,14 +98,21 @@ function b(par) {
 }
 
 // var res = b(c)
-// alert(res())
+// alert(res()) 
 var array = [1, 2, 11, 4];
 var evens = _.remove(array, function(n) {
     return n % 2 == 0;
 });
 
-console.log(array);
+// console.log(array);
 // => [1, 3]
 
-console.log(evens);
+// console.log(evens);
 // => [2, 4]
+// var res = _.rest([1, 2, 3])
+// console.log(res)
+
+var res = _.takeRightWhile([1, 2, 3], function(n) {
+    return n > 1;
+});
+console.log(res)

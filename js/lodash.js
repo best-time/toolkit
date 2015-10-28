@@ -3414,7 +3414,7 @@
 
             while ((fromRight ? index-- : ++index < length) &&
                 predicate(array[index], index, array)) {}
-
+	
             return isDrop ? baseSlice(array, (fromRight ? 0 : index), (fromRight ? index + 1 : length)) : baseSlice(array, (fromRight ? index + 1 : 0), (fromRight ? length : index));
         }
 
