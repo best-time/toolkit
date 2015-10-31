@@ -22,3 +22,9 @@ explicit
 fusion
 execution
 invoke
+
+
+pluck
+reduce
+reject
+sample
