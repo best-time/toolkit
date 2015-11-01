@@ -1,53 +1,64 @@
 /*
-_.takeRightWhile([1, 2, 3], function(n) {
-  return n > 1;
-});
-// → [2, 3]
-*/
-function takeRightWhile(array, predicate) {
-    return (array && array.length) ? baseWhile(array, function(n) {
-        return n > 1;
-    }, false, true) : [];
+var zipped = _.zip([1, 2], [10, 20], [100, 200]);
+// → [[1, 10, 100], [2, 20, 200]]
+ */
+var zip = rest(unzip);
+
+function rest(func, start) {
+
+    start = 0;
+    return function() {
+        var args = arguments, //[1, 2], [10, 20], [100, 200]
+            index = -1,
+            length = 3
+        array = Array(length);
+
+        while (++index < length) {
+            array[index] = args[start + index]; //[1, 2], [10, 20], [100, 200]
+        }
+        switch (start) {
+            case 0:
+                return func.call(this, array);
+            case 1:
+                return func.call(this, args[0], array);
+            case 2:
+                return func.call(this, args[0], args[1], array);
+        }
+        var otherArgs = Array(start + 1);
+        index = -1;
+        while (++index < start) {
+            otherArgs[index] = args[index];
+        }
+        otherArgs[start] = array;
+        return func.apply(this, otherArgs);
+    };
+}
+// [ [1, 2], [10, 20], [100, 200] ]
+function unzip(array) {
+    var length = 0;
+    array = arrayFilter(array, function(group) {
+        if (isArrayLikeObject(group)) {
+            length = nativeMax(group.length, length);
+            return true;
+        }
+    });
+
+    return baseTimes(length, function(index) {
+        return arrayMap(array, baseProperty(index));
+    });
 }
 
-
-function baseWhile(array, predicate, isDrop, fromRight) {
-    var length = array.length, //3 
-        index = fromRight ? length : -1; //3
-
-    while (
-        (fromRight ? index-- : ++index < length) 
-        &&
-        predicate(array[index], index, array)
-        ) {
-
-}
-
-
-    return isDrop ?
-        baseSlice(array, (fromRight ? 0 : index), (fromRight ? index + 1 : length)) :
-        baseSlice(array, 1, 3);
-}
-
-function baseSlice(array, start, end) {
+function arrayFilter(array, predicate) {
     var index = -1,
-        length = array.length; // 3
+        length = array.length,//3
+        resIndex = -1,
+        result = [];
 
-    start = start == null ? 0 : toInteger(start);
-    1
-    if (start < 0) {
-        start = -start > length ? 0 : (length + start);
-    }
-    end = (end === undefined || end > length) ? length : toInteger(end); //3
-    if (end < 0) {
-        end += length;
-    }
-    length = start > end ? 0 : ((end - start) >>> 0); //2
-    start >>>= 0; //1
-
-    var result = Array(length);
     while (++index < length) {
-        result[index] = array[index + start];
+        var value = array[index];
+        if (predicate(value, index, array)) {
+            result[++resIndex] = value;
+        }
     }
     return result;
 }

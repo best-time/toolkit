@@ -1,3 +1,5 @@
 # ywy
-useful
-this is the first time to use github.
+
+js 函数工具集
+
+框架学习笔记

@@ -275,12 +275,35 @@
 
     //实现对象拷贝
     _sole.extend = function(target, source) {
-        for (var i in source) {
+        var i;
+        for (i in source) {
             if (source.hasOwnProperty(i)) {
                 target[p] = source[i];
             }
         }
         return target;
+    }
+
+    /**
+     * 设置cookie
+     */
+    _sole.setCookie = function(name, value, hours) { //写cookie
+        var exp = new Date();
+        exp.setTime(exp.getTime() + hours * 60 * 60 * 1000);
+        if (navigator.cookieEnabled) {
+            document.cookie = name + "=" + encodeURI(value) + ";expires=" + exp.toGMTString();
+        }
+    }
+
+    /**
+     * 读取cookie
+     * 
+     */
+    _sole.getCookie = unction(name) { //取cookie
+        if (navigator.cookieEnabled) {
+            var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+            if (arr != null) return decodeURI(arr[2]);
+        }
     }
 
     /**

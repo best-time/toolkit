@@ -85,7 +85,20 @@
             return a[age] > b[age];
         })
     }
-    bb(arrs, "age")
-    console.log(arrs);
-    arrs.reverse();
-    console.log(arrs);
+    // bb(arrs, "age")
+    // console.log(arrs);
+    // arrs.reverse();
+    // console.log(arrs);
+
+
+    var aa = bb();
+
+    function bb() {
+        var c = 1;
+        return function() {
+            var args = arguments.length;
+            console.log(args)
+            console.log(c * 10);
+        }
+    }
+    aa([1, 2, 3]);
