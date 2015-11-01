@@ -275,7 +275,8 @@
 
     //实现对象拷贝
     _sole.extend = function(target, source) {
-        for (var i in source) {
+        var i;
+        for (i in source) {
             if (source.hasOwnProperty(i)) {
                 target[p] = source[i];
             }

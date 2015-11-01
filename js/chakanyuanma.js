@@ -50,7 +50,7 @@ function unzip(array) {
 
 function arrayFilter(array, predicate) {
     var index = -1,
-        length = array.length,
+        length = array.length,//3
         resIndex = -1,
         result = [];
 
