@@ -3,7 +3,7 @@
         return document.getElementById(id);
     },
     defaults: { //默认选项
-        title: "标题栏", //标题描述
+        title: "", //标题描述
         shade: true, //是否有遮罩层
         opacity: 20, //遮罩层透明度
         width: 500, //弹窗宽度
@@ -28,7 +28,9 @@
         this.defaults.ConfirmFun = option.ConfirmFun ? option.ConfirmFun : this.defaults.ConfirmFun;
         this.defaults.CancelFun = option.CancelFun ? option.CancelFun : this.defaults.CancelFun;
 
-        this.editTitle();
+        if (this.defaults.title !== "") {
+            this.editTitle();
+        }
         this.editHtml();
         if (this.defaults.ConfirmFun) {
             this.showBottom();
@@ -113,8 +115,9 @@
         }
     },
     hide: function() {
-        this.$("prompt").style.display = "none";
-        this.$("shadeDiv").style.display = "none";
+        var doc = document;
+        doc.getElementById("prompt").style.display = "none";
+        doc.getElementById("shadeDiv").style.display = "none";
     },
     createShade: function() { //创建遮罩层
         var doc = document,
@@ -150,13 +153,12 @@
         Iframe.style.height = height + 'px';
         return Iframe;
     },
-    isDown: false,
     drag: function() { //添加拖拽事件
         var that = this,
             mouseX, mouseY, objY, objX,
             prompt_title = this.$("prompt_title"),
             prompt = this.$("prompt");
-
+        var isDown = false;
         that.addHandler(prompt_title, "mousedown", function(event) { //按下鼠标左键
             var event = window.event || event;
             if (event.button == 0 || event.button == 1) { //鼠标左键chrome=0 ie=1
@@ -169,12 +171,13 @@
                 objY = parseInt(prompt.style.top, 10);
                 objX = parseInt(prompt.style.left, 10);
                 console.log(objX, objY)
-                that.isDown = true;
+                isDown = true;
             }
         });
 
         that.addHandler(document, "mousemove", function(event) {
-            if (that.isDown) {
+            console.log(isDown)
+            if (isDown) {
                 var event = window.event || event;
                 (!window.ActiveXObject) ?
                 event.preventDefault():
@@ -198,7 +201,7 @@
         });
 
         that.addHandler(document, "mouseup", function() {
-            that.isDown = false;
+            isDown = false;
         });
     },
     getPosition: function(obj) { //获取元素在页面里的位置和宽高
