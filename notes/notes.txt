@@ -72,6 +72,7 @@ port: 端口号
 protocol: url协议
 search: ?号开始的url
 
-js正则函数
+js正则函数 没理清
+页面宽度, div宽度等获取 没理清
 
 *****************_.isArguments 2015年11月02日23:23:16
