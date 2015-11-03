@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>test- Vue.js</title>
+    <script type="text/javascript" src="js/vue.js"></script>
+</head>
+
+<body>
+	<!-- it框惰性更新 添加个lazy属性 -->
+    <form id="demo">
+        <!-- text -->
+        <p>
+            input框:
+            <input type="text" v-model="msg"> {{msg}}
+        </p>
+        <!-- checkbox -->
+        <p>
+            复选框:
+            <input type="checkbox" v-model="checked"> {{checked ? "yes" : "no"}}
+            <br>
+            <input type="checkbox" v-model="checked"> {{checked ? "yes" : "no"}}
+            <br>
+            <input type="checkbox" v-model="checked"> {{checked ? "yes" : "no"}}
+        </p>
+        <!-- radio buttons -->
+        <p>
+            单选框:
+            <input type="radio" name="picked" value="one" v-model="picked">
+            <br>
+            <input type="radio" name="picked" value="two" v-model="picked"> {{picked}}
+        </p>
+        <!-- select -->
+        <p>
+            下拉框:
+            <br>
+            <select v-model="selected">
+                <option>one</option>
+                <option>two</option>
+            </select>
+            {{selected}}
+        </p>
+        <!-- multiple select -->
+        <p>
+            多选的下拉框:
+            <br>
+            <select v-model="multiSelect" multiple>
+                <option>one</option>
+                <option>two</option>
+                <option>three</option>
+            </select>
+            {{multiSelect}}
+        </p>
+        <p><pre>data: {{$data | json 2}}</pre></p>
+        <a v-on="click: aa">点击</a>
+    </form>
+</body>
+
+</html>
+<script type=" text/javascript " src="js/formVue.js "></script>
