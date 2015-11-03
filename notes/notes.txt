@@ -43,3 +43,36 @@ note: 函数的 length 得到的是形参个数     ||   arguments.length   得�
 *****************_.takeWhile 2015年10月29日00:06:05
 
 *****************_.where 2015年10月31日22:18:45
+
+只有函数被调用时,arguments对象才会被创建,未调用时其值为 null
+函数 arguments 保存实参
+
+在一个函数调用另一个函数时,被调用的函数会自动生成一个caller属性,指向调用它的函数对象.
+如果该函数当前未被调用,或并非被其他函数调用,则caller为null
+function testCaller() {
+	var caller = testCaller.caller;
+	alert(caller);
+}
+function aCaller() {
+	testCaller();
+}
+aCaller();
+弹窗会弹处 aCaller()函数的源码
+
+当函数被调用时,它的arguments.callee对象就会指向自身,也就是一个对自己的引用. (多用于函数递归)
+因为arguments是在函数调用时才有效,因此函数未调用时, arguments.callee为null
+
+window.location 属性:
+hash : #号开始的url
+host : 主机名和当前url的端口号
+hostname :主机名
+href: 完整的url
+pathname: 当前url的路径部分, / 斜杠部分
+port: 端口号
+protocol: url协议
+search: ?号开始的url
+
+js正则函数 没理清
+页面宽度, div宽度等获取 没理清
+
+*****************_.isArguments 2015年11月02日23:23:16

@@ -28,3 +28,5 @@ pluck
 reduce
 reject
 sample
+
+negate

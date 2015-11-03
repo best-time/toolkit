@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>test- Vue.js</title>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <style type="text/css">
+    #demo li,
+    .demoli {
+        cursor: pointer;
+    }
+    
+    #demo li.done,
+    .demo li.dene {
+        color: #7f8c8d;
+        text-decoration: line-through;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="demo">
+        <h1>{{title | uppercase}}</h1>
+        <ul>
+            <li v-repeat="todos" v-on="click: done = !done" class="{{done ? 'done' : ''}}">
+                {{content}}
+            </li>
+        </ul>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo2">
+        <li v-repeat="items" class="item-{{$index}}">
+            {{$index}} - {{parentMsg}} - {{childMsg}}
+        </li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo3">
+        <template v-repeat="list">
+            <!-- 包含多个节点的块, 需要template标签包裹 -->
+            <li>{{$index}}</li>
+            <li>{{msg}}</li>
+        </template>
+    </ul>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo4">
+        <li v-repeat="tags">
+            {{$index}} - {{$value}}
+        </li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo5">
+        <li v-repeat="aa in users">
+            <!-- 使用别名,可读性更强,同时性能更好 -->
+            {{aa.name}} ---> {{aa.email}}
+        </li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo6">
+        <li v-repeat="primitiveValues">{{$key}} : {{$value}}</li>
+        <li>===============</li>
+        <li v-repeat="objectValues">{{$key}} : {{msg}}</li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo7">
+        <!-- v-repeat值为整数时,它将重复显示模板多次 -->
+        <li v-repeat="val"> Hi {{$index}}
+        </li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+    <div id="demo8">
+        <a v-on="click: onClick">触发一个方法函数</a>
+        <br>
+        <a v-on="click:n++">触发一个表达式 - {{n}}</a>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <ul id="demo9">
+        <li v-repeat="item in items" v-on="click: toggle(item)">
+            {{item.text}}
+        </li>
+    </ul>
+    <!-- 当你想要在表达式中访问原来的DOM event, 可以传递一个$event参数
+<button v-on="click: submit('hello', $event)"></button>
+{ methods: {submit:function(msg, e){ e.stopPropagation(); }} } -->
+    <br>
+    <hr>
+    <br>
+    <div id="demo10">
+        <input v-on="keyup: submit | key 13">
+        <br>
+        <input v-on="keyup: submit2 | key 'enter'">
+    </div>
+</body>
+
+</html>
+<script type=" text/javascript " src="js/testVue.js "></script>
