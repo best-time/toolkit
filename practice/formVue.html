@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<!-- it框惰性更新 添加个lazy属性 -->
+    <!-- it框惰性更新 添加个lazy属性 -->
     <form id="demo">
         <!-- text -->
         <p>
@@ -54,6 +54,22 @@
         <p><pre>data: {{$data | json 2}}</pre></p>
         <a v-on="click: aa">点击</a>
     </form>
+    <br>
+    <br>
+    <br>
+    <ul id="list">
+        <li v-repeat="item in items" v-on="click: toggle(item)">
+            {{item.text}} - {{item.done}}
+        </li>
+    </ul>
+    <br>
+    <br>
+    <br>
+    <div id="demoo" v-demo-zhiling="maroon">
+    </div>
+    <br>
+    <br>
+    <div id="box" v-literal-dir="foo"></div>
 </body>
 
 </html>
