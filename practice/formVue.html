@@ -66,6 +66,21 @@
     <br>
     <hr>
     <br>
+    <br>
+    <br>
+    <ul id="list">
+        <li v-repeat="item in items" v-on="click: toggle(item)">
+            {{item.text}} - {{item.done}}
+        </li>
+    </ul>
+    <br>
+    <br>
+    <br>
+    <div id="demoo" v-demo-zhiling="maroon">
+    </div>
+    <br>
+    <br>
+    <div id="box" v-literal-dir="foo"></div>
 </body>
 
 </html>
