@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<!-- it框惰性更新 添加个lazy属性 -->
+    <!-- it框惰性更新 添加个lazy属性 -->
     <form id="demo">
         <!-- text -->
         <p>
@@ -54,6 +54,18 @@
         <p><pre>data: {{$data | json 2}}</pre></p>
         <a v-on="click: aa">点击</a>
     </form>
+    <br>
+    <hr>
+    <br>
+    <!-- 计算属性 -->
+    <div id="demo1" v-on="click: cc">{{fullName}}</div>
+    <br>
+    <hr>
+    <br>
+    <div id="demo2" v-demo="maroon : msg"></div>
+    <br>
+    <hr>
+    <br>
 </body>
 
 </html>

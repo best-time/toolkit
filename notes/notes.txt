@@ -76,3 +76,14 @@ js正则函数 没理清
 页面宽度, div宽度等获取 没理清
 
 *****************_.isArguments 2015年11月02日23:23:16
+
+
+vue.js 笔记
+创建一个Vue实例:
+var vm = new Vue({})
+实例属性: http://cn.vuejs.org/api/instance-properties.html
+实例方法: http://cn.vuejs.org/api/instance-methods.html
+全局api: http://cn.vuejs.org/api/global-api.html
+组件选项: http://cn.vuejs.org/api/options.html
+
+注意: 以 _ 或 $ 开头的属性将不会被代理在 Vue 实例上
