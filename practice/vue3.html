@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue-test3</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <!-- 3层{} 会自动解析html标签,否则会把标签当成普通文本输出 -->
+        {{{ raw_html}}}
+        <!-- 表达式的使用 -->
+        <br> {{ok ? 'yes' : 'no'}}
+        <br>{{ number + 1 }}
+        <br>{{ message.split('').reverse().join('') }}
+        <br>{{ message | capitalize }}
+        <br><a href="{{ url }}">a链接</a>
+        <br><a v-bind:href="url">a链接</a>
+        <br>
+        <a v-on:click="doSomething">点击调用doSomething</a>
+        <br>
+        <button @click="alert">点击</button>
+    </div>
+    <div id="example">
+        a={{ a }}, b={{ b }}
+    </div>
+    <div id="demo">{{fullName}}</div>
+    <div id="box1">{{ example }}</div>
+    <script>
+    //在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 XSS 攻击。
+    //记住，只对可信内容使用 HTML 插值，永不用于用户提交的内容。
+    //不能在表达式内使用过滤器
+    /*
+		过滤器串联
+		{{ message | filterA | filterB }}
+		过滤器传参
+		{{ message | filterA 'arg1' arg2 }}
+    */
+
+    /**
+    	下面这2中用法不可以
+	    <!-- 这是一个语句，不是一个表达式： -->
+		{{ var a = 1 }}
+
+		<!-- 流程控制也不可以，可使用三元表达式 -->
+		{{ if (ok) { return message } }}
+	
+
+		v-bind 和 v-on 提供特别的缩写
+
+		<!-- 完整语法 -->
+		<a v-bind:href="url"></a>
+		<!-- 缩写 -->
+		<a :href="url"></a>
+	
+		<!-- 完整语法 -->
+		<a v-on:click="doSomething"></a>
+		<!-- 缩写 -->
+		<a @click="doSomething"></a>
+
+
+	*/
+    new Vue({
+            el: "#box",
+            data: {
+                raw_html: "<em>原生html</em>",
+                //javascript 表达式使用
+                //每个绑定值能支持单个表达式
+                ok: true,
+                number: 22,
+                message: "mingtian",
+                url: 'http://www.webxmf.com'
+            },
+            methods: {
+                doSomething: function() {
+                    console.log("doSomething")
+                },
+                alert: function() {
+                    alert('alert 方法')
+                }
+            }
+        })
+        //=======================================
+
+    //计算属性
+    var vm = new Vue({
+        el: '#example',
+        data: {
+            a: 1
+        },
+        computed: {
+            // getter
+            b: function() {
+                // `this` 指向 vm 实例
+                return this.a + 1
+            }
+        }
+    })
+
+    var vm = new Vue({
+            el: '#demo',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar'
+            },
+            computed: {
+                fullName: function() {
+                        return this.firstName + ' ' + this.lastName
+                    }
+                    // fullName: {
+                    //     // getter
+                    //     get: function() {
+                    //         return this.firstName + ' ' + this.lastName
+                    //     },
+                    //     // setter
+                    //     set: function(newValue) {
+                    //         var names = newValue.split(' ')
+                    //         this.firstName = names[0]
+                    //         this.lastName = names[names.length - 1]
+                    //     }
+                    // }
+            }
+        })
+        /**
+        //$watch 方式实现 (尽量用计算属性替换$watch)
+        var vm = new Vue({
+          data: {
+            firstName: 'Foo',
+            lastName: 'Bar',
+            fullName: 'Foo Bar'
+          }
+        })
+
+        vm.$watch('firstName', function (val) {
+          this.fullName = val + ' ' + this.lastName
+        })
+
+        vm.$watch('lastName', function (val) {
+          this.fullName = this.firstName + ' ' + val
+        })
+	
+		// 计算存储器
+		computed: {
+		  fullName: {
+		    // getter
+		    get: function () {
+		      return this.firstName + ' ' + this.lastName
+		    },
+		    // setter
+		    set: function (newValue) {
+		      var names = newValue.split(' ')
+		      this.firstName = names[0]
+		      this.lastName = names[names.length - 1]
+		    }
+		  }
+		}
+
+        */
+
+    var vm = new Vue({
+        el: "#box1",
+        data: {
+            msg: 'hi'
+        },
+        computed: {
+            cache: false,
+            example: function() {
+                return Date.now() + "-" + this.msg
+            }
+        }
+    })
+    </script>
+    <br>
+    <div class="static" :class="{ 'class-a': isA, 'class-b': isB }">class</div>
+    <!-- v-bind:class 可以绑定到computed 属性上 -->
+    <div id="box3" :class="getObj">参数为对象的 class</div>
+    <div id="box4" v-bind:class="[classA, classB]">数组为参数 class</div>
+    <div id="box5" v-bind:class="[classA, isB ? classB : '']">三元运算 class</div>
+    <br>
+    <div id="box6" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"> 参数式的-内联style使用
+        <div v-bind:style="styleObject">对象式的-内联style使用</div>
+        <div v-bind:style="[styleObjectA, styleObjectB]">数组式的-内联style使用 (使用存在问题)</div>
+    </div>
+    <script>
+    new Vue({
+        el: ".static",
+        data: {
+            isA: true,
+            isB: false
+        }
+    })
+    new Vue({
+        el: '#box3',
+        data: {
+            classObject: {
+                'class-a': true,
+                'class-b': false
+            },
+        },
+        computed: { // 计算属性
+            getObj: function() {
+                return {
+                    'class-a': true,
+                    'class-b': true
+                }
+            }
+        },
+        // methods: { // getObj: function() { // this.classObject['class-b'] = true // } // }
+
+    })
+    new Vue({
+        el: '#box4',
+        data: {
+            classA: 'classA',
+            classB: 'classB'
+        }
+    })
+    new Vue({
+        el: '#box5',
+        data: {
+            classA: "aaa",
+            isB: true,
+            classB: "bbb"
+        }
+    })
+
+    //绑定样式
+    new Vue({
+        el: '#box6',
+        data: {
+            activeColor: 'red',
+            fontSize: 30,
+            styleObject: { // 同样的，对象语法常常与计算属性（返回对象）一起用
+                color: 'orange',
+                fontSize: '18px',
+                borderRadius: '10px',
+                background: '#eee',
+                lineHeight: '40px'
+            },
+            styleObjectA: {
+                'color': 'blue'
+            },
+            styleObjectB: {
+                'fontSize': '25px'
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
