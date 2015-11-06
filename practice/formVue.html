@@ -54,33 +54,6 @@
         <p><pre>data: {{$data | json 2}}</pre></p>
         <a v-on="click: aa">点击</a>
     </form>
-    <br>
-    <hr>
-    <br>
-    <!-- 计算属性 -->
-    <div id="demo1" v-on="click: cc">{{fullName}}</div>
-    <br>
-    <hr>
-    <br>
-    <div id="demo2" v-demo="maroon : msg"></div>
-    <br>
-    <hr>
-    <br>
-    <br>
-    <br>
-    <ul id="list">
-        <li v-repeat="item in items" v-on="click: toggle(item)">
-            {{item.text}} - {{item.done}}
-        </li>
-    </ul>
-    <br>
-    <br>
-    <br>
-    <div id="demoo" v-demo-zhiling="maroon">
-    </div>
-    <br>
-    <br>
-    <div id="box" v-literal-dir="foo"></div>
 </body>
 
 </html>

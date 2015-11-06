@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <br>
+    <div id="app">
+        <ul>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ul>
+    </div>
+    <br>
+    <br>
+    <div id="user">
+        <p>{{message}}</p>
+        <button v-on:click="reverseMessage">Reverse</button>
+    </div>
+    <br>
+    <br>
+    <div id="tt">
+        {{a}}
+    </div>
+    <script src="js/test4.js"></script>
+</body>
+
+</html>
