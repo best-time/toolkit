@@ -87,3 +87,5 @@ var vm = new Vue({})
 组件选项: http://cn.vuejs.org/api/options.html
 
 注意: 以 _ 或 $ 开头的属性将不会被代理在 Vue 实例上
+
+vue 指令只封装 DOM 操作，而组件代表一个自给自足的独立单元
