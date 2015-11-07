@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>函数式编程</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    function forEach(array, func) {
+        for (var i = 0; i < array.length; i++) {
+            func(array[i]);
+        }
+    }
+
+    function reduce(combine, base, array) {
+        var base;
+        forEach(array, function(value) {
+            base = combine(base, value);
+        });
+        return base;
+    }
+
+    function countZeros(count, value) { //统计0的个数
+        return value == 1 ? (count + 1) : count;
+    }
+
+    function add(sum, value) { //求和
+        return value + sum;
+    }
+
+    var arr = [1, 2, 3, 4, 0, 5];
+    console.log(reduce(add, 0, arr));
+    console.log(reduce(countZeros, 0, arr));
+
+    function map(func, array) {
+        var result = [];
+        forEach(array, function(value) {
+            result.push(func(value));
+        });
+        return result;
+    }
+    var a = [1, 2, 3, 4, 7, 5];
+
+    console.log(map(function(value) {
+        return value * value;
+    }, a));
+
+    var ops = {
+        "+": function(x, y) {
+            return x + y;
+        },
+        "-": function(x, y) {
+            return x - y;
+        },
+        "*": function(x, y) {
+            return x * y;
+        },
+        "/": function(x, y) {
+            return x / y;
+        },
+    };
+
+    function operation(op, array) {
+        if (op in ops) {
+            return reduce(ops[op], 0, array);
+        } else {
+            throw new Error("invalid operation.");
+        }
+    }
+    console.log(operation("+", a));
+    console.log(operation("*", a));
+    </script>
+</body>
+
+</html>
