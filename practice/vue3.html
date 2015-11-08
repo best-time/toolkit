@@ -33,35 +33,35 @@
     //记住，只对可信内容使用 HTML 插值，永不用于用户提交的内容。
     //不能在表达式内使用过滤器
     /*
-		过滤器串联
-		{{ message | filterA | filterB }}
-		过滤器传参
-		{{ message | filterA 'arg1' arg2 }}
+        过滤器串联
+        {{ message | filterA | filterB }}
+        过滤器传参
+        {{ message | filterA 'arg1' arg2 }}
     */
 
     /**
-    	下面这2中用法不可以
-	    <!-- 这是一个语句，不是一个表达式： -->
-		{{ var a = 1 }}
+        下面这2中用法不可以
+        <!-- 这是一个语句，不是一个表达式： -->
+        {{ var a = 1 }}
 
-		<!-- 流程控制也不可以，可使用三元表达式 -->
-		{{ if (ok) { return message } }}
-	
+        <!-- 流程控制也不可以，可使用三元表达式 -->
+        {{ if (ok) { return message } }}
+    
 
-		v-bind 和 v-on 提供特别的缩写
+        v-bind 和 v-on 提供特别的缩写
 
-		<!-- 完整语法 -->
-		<a v-bind:href="url"></a>
-		<!-- 缩写 -->
-		<a :href="url"></a>
-	
-		<!-- 完整语法 -->
-		<a v-on:click="doSomething"></a>
-		<!-- 缩写 -->
-		<a @click="doSomething"></a>
+        <!-- 完整语法 -->
+        <a v-bind:href="url"></a>
+        <!-- 缩写 -->
+        <a :href="url"></a>
+    
+        <!-- 完整语法 -->
+        <a v-on:click="doSomething"></a>
+        <!-- 缩写 -->
+        <a @click="doSomething"></a>
 
 
-	*/
+    */
     new Vue({
             el: "#box",
             data: {
@@ -140,22 +140,22 @@
         vm.$watch('lastName', function (val) {
           this.fullName = this.firstName + ' ' + val
         })
-	
-		// 计算存储器
-		computed: {
-		  fullName: {
-		    // getter
-		    get: function () {
-		      return this.firstName + ' ' + this.lastName
-		    },
-		    // setter
-		    set: function (newValue) {
-		      var names = newValue.split(' ')
-		      this.firstName = names[0]
-		      this.lastName = names[names.length - 1]
-		    }
-		  }
-		}
+    
+        // 计算存储器
+        computed: {
+          fullName: {
+            // getter
+            get: function () {
+              return this.firstName + ' ' + this.lastName
+            },
+            // setter
+            set: function (newValue) {
+              var names = newValue.split(' ')
+              this.firstName = names[0]
+              this.lastName = names[names.length - 1]
+            }
+          }
+        }
 
         */
 
@@ -244,6 +244,132 @@
             },
             styleObjectB: {
                 'fontSize': '25px'
+            }
+        }
+    })
+    </script>
+    <h3>列表渲染</h3>
+    <div id="box11">
+        <template v-if="ok">
+            <h1>Title</h1>
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+        </template>
+        <h1 v-show="ok1">Hello!</h1>
+        <hr>
+        <br>
+        <div v-if="Math.random() > 0.5">
+            Sorry
+        </div>
+        <!-- v-else的使用-->
+        <div v-else>
+            Not sorry
+        </div>
+    </div>
+    <script>
+    //v-show的值为false时, 相当于css的display:none, 元素还是会留在html源码中 (v-show 不支持 <template> 语法。)
+    //v-if的值为false时,页面上是看不到html源码的
+    //v-else 元素必须立即跟在 v-if 或 v-show 元素的后面——否则它不能被识别。
+    /*
+        一般来说，v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。
+        因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好。
+    */
+    new Vue({
+        el: "#box11",
+        data: {
+            ok: false,
+            ok1: true
+        }
+    })
+    </script>
+    <hr>
+    <br>
+    <h3>方法调用</h3>
+    <div id="example22">
+        <button v-on:click="greet">Greet</button>
+    </div>
+    <script>
+    var vm = new Vue({
+            el: '#example22',
+            data: {
+                name: 'Vue.js'
+            },
+            // 在 `methods` 对象中定义方法
+            methods: {
+                greet: function(event) {
+                    // 方法内 `this` 指向 vm
+                    alert('Hello ' + this.name + '!')
+                        // `event` 是原生 DOM 事件
+                    alert(event.target.tagName)
+                }
+            }
+        })
+        //vm.greet(); 可以直接掉
+    </script>
+    <hr>
+    <br>
+    <h3>内联方法调用</h3>
+    <div id="example-2">
+        <button v-on:click="say('hi')">Say Hi</button>
+        <button v-on:click="say('what')">Say What</button>
+        <!--有时也需要在内联语句处理器中访问原生 DOM 事件。可以用特殊变量 $event 把它传入-->
+        <a href="http://www.baidu.com" v-on:click="say1('hello!', $event)">Submit</a>
+    </div>
+    <script>
+    //类似于内联表达式，事件处理器限制为一个语句。
+    /*
+        事件修饰符
+        在事件处理器中经常需要调用 event.preventDefault() 或 event.stopPropagation()。尽管我们在方法内可以轻松做到，不过让方法是纯粹的数据逻辑而不处理 DOM 事件细节会更好。
+
+        为了解决这个问题，Vue.js 为 v-on 提供两个 事件修饰符：.prevent 与 .stop。你是否还记得修饰符是点号打头的指令后缀？
+
+        <!-- 阻止单击事件冒泡 -->
+        <a v-on:click.stop="doThis"></a>
+
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="onSubmit"></form>
+
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="doThat">
+
+        <!-- 只有修饰符 -->
+        <form v-on:submit.prevent></form>
+
+        按键修饰符
+        <!-- 只有在 keyCode 是 13 时调用 vm.submit() -->
+        <input v-on:keyup.13="submit">
+
+        <!-- 同上 -->
+        <input v-on:keyup.enter="submit">
+
+        <!-- 缩写语法 -->
+        <input @keyup.enter="submit">
+
+        全部的按键别名：
+        enter
+        tab
+        delete
+        esc
+        space
+        up
+        down
+        left
+        right
+        虽然存在和html代码耦合.
+        但使用 v-on 有几个好处：
+        1 扫一眼 HTML 模板便能轻松定位在 JavaScript 代码里对应的方法。
+        2 因为你无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，和 DOM 完全解耦，更易于测试。
+        3 当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何自己清理它们。
+    */
+    new Vue({
+        el: '#example-2',
+        methods: {
+            say: function(msg) {
+                alert(msg)
+            },
+            say1: function(msg, event) {
+                event.preventDefault(); //阻止默认行为
+                alert(msg);
             }
         }
     })

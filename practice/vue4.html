@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue4.html</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <h3>表单控件</h3>
+    <div id="box1">
+        <h4>数据双向绑定</h4>
+        <span>Message is: {{ message }}</span>
+        <br>
+        <input type="text" v-model="message" placeholder="edit me">
+        <br>
+        <i>单选框</i>
+        <br>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+        <br>
+        <i>复选框</i>
+        <br>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames | json }}</span>
+        <br>
+        <br>
+        <h5>radio</h5>
+        <input type="radio" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+        <h5>select</h5>
+        <select v-model="selected">
+            <option selected>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+        <h5>select - 2</h5>
+        <select v-model="selected2" multiple>
+            <option selected>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <br>
+        <span>Selected: {{ selected2 | json }}</span>
+        <h5>动态选项, 使用v-for</h5>
+        <select v-model="selected">
+            <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+            </option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+    </div>
+    <script>
+    new Vue({
+            el: "#box1",
+            data: {
+                message: "hello",
+                checked: true,
+                checkedNames: [],
+                picked: "",
+                selected: null,
+                selected2: [],
+                options: [{
+                    text: 'One',
+                    value: 'A'
+                }, {
+                    text: 'Two',
+                    value: 'B'
+                }, {
+                    text: 'Three',
+                    value: 'C'
+                }]
+            }
+        })
+        //表单控件绑定
+    </script>
+    <div id="box2">
+        <!-- 当选中时，`picked` 为字符串 "a" -->
+        <input type="radio" v-model="picked" value="a">
+        <!-- `toggle` 为 true 或 false -->
+        <input type="checkbox" v-model="toggle">
+        <!-- 当选中时，`selected` 为字符串 "abc" -->
+        <select v-model="selected">
+            <option value="abc">ABC</option>
+            <option value="ccc">ccc</option>
+            <option value="sss">sss</option>
+        </select>
+        <br>
+        <button @click="show">按钮</button>
+        <br>
+        <input type="checkbox" v-model="toggle1" v-bind:true-value="a" v-bind:false-value="b">
+        <br>
+        <input type="radio" v-model="pick" v-bind:value="a">
+        <br>
+        <select v-model="selected2">
+            <!-- 对象字面量 -->
+            <option v-bind:value="{ number: 123 }">123</option>>
+        </select>
+        <br>
+        <br>
+        <input type="text" v-model="age" number>
+        <br>
+        <!-- 
+        debounce 参数不会延迟 input 事件：它延迟“写入”底层数据。因此在使用 debounce 时应当用 vm.$watch() 响应数据的变化。
+        若想延迟 DOM 事件，应当使用 debounce 过滤器. 如:<input @keyup="onKeyup | debounce 500"> -->
+        <input v-model="msg" debounce="500"> {{msg}}
+    </div>
+    <script>
+    var vvm = new Vue({
+        el: "#box2",
+        data: {
+            picked: "a",
+            toggle: true,
+            toggle1: false,
+            selected: 'abc',
+            a: 'aaaaaaaa',
+            b: 'bbbbbbbbb',
+            pick: true,
+            selected2: true,
+            age: 20,
+            msg: "lag"
+        },
+        methods: {
+            show: function() {
+                console.log(this.picked, this.toggle, this.selected);
+                console.log(vvm.selected2.number) // 当select选中时, 输出 123
+                console.log(this.age)
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
