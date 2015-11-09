@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>obj属性循环</title>
+    <script type="text/javascript">
+    var arr = [{
+        "age": 26,
+        "isChecked": false
+    }, {
+        "age": 25,
+        "isChecked": false
+    }, {
+        "age": 24,
+        "isChecked": false
+    }];
+    var i = -1;
+    var res = [];
+    extend(res, arr)
+    while (++i < res.length) {
+        if (res[i].age > 25) {
+            res[i].isChecked = true;
+        }
+    }
+    console.log(res)
+    console.log(arr)
+
+    var arr1 = [10, 20, 30, 40];
+    var j = -1;
+    var res1 = arr1.slice(0);
+    while (++j < res1.length) {
+        if (res1[j] > 30) {
+            res1[j] = 100
+        }
+    }
+    // console.log(res1)
+    // console.log(arr1)
+
+
+
+    var a = [1, 2, 3];
+    var b = a;
+    a = [4, 5, 6];
+    // console.log(b); // [1,2,3]
+
+    var aa = [1, 2, 3];
+    var bb = aa;
+    aa.pop();
+    // console.log(bb); //[1,2]
+
+    function getType(o) { // [object Array]
+        var _t;
+        return ((_t = typeof(o)) == "object" ?
+            o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
+    }
+
+    function extend(destination, source) {
+        for (var p in source) {
+            if (getType(source[p]) == "array" || getType(source[p]) == "object") {
+                destination[p] = getType(source[p]) == "array" ? [] : {};
+                arguments.callee(destination[p], source[p]);
+            } else {
+                destination[p] = source[p];
+            }
+        }
+    }
+    // console.log(getType(null)) // null
+
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+
+    function guid() {
+        return (S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4());
+    }
+    // console.log(guid())
+    </script>
+</head>
+
+<body>
+    <input type="button" value="测试函数运行时间" onclick="getFuncRuntime()" />
+    <input type="text" id="r31">
+    <input type="text" id="r32">
+    <script type="text/javascript">
+    <!--
+    function getFuncRuntime() {
+        var date1 = new Date().getTime(); //window.performance.now()
+        var m = 0;
+        for (var i = 0; i < 10000000; i++) {
+            getType(null)
+        }
+        var date2 = new Date().getTime();
+        for (var i = 9999; i >= 0; i--) {
+            m = i;
+        }
+        var date3 = new Date().getTime();
+        r31.value = (date2 - date1);
+        r32.value = (date3 - date2);
+    }
+    //-->
+    </script>
+</body>
+
+</html>

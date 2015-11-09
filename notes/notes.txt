@@ -98,7 +98,7 @@ var vm = new Vue({})
 棉拖鞋
 办公室面纸
 javascript忍者 书
-(肥皂)
+javascript 函数式编程
 (鼠标)
 
 

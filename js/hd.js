@@ -49,8 +49,7 @@
     }
 
     // Internal function that returns an efficient (for current engines) version
-    // of the passed-in callback, to be repeatedly applied in other Underscore
-    // functions.
+    // of the passed-in callback, to be repeatedly applied in other functions.
     var optimizeCb = function(func, context, argCount) {
         if (context === void 0) return func;
         switch (argCount == null ? 3 : argCount) {
@@ -273,15 +272,34 @@
         return regu.test(str);
     }
 
-    //实现对象拷贝
-    _sole.extend = function(target, source) {
-        var i;
-        for (i in source) {
-            if (source.hasOwnProperty(i)) {
-                target[p] = source[i];
+    //实现对象拷贝,只拷贝了'第一层',如果第一层保存'第二层'数据的引用, 此方法存在问题
+    // _sole.extend = function(target, source) {
+    //     var i;
+    //     for (i in source) {
+    //         if (source.hasOwnProperty(i)) {
+    //             target[p] = source[i];
+    //         }
+    //     }
+    //     return target;
+    // }
+
+    //实现数组 对象深复制
+    //slice和concat方法。这2个方法的确是最快的把数组成功复制，而不是引用。
+    function getType(o) { // [object Array] [object Object] [object Null]
+        var _t;
+        return ((_t = typeof(o)) == "object" ?
+            o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
+    }
+
+    _sole.extend = function(destination, source) {
+        for (var p in source) {
+            if (getType(source[p]) == "array" || getType(source[p]) == "object") {
+                destination[p] = getType(source[p]) == "array" ? [] : {};
+                arguments.callee(destination[p], source[p]);
+            } else {
+                destination[p] = source[p];
             }
         }
-        return target;
     }
 
     /**
@@ -299,7 +317,7 @@
      * 读取cookie
      * 
      */
-    _sole.getCookie = unction(name) { //取cookie
+    _sole.getCookie = function(name) { //取cookie
         if (navigator.cookieEnabled) {
             var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
             if (arr != null) return decodeURI(arr[2]);

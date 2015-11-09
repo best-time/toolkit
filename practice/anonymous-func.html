@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>自执行匿名函数方式总结:</title>
+    <script type="text/javascript">
+    void
+
+    function(x) {
+        console.log("void 匿名函数：" + x);
+    }(9);
+
+    - function(x, y) {
+        console.log("符号 '-' 匿名函数：" + (x + y));
+    }(3, 4);
+
+    + function(x, y) {
+        console.log("符号 '+' 匿名函数：" + (x + y));
+    }(3, 4);
+
+    /*
+		此方法报错. 但能输出结果
+        --function(x, y) {
+            console.log("符号 '--' 匿名函数：" + (x + y));
+        }(3, 4)
+
+	    ++ function(x, y) {
+	        console.log("符号 '++' 匿名函数：" + (x + y));
+	    }(3, 4);
+    */
+    ~ function(x, y) {
+        console.log("符号 '~' 匿名函数：" + (x + y));
+    }(3, 4);
+
+    [function(x, y) {
+        console.log("符号 '[]' 匿名函数：" + (x + y));
+    }(3, 3)];
+
+    typeof
+
+    function(x, y) {
+        console.log("符号 'typeof' 匿名函数：" + (x + y));
+    }(3, 3);
+
+
+    delete
+
+    function(x, y) {
+        console.log("符号 'delete' 匿名函数：" + (x + y));
+    }(3, 5);
+
+
+    new function(x, y) {
+        console.log("符号 'new 传参' 匿名函数：" + (x + y));
+    }(5, 5);
+
+    new function(win) {
+        console.log(win) // window  window对象
+    }(this);
+
+    new function() {
+        console.log(this) // {} 空对象
+    }
+
+    1,
+    function(x, y) {
+        console.log("符号 '逗号运算符' 匿名函数：" + (x + y));
+    }(6, 6);
+
+    1 ^ function(x, y) {
+        console.log("符号 '逗号运算符' 匿名函数：" + (x + y));
+    }(7, 7);
+
+    1 > function(x, y) {
+        console.log("符号 '逗号运算符' 匿名函数：" + (x + y));
+    }(8, 8);
+
+    /**
+     * 原理: () 括号内被当做表达式来执行
+     * (function(){}) 会输入: function(){}
+     *
+     * // 如果本身就是expression，那么根本不需要做任何处理
+		var i = function(){ return 10; }();
+		true && function(){  code  }();
+		0, function(){  code  }();
+
+		// 如果你不在乎返回值，可以这么做
+		!function(){ /* code  }();
+		~function(){ /* code  }();
+		-function(){ /* code  }();
+		+function(){ /* code  }();
+
+		// 还有更奇葩的方式，但是不知道性能如何，来自
+		// http://twitter.com/kuvos/status/18209252090847232
+		new function(){ /* code  }
+		new function(){ /* code  }()
+     * 
+     */
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
