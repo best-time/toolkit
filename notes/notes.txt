@@ -72,16 +72,15 @@ port: 端口号
 protocol: url协议
 search: ?号开始的url
 
-js正则函数 没理清
-页面宽度, div宽度等获取 没理清
+js正则函数详细使用 没理清
+页面宽度, div宽度等获取 浏览器差异没理清
 
 *****************_.isArguments 2015年11月02日23:23:16
 *****************_.add 2015年11月6日00:08:12
 
 
 vue.js 笔记
-创建一个Vue实例:
-var vm = new Vue({})
+
 实例属性: http://cn.vuejs.org/api/instance-properties.html
 实例方法: http://cn.vuejs.org/api/instance-methods.html
 全局api: http://cn.vuejs.org/api/global-api.html

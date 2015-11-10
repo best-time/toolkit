@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue - 组件</title>
+    <script src="js/vue.js"></script>
+    <style>
+    i {
+        color: orange;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="example" class="demo">
+        <my-component></my-component>
+        <my-component2>
+            <Childc></Childc>
+        </my-component2>
+        <!-- table中,限制放入其他元素 会被放到table外面, 这时需要使用 is 特性 -->
+        <table>
+            <tr is="my-component"></tr>
+        </table>
+    </div>
+    <script>
+    var Childc = Vue.extend({
+        template: "<em>局部注册</em>"
+    });
+    // define 定义一个构造器
+    var MyComponent = Vue.extend({
+        template: '<h3>A custom component!</h3>',
+        components: {
+            // <my-component> 只能用在父组件模板内
+            'cc': Childc
+        }
+    });
+    //register  用作组件之前,需要注册一下
+    Vue.component('my-component2', MyComponent);
+
+
+    Vue.component('my-component', {
+        template: '<i>A custom component!</i>'
+    });
+    //要确保在初始化根实例之前,注册了组件
+    new Vue({
+        el: '#example'
+    })
+    </script>
+    <script>
+    // 在一个步骤中定义与注册
+    Vue.component('my-component', {
+        template: '<div>A custom component!</div>'
+    })
+
+    // // 局部注册也可以这么做
+    // var Parent = Vue.extend({
+    //     components: {
+    //         'my-component': {
+    //             template: '<div>A custom component!</div>'
+    //         }
+    //     }
+    // })
+    </script>
+    <div id="prop-example-1" class="demo">
+        <child msg="hello!"></child>
+        <child ms-tem=" world"></child>
+    </div>
+    <script>
+    //不应该在子组件的模板内直接引用父组件的数据
+    //HTML 特性不区分大小写。名字形式为 camelCase 的 prop 用作特性时，
+    //需要转为 kebab-case（短横线隔开）：
+    new Vue({
+        el: '#prop-example-1',
+        components: {
+            child: {
+                props: ['msg', 'msTem'],
+                template: '<span>{{ msg }} {{msTem}}</span>'
+            }
+        }
+    })
+    </script>
+    <br>
+    <br>
+    <div id="demo-2">
+        <input type="text" v-model="parentMsg">
+        <br>
+        <!-- 默认，单向绑定 -->
+        <child v-bind:my-message="parentMsg"></child>
+        <br>
+        <!-- 双向绑定 -->
+        <child :my-message.sync="parentMsg"></child>
+        <br>
+        <!-- 单次绑定 -->
+        <child :my-message.once="parentMsg"></child>
+        <br>
+    </div>
+    <script>
+    //动态 props
+    //这种封装也适用于其它资源，如指令、过滤器和过渡。
+    //prop 默认是单向绑定：当父组件的属性变化时，将传导给子组件，但是反过来不会。
+    //不过，也可以使用 .sync 或 .once 绑定修饰符显式地强制双向或单次绑定：
+    //☆☆☆☆:
+    //注意如果 prop 是一个对象或数组，是按引用传递。
+    //在子组件内修改它会影响父组件的状态，不管是使用哪种绑定类型。
+    //type: String Number Boolean Function Object Array
+    //
+    //子组件可以用 this.$parent 访问它的父组件。
+    //根实例的后代可以用 this.$root 访问它。
+    //父组件有一个数组 this.$children，包含它所有的子元素。
+    //
+    //每个 Vue 实例都是一个事件触发器：
+    //使用 $on() 监听事件；
+    //使用 $emit() 在它上面触发事件；
+    //使用 $dispatch() 派发事件，事件沿着父链冒泡；
+    //使用 $broadcast() 广播事件，事件向下 传导给所有的后代。
+    //不同于 DOM 事件，Vue事件在冒泡过程中第一次触发回调之后自动停止冒泡，
+    //除非回调明确返回 true。
+    new Vue({
+        el: '#demo-2',
+        data: {
+            parentMsg: 'message'
+        },
+        components: {
+            child: {
+                props: {
+                    //组件可以为 props 指定验证要求
+                    myMessage: {
+                        // twoWay: true //双向绑定
+                        type: String,
+                        required: true,
+                        // default: "aa"
+                        // validator: function(value) {
+                        //     return value + "vvv"
+                        // }
+                    }
+                },
+                template: '<span>{{myMessage}}</span>'
+            }
+        }
+    })
+    </script>
+    <br>
+    <br>
+    <!-- 子组件模板 
+    <template id="child-template">
+        <input type="text" v-model="msg">
+        <button v-on:click="notify">派发事件</button>
+    </template>
+     父组件模板 -->
+    <!--<div id="events-example" class="demo">
+        <p>Messages: {{ messages | json }}</p>
+        <child></child>
+    </div>-->
+    <script>
+    // 注册子组件
+    // 将当前消息派发出去
+    // Vue.component('child', {
+    //     template: '#child-template', // 注册组件模板的第二种方式
+    //     data: function() {
+    //         return {
+    //             msg: 'hello'
+    //         }
+    //     },
+    //     methods: {
+    //         notify: function() {
+    //             if (this.msg.trim()) {
+    //                 this.$dispatch('child-msg', this.msg)
+    //                 this.msg = ''
+    //             }
+    //         }
+    //     }
+    // })
+
+    // var parent = new Vue({
+    //     el: '#events-example',
+    //     data: {
+    //         messages: []
+    //     },
+    //     // 在创建实例时 `events` 选项简单地调用 `$on`
+    //     events: {
+    //         'child-msg': function(msg) {
+    //             // 事件回调内的 `this` 自动绑定到注册它的实例上
+    //             this.messages.push(msg)
+    //         }
+    //     }
+    // })
+    </script>
+    <br>
+    <br>
+    <h2>2222(这样v-on绑定自定义事件, 更容易理解)</h2>
+    <!-- 子组件模板 -->
+    <template id="child-template">
+        <input type="text" v-model="msg">
+        <button v-on:click="notify">派发事件</button>
+    </template>
+    <!-- 父组件模板 -->
+    <div id="events-example" class="demo">
+        <p>Messages: {{ messages | json }}</p>
+        <child v-on:child-msg="handleIt"></child>
+    </div>
+    <script>
+    // 注册子组件
+    // 将当前消息派发出去
+    Vue.component('child', {
+        template: '#child-template', // 注册组件模板的第二种方式
+        data: function() {
+            return {
+                msg: 'hello'
+            }
+        },
+        methods: {
+            notify: function() {
+                if (this.msg.trim()) {
+                    this.$dispatch('child-msg', this.msg)
+                    this.msg = ''
+                }
+            }
+        }
+    })
+
+    var parent = new Vue({
+        el: '#events-example',
+        data: {
+            messages: []
+        },
+        // 在创建实例时 `events` 选项简单地调用 `$on`
+        methods: {
+            handleIt: function(msg) {
+                // 事件回调内的 `this` 自动绑定到注册它的实例上
+                this.messages.push(msg)
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

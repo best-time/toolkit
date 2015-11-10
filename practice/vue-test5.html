@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue.js过渡</title>
+    <style>
+    .expand-transition {
+        transition: all .3s ease;
+        height: 30px;
+        padding: 10px;
+        background-color: #eee;
+        overflow: hidden;
+    }
+    
+    .expand-enter,
+    .expand-leave {
+        height: 0;
+        padding: 0 10px;
+        opacity: 0;
+    }
+    </style>
+    <script src="js/vue.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+    <h2>css 过渡</h2>
+    <div id="demo">
+        <div v-if="show" transition="expand">hello</div>
+        <button @click="show = !show">Toggle</button>
+    </div>
+    <script>
+    //类名的添加和切换取决于 transition 特性的值。比如 transition="fade"，会有三个 CSS 类名：
+
+    //.fade-transition 始终保留在元素上。
+
+    //.fade-enter 定义进入过渡的开始状态。只应用一帧然后立即删除。
+
+    //.fade-leave 定义离开过渡的结束状态。在离开过渡开始时生效，在它结束后删除。
+
+    //如果 transition 特性没有值，类名默认是 :
+    //.v-transition, .v-enter 和 .v-leave。
+    new Vue({
+        el: '#demo',
+        data: {
+            show: true
+        },
+        transitions: {
+            expand: {
+                beforeEnter: function(el) {
+                    el.textContent = 'beforeEnter'
+                },
+                enter: function(el) {
+                    el.textContent = 'enter'
+                },
+                afterEnter: function(el) {
+                    el.textContent = 'afterEnter'
+                },
+                beforeLeave: function(el) {
+                    el.textContent = 'beforeLeave'
+                },
+                leave: function(el) {
+                    el.textContent = 'leave'
+                },
+                afterLeave: function(el) {
+                    el.textContent = 'afterLeave'
+                }
+            }
+        }
+    })
+    </script>
+    <br>
+    <div id="anim" class="demo">
+        <span v-show="show" transition="bounce">Look at me!</span>
+        <br>
+        <br>
+        <button @click="show = !show">Toggle</button>
+    </div>
+    <br>
+    <style>
+    .bounce-enter {
+        -webkit-animation: bounce-in .5s;
+        animation: bounce-in .5s;
+    }
+    
+    .bounce-leave {
+        -webkit-animation: bounce-out .5s;
+        animation: bounce-out .5s;
+    }
+    
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0);
+            -webkit-transform: scale(0);
+        }
+        50% {
+            transform: scale(1.5);
+            -webkit-transform: scale(1.5);
+        }
+        100% {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+    }
+    
+    @keyframes bounce-out {
+        0% {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+        50% {
+            transform: scale(1.5);
+            -webkit-transform: scale(1.5);
+        }
+        100% {
+            transform: scale(0);
+            -webkit-transform: scale(0);
+        }
+    }
+    
+    @-webkit-keyframes bounce-in {
+        0% {
+            -webkit-transform: scale(0);
+        }
+        50% {
+            -webkit-transform: scale(1.5);
+        }
+        100% {
+            -webkit-transform: scale(1);
+        }
+    }
+    
+    @-webkit-keyframes bounce-out {
+        0% {
+            -webkit-transform: scale(1);
+        }
+        50% {
+            -webkit-transform: scale(1.5);
+        }
+        100% {
+            -webkit-transform: scale(0);
+        }
+    }
+    </style>
+    <script>
+    new Vue({
+        el: '#anim',
+        data: {
+            show: true
+        }
+    })
+    </script>
+    <h2>javascript 过渡</h2>
+    <div id="demo2">
+        <div v-if="show" transition="fade">hello</div>
+        <button @click="show = !show">Toggle</button>
+    </div>
+    <script>
+    new Vue({
+        el: "#demo2",
+        data: {
+            show: true
+        },
+        transitions: {
+            fade: {
+                css: false,
+                enter: function(el, done) {
+                    // 元素已被插入 DOM   //在动画结束后调用 done
+                    $(el).css('opacity', 0)
+                        .animate({
+                            opacity: 1
+                        }, 600, done)
+                },
+                enterCancelled: function(el) {
+                    $(el).stop()
+                },
+                leave: function(el, done) {
+                    // 与 enter 相同
+                    $(el).animate({
+                        opacity: 0
+                    }, 600, done)
+                },
+                leaveCancelled: function(el) {
+                    $(el).stop()
+                }
+            }
+        }
+    })
+    </script>
+    <h2>渐近过渡</h2>
+    <div id="demo3">
+        <input v-model="query">
+        <ul>
+            <li v-for="item in list | filterBy query" transition="staggered" stagger="100">
+                {{item.msg}}
+            </li>
+        </ul>
+    </div>
+    <br>
+    <br>
+    <br>
+    <style>
+    ul {
+        padding-left: 0;
+        font-family: Helvetica, Arial, sans-serif;
+    }
+    
+    .staggered-transition {
+        transition: all .3s ease;
+        overflow: hidden;
+        margin: 0;
+        height: 20px;
+    }
+    
+    .staggered-enter,
+    .staggered-leave {
+        opacity: 0;
+        height: 0;
+    }
+    </style>
+    <script>
+    new Vue({
+        el: '#demo3',
+        data: {
+            query: '',
+            list: [{
+                msg: 'Bruce Lee'
+            }, {
+                msg: 'Jackie Chan'
+            }, {
+                msg: 'Chuck Norris'
+            }, {
+                msg: 'Jet Li'
+            }, {
+                msg: 'Kung Fury'
+            }]
+        }
+    })
+    </script>
+</body>
+
+</html>
