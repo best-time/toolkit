@@ -1,0 +1,113 @@
+<html>
+
+<head>
+    <title>自定义指令</title>
+    <script type="text/javascript" src="js/vue.js"></script>
+</head>
+
+<body>
+    <!-- msg称作 指令表达式 -->
+    <!-- a b 为指令的修饰符 -->
+    <div id="demo" v-demo:maroon.a.b="msg"></div>
+    <script type="text/javascript">
+    //定义对象可以提供几个钩子函数（都是可选的）：
+
+    //bind：只调用一次，在指令第一次绑定到元素上时调用。
+
+    //update： 在 bind 之后立即以初始值为参数第一次调用，之后每当绑定值变化时调用，参数为新值与旧值。
+
+    //unbind：只调用一次，在指令从元素上解绑时调用。
+
+
+    //指令实例属性:
+    //	el: 指令绑定的元素。
+    //	vm: 拥有该指令的上下文 ViewModel。
+    //	expression: 指令的表达式，不包括参数和过滤器。
+    //	arg: 指令的参数。
+    //	name: 指令的名字，不包含前缀。
+    //	modifiers: 一个对象，包含指令的修饰符。
+    //	descriptor: 一个对象，包含指令的解析结果。
+    //	你应当将这些属性视为只读的，不要修改它们。你也可以给指令对象添加自定义属性，
+    //  但是注意不要覆盖已有的内部属性。
+    Vue.directive('demo', {
+        bind: function() {
+            this.el.style.color = 'orange'
+            this.el.style.backgroundColor = this.arg
+        },
+        update: function(value) {
+            this.el.innerHTML =
+                'name - ' + this.name + '<br>' +
+                'expression - ' + this.expression + '<br>' +
+                'arg - ' + this.arg + '<br>' +
+                'modifiers - ' + JSON.stringify(this.modifiers) + '<br>' +
+                'value - ' + value
+        }
+    })
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            msg: 'hello world'
+        }
+    })
+    </script>
+    <br>
+    <br>
+    <div id="demo2" v-demoo="{ color: 'white', text: 'hello!' }">{{msg}}</div>
+    <script type="text/javascript">
+    Vue.directive('demoo', function(value) { //此时相当于只有一个update函数
+        console.log(value.color) // "white"
+        console.log(value.text) // "hello!"
+    })
+    new Vue({
+        el: '#demo2',
+        data: {
+            msg: "指令-对象字面量演示"
+        }
+    })
+    </script>
+    <br>
+    <br>
+    <div id="demo3" v-demooo.literal="foo bar baz">{{msg}}</div>
+    <script type="text/javascript">
+    Vue.directive('demooo', function(value) { //此时相当于只有一个update函数
+        console.log(value) // "foo bar baz"
+    })
+    new Vue({
+        el: '#demo3',
+        data: {
+            msg: "字面修饰符演示"
+        }
+    })
+    </script>
+    <script type="text/javascript">
+    //元素指令
+    //Vue.elementDirective('my-directive', {
+    // API 同普通指令
+    //bind: function() {
+    // 操作 this.el...
+    //}
+    //})
+    //不这样写: <div v-my-directive></div>
+    //这样写 : <my-directive></my-directive>
+    </script>
+    <br>
+    <br>
+    <div id="box" v-example a="hi">{{msg}}</div>
+    <script type="text/javascript">
+    //高级选项
+    Vue.directive('example', {
+        params: ['a'],
+        bind: function() {
+            console.log(this.params.a) // -> "hi"
+        }
+    })
+    new Vue({
+        el: "#box",
+        data: {
+            msg: "params参数的使用"
+        }
+    })
+    </script>
+</body>
+
+</html>

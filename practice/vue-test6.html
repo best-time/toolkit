@@ -235,6 +235,87 @@
         }
     })
     </script>
+    <br>
+    <br>
+    <div id="bb">
+        <button @click="aa">切换模板</button>
+        <component :is="currentView" keep-alive>
+            <!-- keepalive 指令可以避免重新渲染 -->
+            <!-- 组件在 vm.currentview 变化时改变 -->
+        </component>
+    </div>
+    <script type="text/javascript">
+    //slot区分根据 name 值
+    //动态组件
+    //在切换组件时，切入组件在切入前可能需要进行一些异步操作。
+    //为了控制组件切换时长，给切入组件添加 activate 钩子
+    Vue.component('component', {
+        template: '<a>dsfadf</a>'
+    })
+    new Vue({
+        el: 'body',
+        data: {
+            currentView: 'home'
+        },
+        methods: {
+            aa: function() {
+                this.currentView = 'posts'
+            },
+            b: function() {},
+            c: function() {}
+        },
+        components: {
+            home: {
+                template: '<span>myMessage</span>'
+            },
+            posts: {
+                template: '<b style="color: orange">myMessage</b>'
+            },
+            archive: {
+                template: '<i style="color: red">myMessage</i>'
+            }
+        }
+    })
+    </script>
+    <br>
+    <br>
+    <div id="transition-mode-demo" class="demo">
+        <input v-model="view" type="radio" value="v-a">
+        <label for="a">A</label>
+        <input v-model="view" type="radio" value="v-b">
+        <label for="b">B</label>
+        <component :is="view" transition="fade" transition-mode="out-in">
+        </component>
+    </div>
+    <style>
+    .fade-transition {
+        transition: opacity .3s ease;
+    }
+    
+    .fade-enter,
+    .fade-leave {
+        opacity: 0;
+    }
+    </style>
+    <script>
+    //在默认情况下，进入与离开平滑地过渡。这个特性可以指定另外两种模式：
+    //in-out：新组件先过渡进入，等它的过渡完成之后当前组件过渡出去。
+    //out-in：当前组件先过渡出去，等它的过渡完成之后新组件过渡进入。
+    new Vue({
+        el: '#transition-mode-demo',
+        data: {
+            view: 'v-a'
+        },
+        components: {
+            'v-a': {
+                template: '<div>Component A</div>'
+            },
+            'v-b': {
+                template: '<div>Component B</div>'
+            }
+        }
+    })
+    </script>
 </body>
 
 </html>

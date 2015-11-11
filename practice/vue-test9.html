@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <title>mixin 使用</title>
+    <script type="text/javascript" src="js/vue.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //值为对象的选项，如 methods, components 和 directives 将合并到同一个对象内。如果键冲突则原实例中的选项优先。
+    var mixin = {
+        methods: {
+            foo: function() {
+                console.log('foo')
+            },
+            conflicting: function() {
+                console.log('from mixin')
+            }
+        }
+    }
+
+    var vm = new Vue({
+        mixins: [mixin],
+        methods: {
+            bar: function() {
+                console.log('bar')
+            },
+            conflicting: function() {
+                console.log('from self') //调用了 此输出
+            }
+        }
+    })
+
+    vm.foo() // -> "foo"
+    vm.bar() // -> "bar"
+    vm.conflicting() // -> "from self"
+    </script>
+</body>
+
+</html>

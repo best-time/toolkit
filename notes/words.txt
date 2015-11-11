@@ -35,3 +35,7 @@ stagger
 
 prop
 Dispatch
+slot
+transclusion
+tick
+mount

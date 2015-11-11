@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <title>指令-api</title>
+    <script type="text/javascript" src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="mount-point"></div>
+    <script type="text/javascript">
+    // 创建可复用的构造器
+    var Profile = Vue.extend({
+            template: '<p>firstName: {{firstName}}  / lastName: {{lastName}} / alias: {{alias}} </p>'
+        })
+        // 创建一个 Profile 实例
+    var profile = new Profile({
+            el: "#mount-point", //如果没有el属性, 则需要调用 $mount方法手动编译
+            data: {
+                firstName: 'Walter',
+                lastName: 'White',
+                alias: 'Heisenberg'
+            }
+        })
+        // 挂载到元素上
+        // profile.$mount('#mount-point')
+    </script>
+    <div id="replace"></div>
+    <div id="replace2"></div>
+    <script type="text/javascript">
+    new Vue({
+        el: '#replace',
+        template: '<p>replaced</p>' // 如果没添加replace属性,默认为true, 会直接替换挂载元素
+    })
+    new Vue({
+        el: '#replace2',
+        replace: false,
+        template: '<p>replaced</p>' // 如果replace属性设置为了false, 不会替换元素本身
+    })
+    </script>
+    <script type="text/javascript">
+    var vm = new Vue({
+            events: {
+                'hook:created': function() {
+                    console.log('created!')
+                },
+                greeting: function(msg) {
+                    console.log(msg)
+                },
+                // 也可以是方法的名字
+                bye: 'sayGoodbye'
+            },
+            methods: {
+                sayGoodbye: function() {
+                    console.log('goodbye!')
+                }
+            }
+        }) // -> created!
+    vm.$emit('greeting', 'hi!') // -> hi!
+    vm.$emit('bye') // -> goodbye!
+    </script>
+    <script type="text/javascript">
+    //派发事件，首先在实例上触发它，然后沿着父链向上冒泡在触发一个监听器后停止，除非它返回 true
+    // 创建父链
+    var parent = new Vue()
+    var child1 = new Vue({
+        parent: parent
+    })
+    var child2 = new Vue({
+        parent: child1
+    })
+
+    parent.$on('test', function() {
+        console.log('parent notified')
+    })
+    child1.$on('test', function() {
+        console.log('child1 notified')
+    })
+    child2.$on('test', function() {
+        console.log('child2 notified')
+    })
+
+    child2.$dispatch('test');
+    // child2 notified 
+    // child1 notified
+    // 没有通知 parent，因为 child1 的回调没有返回 true
+    </script>
+    <script type="text/javascript">
+    //广播事件，通知给当前实例的全部后代。因为后代有多个枝杈，事件将沿着各“路径”通知。
+    //每条路径上的通知在触发一个监听器后停止，除非它返回 true。
+    var parent = new Vue()
+        // child1 和 child2 是兄弟
+    var child1 = new Vue({
+        parent: parent
+    })
+    var child2 = new Vue({
+            parent: parent
+        })
+        // child3 在 child2 内
+    var child3 = new Vue({
+        parent: child2
+    })
+
+    child1.$on('test', function() {
+        console.log('child1 notified')
+    })
+    child2.$on('test', function() {
+        console.log('child2 notified')
+    })
+    child3.$on('test', function() {
+        console.log('child3 notified')
+    })
+
+    parent.$broadcast('test')
+        // -> "child1 notified"
+        // -> "child2 notified"
+        // 没有通知 child3，因为 child2 的回调没有返回 true
+    </script>
+</body>
+
+</html>
