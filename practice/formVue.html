@@ -8,41 +8,43 @@
 
 <body>
     <!-- it框惰性更新 添加个lazy属性 -->
-    <form id="demo">
-        <!-- text -->
+    <div id="demo">
         <p>
             input框:
-            <input type="text" v-model="msg"> {{msg}}
+            <input type="text" v-model="msg" v-on:keyup="check" v-bind="check()"> {{msg}}- {{info}}
         </p>
-        <!-- checkbox -->
         <p>
             复选框:
-            <input type="checkbox" v-model="checked"> {{checked ? "yes" : "no"}}
+            <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+            <label for="jack">Jack</label>
+            <input type="checkbox" id="john" value="John" v-model="checkedNames">
+            <label for="john">John</label>
+            <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+            <label for="mike">Mike</label>
             <br>
-            <input type="checkbox" v-model="checked"> {{checked ? "yes" : "no"}}
-            <br>
-            <input type="checkbox" v-model="checked"> {{checked ? "yes" : "no"}}
+            <span>Checked names: {{ checkedNames | json }}</span>
         </p>
-        <!-- radio buttons -->
         <p>
             单选框:
-            <input type="radio" name="picked" value="one" v-model="picked">
+            <input type="radio" value="One" v-model="picked">
+            <label for="one">One</label>
             <br>
-            <input type="radio" name="picked" value="two" v-model="picked"> {{picked}}
+            <input type="radio" value="Two" v-model="picked">
+            <label for="two">Two</label>
+            <br>
+            <span>Picked: {{ picked }}</span>
         </p>
-        <!-- select -->
         <p>
             下拉框:
-            <br>
             <select v-model="selected">
-                <option>one</option>
-                <option>two</option>
+                <option selected>A</option>
+                <option>B</option>
+                <option>C</option>
             </select>
-            {{selected}}
+            <span>Selected: {{ selected }}</span>
         </p>
         <!-- multiple select -->
         <p>
-            多选的下拉框:
             <br>
             <select v-model="multiSelect" multiple>
                 <option>one</option>
@@ -51,9 +53,9 @@
             </select>
             {{multiSelect}}
         </p>
-        <p><pre>data: {{$data | json 2}}</pre></p>
-        <a v-on="click: aa">点击</a>
-    </form>
+        <p><pre>data: {{$data | json}}</pre></p>
+        <button v-on:click="aa">点击</button>
+    </div>
 </body>
 
 </html>

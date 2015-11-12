@@ -1,3 +1,6 @@
+// {{$index}}  指代索引   无论是对象还是数组
+
+
 new Vue({
     el: '#demo',
     data: {
@@ -25,18 +28,18 @@ new Vue({
 })
 
 //包含多个节点的循环, html代码需要添加<template>标签包裹
-new Vue({
-    el: "#demo3",
-    data: {
-        list: [{
-            msg: '第一个节点'
-        }, {
-            msg: '第二个节点'
-        }]
-    }
-})
+// new Vue({
+//     el: "#demo3",
+//     data: {
+//         list: [{
+//             msg: '第一个节点'
+//         }, {
+//             msg: '第二个节点'
+//         }]
+//     }
+// })
 
-//简单值数组
+//简单值数组数据 展示
 new Vue({
     el: "#demo4",
     data: {
@@ -45,18 +48,18 @@ new Vue({
 })
 
 //使用别名
-new Vue({
-    el: "#demo5",
-    data: {
-        users: [{
-            name: 'FOO BAR',
-            email: 'foo@bar.com'
-        }, {
-            name: 'John Doh',
-            email: 'John@Doh.com'
-        }]
-    }
-})
+// new Vue({
+//     el: "#demo5",
+//     data: {
+//         users: [{
+//             name: 'FOO BAR',
+//             email: 'foo@bar.com'
+//         }, {
+//             name: 'John Doh',
+//             email: 'John@Doh.com'
+//         }]
+//     }
+// })
 
 //遍历对象
 new Vue({
@@ -94,7 +97,6 @@ new Vue({
     },
     methods: {
         onClick: function(e) { // DOM event作为第一个参数传入, 同时这个event会带有targetVM属性,指向触发该事件的响应的ViemModel
-
             console.log(e.target.tagName);
             console.debug(e.targetVM == this)
         }
@@ -110,7 +112,7 @@ new Vue({
             done: true
         }, {
             text: 'two',
-            done: false
+            done: true
         }]
     },
     methods: {

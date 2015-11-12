@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>test- Vue.js</title>
+    <!-- vue version 1.0.6 -->
     <script type="text/javascript" src="js/vue.js"></script>
     <style type="text/css">
     #demo li,
@@ -22,75 +23,57 @@
     <div id="demo">
         <h1>{{title | uppercase}}</h1>
         <ul>
-            <li v-repeat="todos" v-on="click: done = !done" class="{{done ? 'done' : ''}}">
-                {{content}}
+            <li v-for="to in todos">
+                {{to.content}}
             </li>
         </ul>
     </div>
     <br>
     <hr>
-    <br>
     <ul id="demo2">
-        <li v-repeat="items" class="item-{{$index}}">
-            {{$index}} - {{parentMsg}} - {{childMsg}}
+        <!-- 行内调data索引 -->
+        <li v-for="item in items" class="item-{{$index}}">
+            {{$index}} - {{parentMsg}} - {{item.childMsg}}
         </li>
-    </ul>
-    <br>
-    <hr>
-    <br>
-    <ul id="demo3">
-        <template v-repeat="list">
-            <!-- 包含多个节点的块, 需要template标签包裹 -->
-            <li>{{$index}}</li>
-            <li>{{msg}}</li>
-        </template>
     </ul>
     <br>
     <hr>
     <br>
     <ul id="demo4">
-        <li v-repeat="tags">
-            {{$index}} - {{$value}}
-        </li>
-    </ul>
-    <br>
-    <hr>
-    <br>
-    <ul id="demo5">
-        <li v-repeat="aa in users">
-            <!-- 使用别名,可读性更强,同时性能更好 -->
-            {{aa.name}} ---> {{aa.email}}
+        <li v-for="value in tags">
+            {{$index}} - {{value}}
         </li>
     </ul>
     <br>
     <hr>
     <br>
     <ul id="demo6">
-        <li v-repeat="primitiveValues">{{$key}} : {{$value}}</li>
+        <li v-for="value in primitiveValues">{{$key}} : {{value}}</li>
         <li>===============</li>
-        <li v-repeat="objectValues">{{$key}} : {{msg}}</li>
+        <li v-for="v in objectValues">{{$key}} : {{v.msg}}</li>
     </ul>
     <br>
     <hr>
     <br>
     <ul id="demo7">
         <!-- v-repeat值为整数时,它将重复显示模板多次 -->
-        <li v-repeat="val"> Hi {{$index}}
+        <li v-for="v in val"> Hi {{v}}
         </li>
     </ul>
     <br>
     <hr>
     <br>
     <div id="demo8">
-        <a v-on="click: onClick">触发一个方法函数</a>
+        <button v-on:click="onClick">触发一个方法函数</button>
         <br>
-        <a v-on="click:n++">触发一个表达式 - {{n}}</a>
+        <button v-on:click="n++">触发一个表达式 - {{n}}</button>
     </div>
     <br>
     <hr>
     <br>
     <ul id="demo9">
-        <li v-repeat="item in items" v-on="click: toggle(item)">
+        <h3>点击隐藏行</h3>
+        <li v-for="item in items" v-on:click="toggle(item)" v-show="item.done">
             {{item.text}}
         </li>
     </ul>
@@ -101,9 +84,9 @@
     <hr>
     <br>
     <div id="demo10">
-        <input v-on="keyup: submit | key 13">
+        <input v-on:keyup.13="submit">
         <br>
-        <input v-on="keyup: submit2 | key 'enter'">
+        <input v-on:keyup.enter="submit2">
     </div>
 </body>
 

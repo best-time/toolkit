@@ -3,14 +3,24 @@ var bb = new Vue({
     el: '#demo',
     data: {
         msg: 'hi!',
+        info: "",
+        checkedNames: [],
         checked: true,
-        picked: 'one',
-        selected: 'two',
+        picked: 'One',
+        selected: 'A',
         multiSelect: ['one', 'three']
     },
     methods: {
         aa: function(e) {
-            console.log(bb.$data.picked)
+            console.log(bb.$data.picked);
+            // console.log(this.picked)  上下两种方式都可以访问到 data的picked属性
+        },
+        check: function() {
+            if (this.msg.length < 6) {
+                this.info = "长度太短"
+            } else {
+                this.info = "长度够了"
+            }
         }
     }
 })
@@ -174,18 +184,3 @@ var bb = new Vue({
 // new Vue({
 //     el: '#box'
 // })
-
-
-
-new Vue({
-    el: '#app',
-    data: {
-        todos: [{
-            text: 'Learn JavaScript'
-        }, {
-            text: 'Learn Vue.js'
-        }, {
-            text: 'Build Something Awesome'
-        }]
-    }
-})
