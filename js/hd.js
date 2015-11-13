@@ -77,7 +77,7 @@
     // to each element in a collection, returning the desired result — either
     // `identity`, an arbitrary callback, a property matcher, or a property accessor.
     var cb = function(value, context, argCount) {
-        if (value == null) return _.identity;
+        if (value == null) return _sole.identity;
         if (_.isFunction(value)) return optimizeCb(value, context, argCount);
         if (_.isObject(value)) return _.matcher(value);
         return _.property(value);
@@ -140,6 +140,9 @@
         return results;
     };
 
+    _sole.identity = function(value) {
+        return value;
+    };
     /*---------------------------------------
     ===================================================
         工具
@@ -219,7 +222,7 @@
             temp.toLocaleTimeString().slice(2)).replace(regex, '-');
     }
 
-    //数组去重(此方法高效,比其他方法占用更多内存)
+    //数组去重(此方法高效, 但比其他方法占用更多内存)
     _sole.arrayUnique = function(arr) {
         if (!this.isArray(arr)) return;
         var n = {},
@@ -490,6 +493,16 @@
         var gapTime = endTime - startTime;
         console.log('一共耗时:' + gapTime + 'ms');
         return gapTime;
+    }
+
+    //判断一个值是否存在, javascript中有2个值表示不存在:null undefined
+    function existy(X) {
+        return x != null;
+    }
+
+    //判断一个值是否为true的同义词,这个函数认为 数字 0 是 `true`
+    function truthy(x) {
+        return (x !== false) && existy(x);
     }
 
     //避免_sole变量的冲突

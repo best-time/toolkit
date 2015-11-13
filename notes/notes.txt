@@ -106,3 +106,17 @@ vue 指令只封装 DOM 操作，而组件代表一个自给自足的独立单�
 
 
 vue.js 看到过渡  2015年11月8日22:34:47
+
+//=================================
+ES5中新增了写数组方法，如下：
+forEach (js v1.6)
+map (js v1.6)
+filter (js v1.6)
+some (js v1.6)
+every (js v1.6)
+indexOf (js v1.6)
+lastIndexOf (js v1.6)
+reduce (js v1.8)
+reduceRight (js v1.8)
+
+url: http://www.zhangxinxu.com/wordpress/2013/04/es5新增数组方法/

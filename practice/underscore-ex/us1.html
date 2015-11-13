@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>func-programing</title>
+    <script src="underscore-1.8.2.js"></script>
+</head>
+
+<body>
+    <script>
+    function existy(x) {
+        return x != null
+    };
+
+    function truthy(x) {
+        return (x !== false) && existy(x)
+    };
+
+    function doWhen(cond, action) {
+        if (truthy(cond)) return action();
+        else return undefined;
+    }
+
+    function executeIfHasField(target, name) {
+        return doWhen(existy(target[name]), function() {
+            var result = _.result(target, name);
+            console.log(['The result is', result].join(' '));
+            return result;
+        });
+    }
+
+    var res = executeIfHasField([1, 2, 3], 'reverse');
+    console.log(res)
+    </script>
+</body>
+
+</html>
