@@ -130,3 +130,10 @@ url: http://www.zhangxinxu.com/wordpress/2013/04/es5新增数组方法/
 
 看到vue-test4.html结束
 vue.js 看到过渡  2015年11月15日23:49:47
+
+有很多函数式库：underscore.js， lodash，Fantasy Land, Functional.js, Bilby.js, fn.js, Wu.js, Lazy.js, Bacon.js, sloth.js, stream.js, Sugar, Folktale, RxJs 
+
+多种javascript变成方式:
+命令式编程: 是建立在直接操作和检查程序状态之上.
+面向原型的面向对象编程: 利用现有的对象作为原型来生成特定的实例
+元编程: 编写代码叫做编程,当你的代码改变了某些代码被解释的方式. call apply时
