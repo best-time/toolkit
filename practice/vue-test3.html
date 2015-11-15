@@ -8,27 +8,30 @@
 </head>
 
 <body>
+    <h2>插值表达式</h2>
     <div id="box">
-        <!-- 3层{} 会自动解析html标签,否则会把标签当成普通文本输出 -->
+        <!-- 3层{} 会自动解析html标签,
+        否则会把标签当成普通文本输出 -->
         {{{ raw_html}}}
+        <br> {{ raw_html | uppercase }}
+        <!--单次插值, 之后不会再变化了-->
+        <br> {{* msg}}
+        <br> {{ msg}}
         <!-- 表达式的使用 -->
         <br> {{ok ? 'yes' : 'no'}}
         <br>{{ number + 1 }}
         <br>{{ message.split('').reverse().join('') }}
         <br>{{ message | capitalize }}
+        <!-- 绑定属性 -->
         <br><a href="{{ url }}">a链接</a>
         <br><a v-bind:href="url">a链接</a>
         <br>
+        <!-- 绑定事件 -->
         <a v-on:click="doSomething">点击调用doSomething</a>
         <br>
         <button @click="alert">点击</button>
     </div>
-    <div id="example">
-        a={{ a }}, b={{ b }}
-    </div>
-    <div id="demo">{{fullName}}</div>
-    <div id="box1">{{ example }}</div>
-    <script type="text/javascript">
+    <script>
     //在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 XSS 攻击。
     //记住，只对可信内容使用 HTML 插值，永不用于用户提交的内容。
     //不能在表达式内使用过滤器
@@ -47,7 +50,6 @@
         <!-- 流程控制也不可以，可使用三元表达式 -->
         {{ if (ok) { return message } }}
     
-
         v-bind 和 v-on 提供特别的缩写
 
         <!-- 完整语法 -->
@@ -60,45 +62,91 @@
         <!-- 缩写 -->
         <a @click="doSomething"></a>
 
-
     */
     new Vue({
-            el: "#box",
-            data: {
-                raw_html: "<em>原生html</em>",
-                //javascript 表达式使用
-                //每个绑定值能支持单个表达式
-                ok: true,
-                number: 22,
-                message: "mingtian",
-                url: 'http://www.webxmf.com'
+        el: "#box",
+        data: {
+            raw_html: "<em>原生html</em>",
+            //javascript 表达式使用
+            //每个绑定值能支持单个表达式
+            msg: "aa",
+            ok: true,
+            number: 22,
+            message: "星期一",
+            url: 'http://www.webxmf.com'
+        },
+        methods: {
+            doSomething: function() {
+                console.log("doSomething");
             },
-            methods: {
-                doSomething: function() {
-                    console.log("doSomething")
-                },
-                alert: function() {
-                    alert('alert 方法')
-                }
+            alert: function() {
+                alert('alert 方法');
+                this.msg = "aaa->bbb"
             }
-        })
-        //=======================================
-
-    //计算属性
+        }
+    })
+    </script>
+    <br>
+    <hr>
+    <br>
+    <div id="showornot">
+        <!--注意 v-if v-show 两者的区别-->
+        <p class="p1" v-if="greet">hello</p>
+        <p class="p2" v-show="greet">hello</p>
+        <button @click="change"> 点击</button>
+    </div>
+    <script>
+    new Vue({
+        el: '#showornot',
+        data: {
+            greet: true
+        },
+        methods: {
+            change: function() {
+                this.greet = !this.greet
+            }
+        }
+    })
+    </script>
+    <br>
+    <hr>
+    <br>
+    <h2>计算属性的使用</h2>
+    <div id="example">
+        a={{ a }}, b={{ b }}
+        <br>
+        <button @click="changeA">点击变化a的值</button>
+    </div>
+    <script>
+    //计算属性的使用
     var vm = new Vue({
         el: '#example',
         data: {
-            a: 1
+            a: 2
+        },
+        methods: {
+            changeA: function() {
+                this.a = this.a * 3
+            }
         },
         computed: {
             // getter
             b: function() {
                 // `this` 指向 vm 实例
-                return this.a + 1
+                return this.a + 2
             }
         }
     })
-
+    </script>
+    <br>
+    <hr>
+    <br>
+    <div id="demo">{{fullName}}</div>
+    <br>
+    <hr>
+    <br>
+    <script type="text/javascript">
+    //=======================================
     var vm = new Vue({
             el: '#demo',
             data: {
@@ -158,7 +206,16 @@
         }
 
         */
-
+    </script>
+    <br>
+    <div id="box1">{{ example }}
+        <br>
+        <!-- .literal 修饰符告诉指令将它的值解析为一个字面字符串而不是一个表达式 -->
+        <a v-bind:href.literal="/a/b/c">a标签</a></div>
+    <br>
+    <hr>
+    <br>
+    <script>
     var vm = new Vue({
         el: "#box1",
         data: {
@@ -173,16 +230,10 @@
     })
     </script>
     <br>
-    <div class="static" :class="{ 'class-a': isA, 'class-b': isB }">class</div>
-    <!-- v-bind:class 可以绑定到computed 属性上 -->
-    <div id="box3" :class="getObj">参数为对象的 class</div>
-    <div id="box4" v-bind:class="[classA, classB]">数组为参数 class</div>
-    <div id="box5" v-bind:class="[classA, isB ? classB : '']">三元运算 class</div>
+    <hr>
     <br>
-    <div id="box6" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"> 参数式的-内联style使用
-        <div v-bind:style="styleObject">对象式的-内联style使用</div>
-        <div v-bind:style="[styleObjectA, styleObjectB]">数组式的-内联style使用 (使用存在问题)</div>
-    </div>
+    <h2>对象语法绑定class</h2>
+    <div class="static" :class="{ 'class-a': isA, 'class-b': isB }">class</div>
     <script>
     new Vue({
         el: ".static",
@@ -191,6 +242,11 @@
             isB: false
         }
     })
+    </script>
+    <h2>对象绑定到计算属性上</h2>
+    <!-- v-bind:class 可以绑定到computed 属性上 -->
+    <div id="box3" :class="getObj">参数为对象的 class</div>
+    <script>
     new Vue({
         el: '#box3',
         data: {
@@ -210,6 +266,10 @@
         // methods: { // getObj: function() { // this.classObject['class-b'] = true // } // }
 
     })
+    </script>
+    <h2>数组绑定class</h2>
+    <div id="box4" v-bind:class="[classA, classB]">数组为参数 class</div>
+    <script>
     new Vue({
         el: '#box4',
         data: {
@@ -217,6 +277,10 @@
             classB: 'classB'
         }
     })
+    </script>
+    <h2>数组中包含三元运算 - 绑定class</h2>
+    <div id="box5" v-bind:class="[classA, (isB ? classB : '')]">三元运算 class</div>
+    <script>
     new Vue({
         el: '#box5',
         data: {
@@ -225,18 +289,26 @@
             classB: "bbb"
         }
     })
-
+    </script>
+    <br>
+    <h2>参数式的-内联style使用</h2>
+    <div id="box6" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px', lineHeight: lineHeight }"> 参数式的-内联style使用CSS 属性名用驼峰式（camelCase）
+        <div v-bind:style="styleObject">对象式的-内联style使用(CSS 属性名用驼峰式（camelCase）)</div>
+        <div v-bind:style="[styleObjectA, styleObjectB]">数组式的-内联style使用 (使用不方便)</div>
+    </div>
+    <script>
     //绑定样式
     new Vue({
         el: '#box6',
         data: {
             activeColor: 'red',
-            fontSize: 30,
+            fontSize: 20,
+            lineHeight: '30px',
             styleObject: { // 同样的，对象语法常常与计算属性（返回对象）一起用
                 color: 'orange',
                 fontSize: '18px',
                 borderRadius: '10px',
-                background: '#eee',
+                backgroundColor: '#eee',
                 lineHeight: '40px'
             },
             styleObjectA: {
@@ -248,7 +320,10 @@
         }
     })
     </script>
-    <h3>列表渲染</h3>
+    <br>
+    <hr>
+    <br>
+    <h3>列表渲染- (v-else使用)</h3>
     <div id="box11">
         <template v-if="ok">
             <h1>Title</h1>
@@ -256,28 +331,29 @@
             <p>Paragraph 2</p>
         </template>
         <h1 v-show="ok1">Hello!</h1>
-        <hr>
         <br>
         <div v-if="Math.random() > 0.5">
             Sorry
         </div>
-        <!-- v-else的使用-->
         <div v-else>
+            <!-- v-else的使用-->
             Not sorry
         </div>
     </div>
     <script>
     //v-show的值为false时, 相当于css的display:none, 元素还是会留在html源码中 (v-show 不支持 <template> 语法。)
-    //v-if的值为false时,页面上是看不到html源码的
+    //v-if的值为false时,页面上是看不到html源码
     //v-else 元素必须立即跟在 v-if 或 v-show 元素的后面——否则它不能被识别。
     /*
-        一般来说，v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。
-        因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好。
+        一般来说，v-if 有更高的切换消耗而 
+        v-show 有更高的初始渲染消耗。
+        因此，如果需要频繁切换 v-show 较好，
+        如果在运行时条件不大可能改变 v-if 较好。
     */
     new Vue({
         el: "#box11",
         data: {
-            ok: false,
+            ok: true,
             ok1: true
         }
     })
@@ -312,14 +388,25 @@
     <div id="example-2">
         <button v-on:click="say('hi')">Say Hi</button>
         <button v-on:click="say('what')">Say What</button>
+        <br>
         <!--有时也需要在内联语句处理器中访问原生 DOM 事件。可以用特殊变量 $event 把它传入-->
+        <i>传入$event阻止默认行为: </i>
         <a href="http://www.baidu.com" v-on:click="say1('hello!', $event)">Submit</a>
+        <br>
+        <i>使用行内修饰符阻止默认行为(推荐使用): </i>
+        <a href="http://www.baidu.com" v-on:click.prevent="say('hello!')">Submit</a>
+        <br>
+        <i>只使用的修饰符:</i>
+        <a href="http://www.baidu.com" v-on:click.prevent>Submit</a>
+        <br>
+        <input type="text" @keyup.esc.delete.tab.space="al">
     </div>
     <script>
     //类似于内联表达式，事件处理器限制为一个语句。
     /*
         事件修饰符
-        在事件处理器中经常需要调用 event.preventDefault() 或 event.stopPropagation()。尽管我们在方法内可以轻松做到，不过让方法是纯粹的数据逻辑而不处理 DOM 事件细节会更好。
+        在事件处理器中经常需要调用 event.preventDefault() 或 event.stopPropagation()。尽管我们在方法内可以轻松做到，
+        不过让方法是纯粹的数据逻辑而不处理 DOM 事件细节会更好。
 
         为了解决这个问题，Vue.js 为 v-on 提供两个 事件修饰符：.prevent 与 .stop。你是否还记得修饰符是点号打头的指令后缀？
 
@@ -370,6 +457,9 @@
             say1: function(msg, event) {
                 event.preventDefault(); //阻止默认行为
                 alert(msg);
+            },
+            al: function() {
+                alert("按了esc键")
             }
         }
     })

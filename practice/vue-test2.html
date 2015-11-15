@@ -15,7 +15,7 @@
         <br>
         <input type="text" v-model="message" placeholder="edit me">
         <br>
-        <i>单选框</i>
+        <i>复选框-单选</i>
         <br>
         <input type="checkbox" id="checkbox" v-model="checked">
         <label for="checkbox">{{ checked }}</label>
@@ -40,6 +40,7 @@
         <label for="two">Two</label>
         <br>
         <span>Picked: {{ picked }}</span>
+        <!--  -->
         <h5>select</h5>
         <select v-model="selected">
             <option selected>A</option>
@@ -47,6 +48,7 @@
             <option>C</option>
         </select>
         <span>Selected: {{ selected }}</span>
+        <!--  -->
         <h5>select - 2</h5>
         <select v-model="selected2" multiple>
             <option selected>A</option>
@@ -55,38 +57,43 @@
         </select>
         <br>
         <span>Selected: {{ selected2 | json }}</span>
+        <!--  -->
         <h5>动态选项, 使用v-for</h5>
         <select v-model="selected">
             <option v-for="option in options" v-bind:value="option.value">
-                {{ option.text }}
+                {{ option.value }}
             </option>
         </select>
         <span>Selected: {{ selected }}</span>
     </div>
     <script>
     new Vue({
-            el: "#box1",
-            data: {
-                message: "hello",
-                checked: true,
-                checkedNames: [],
-                picked: "",
-                selected: null,
-                selected2: [],
-                options: [{
-                    text: 'One',
-                    value: 'A'
-                }, {
-                    text: 'Two',
-                    value: 'B'
-                }, {
-                    text: 'Three',
-                    value: 'C'
-                }]
-            }
-        })
-        //表单控件绑定
+        el: "#box1",
+        data: {
+            message: "hello",
+            checked: true,
+            checkedNames: [],
+            picked: "",
+            selected: "",
+            selected2: [],
+            options: [{
+                text: 'One',
+                value: 'A'
+            }, {
+                text: 'Two',
+                value: 'B'
+            }, {
+                text: 'Three',
+                value: 'C'
+            }]
+        }
+    })
+
+    //表单控件绑定
     </script>
+    <br>
+    <hr>
+    <br>
     <div id="box2">
         <!-- 当选中时，`picked` 为字符串 "a" -->
         <input type="radio" v-model="picked" value="a">

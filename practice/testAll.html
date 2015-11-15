@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>the page of test</title>
+</head>
+
+<body>
+    <script>
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+
+        this.getInfo = function() {
+            console.log(this.name + " is " + this.age + " years old");
+        };
+    }
+    Person.prototype.say = function() {
+        console.log("hello")
+    }
+    var will = new Person("Will", 28);
+
+    console.log(will.__proto__);
+    console.log(will.constructor);
+
+    console.log(will.__proto__ === Person.prototype);
+    console.log(Person.prototype.__proto__);
+    console.log(Person.prototype.constructor);
+    console.log(Person.prototype.constructor === Person);
+    </script>
+</body>
+
+</html>

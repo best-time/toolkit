@@ -87,7 +87,7 @@
     function getFuncRuntime() {
         var date1 = new Date().getTime(); //window.performance.now()
         var m = 0;
-        for (var i = 0; i < 10000000; i++) {
+        for (var i = 0; i < 100000; i++) {
             getType(null)
         }
         var date2 = new Date().getTime();

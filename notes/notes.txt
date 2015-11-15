@@ -57,10 +57,12 @@ function aCaller() {
 	testCaller();
 }
 aCaller();
-弹窗会弹处 aCaller()函数的源码
+弹窗会弹出 aCaller()函数的源码
 
 当函数被调用时,它的arguments.callee对象就会指向自身,也就是一个对自己的引用. (多用于函数递归)
 因为arguments是在函数调用时才有效,因此函数未调用时, arguments.callee为null
+
+/=======================================
 
 window.location 属性:
 hash : #号开始的url
@@ -75,9 +77,13 @@ search: ?号开始的url
 js正则函数详细使用 没理清
 页面宽度, div宽度等获取 浏览器差异没理清
 
+=======================================/
+
+
+
+
 *****************_.isArguments 2015年11月02日23:23:16
 *****************_.add 2015年11月6日00:08:12
-
 
 vue.js 笔记
 
@@ -120,3 +126,7 @@ reduce (js v1.8)
 reduceRight (js v1.8)
 
 url: http://www.zhangxinxu.com/wordpress/2013/04/es5新增数组方法/
+
+
+看到vue-test4.html结束
+vue.js 看到过渡  2015年11月15日23:49:47
