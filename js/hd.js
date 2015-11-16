@@ -305,9 +305,7 @@
         }
     }
 
-    /**
-     * 设置cookie
-     */
+    //设置cookie
     _sole.setCookie = function(name, value, hours) { //写cookie
         var exp = new Date();
         exp.setTime(exp.getTime() + hours * 60 * 60 * 1000);
@@ -316,10 +314,7 @@
         }
     }
 
-    /**
-     * 读取cookie
-     * 
-     */
+    //读取cookie
     _sole.getCookie = function(name) { //取cookie
         if (navigator.cookieEnabled) {
             var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));

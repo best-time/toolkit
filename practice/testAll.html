@@ -21,13 +21,41 @@
     }
     var will = new Person("Will", 28);
 
-    // console.log(will.__proto__);
+    // console.log(will.__proto__); //Person.prototype
     // console.log(will.constructor);
 
     // console.log(will.__proto__ === Person.prototype);
-    // console.log(Person.prototype.__proto__);
-    // console.log(Person.prototype.constructor);
-    // console.log(Person.prototype.constructor === Person);
+    // console.log(Person.prototype.__proto__); //Object{}
+    // console.log(Person.prototype.constructor); //指回构造函数
+    // console.log(Person.prototype.constructor === Person); //true
+    // 
+    console.log(Person.__proto__ === Function.prototype);
+    console.log(Person.constructor === Function)
+    console.log(typeof Function); // 字符串: 'function'
+    console.log(Function); //function Function() { [native code] }
+    console.log(Function.prototype); //function() {}
+    console.log(Function.prototype.__proto__); //Object{}
+    console.log(Function.prototype.constructor); //function Function() { [native code] }
+    console.log(Function.prototype.constructor === Function); // true
+    //在JavaScript中有个Function对象（类似Object），这个对象本身是个函数；
+    //所有的函数（包括Function，Object）的原型（proto）都是"Function.prototype"。
+    //Function对象作为一个函数，就会有prototype属性，该属性将对应"function () {}"对象。
+    //Function对象作为一个对象，就有"proto"属性，该属性对应"Function.prototype"，也就是说，"Function.proto === Function.prototype"
+    //对于Function的原型对象"Function.prototype"，该原型对象的"proto"属性将对应"Object {}"
+    //
+    //
+
+    var a = {
+        x: 10,
+        calculate: function(z) {
+            return this.x + this.y + z
+        }
+    };
+    var b = {
+        y: 20,
+        __proto__: a
+    };
+    // console.debug(b.calculate(30))
     </script>
 </body>
 
