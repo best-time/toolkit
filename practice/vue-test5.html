@@ -27,7 +27,7 @@
 <body>
     <h2>css 过渡</h2>
     <div id="demo">
-        <div v-if="show" transition="expand">hello</div>
+        <div v-show="show" transition="expand">hello</div>
         <button @click="show = !show">Toggle</button>
     </div>
     <script>
@@ -35,7 +35,8 @@
 
     //.fade-transition 始终保留在元素上。
 
-    //.fade-enter 定义进入过渡的开始状态。只应用一帧然后立即删除。
+    //.fade-enter 
+    //定义进入过渡的开始状态。只应用一帧然后立即删除。
 
     //.fade-leave 定义离开过渡的结束状态。在离开过渡开始时生效，在它结束后删除。
 
@@ -118,30 +119,6 @@
             -webkit-transform: scale(0);
         }
     }
-    
-    @-webkit-keyframes bounce-in {
-        0% {
-            -webkit-transform: scale(0);
-        }
-        50% {
-            -webkit-transform: scale(1.5);
-        }
-        100% {
-            -webkit-transform: scale(1);
-        }
-    }
-    
-    @-webkit-keyframes bounce-out {
-        0% {
-            -webkit-transform: scale(1);
-        }
-        50% {
-            -webkit-transform: scale(1.5);
-        }
-        100% {
-            -webkit-transform: scale(0);
-        }
-    }
     </style>
     <script>
     new Vue({
@@ -153,10 +130,12 @@
     </script>
     <h2>javascript 过渡</h2>
     <div id="demo2">
-        <div v-if="show" transition="fade">hello</div>
+        <div v-show="show" transition="fade">hello</div>
         <button @click="show = !show">Toggle</button>
     </div>
     <script>
+    //当只使用 JavaScript 过渡时，
+    //enter 和 leave 钩子需要调用 done 回调，否则它们将被同步调用，过渡将立即结束。
     new Vue({
         el: "#demo2",
         data: {
@@ -166,7 +145,8 @@
             fade: {
                 css: false,
                 enter: function(el, done) {
-                    // 元素已被插入 DOM   //在动画结束后调用 done
+                    // 元素已被插入 DOM   
+                    //在动画结束后调用 done
                     $(el).css('opacity', 0)
                         .animate({
                             opacity: 1
@@ -188,18 +168,6 @@
         }
     })
     </script>
-    <h2>渐近过渡</h2>
-    <div id="demo3">
-        <input v-model="query">
-        <ul>
-            <li v-for="item in list | filterBy query" transition="staggered" stagger="100">
-                {{item.msg}}
-            </li>
-        </ul>
-    </div>
-    <br>
-    <br>
-    <br>
     <style>
     ul {
         padding-left: 0;
@@ -219,6 +187,18 @@
         height: 0;
     }
     </style>
+    <h2>渐近过渡效果</h2>
+    <div id="demo3">
+        <input v-model="query">
+        <ul>
+            <li v-for="item in list | filterBy query" transition="staggered" stagger="100">
+                {{item.msg}}
+            </li>
+        </ul>
+    </div>
+    <br>
+    <br>
+    <br>
     <script>
     new Vue({
         el: '#demo3',

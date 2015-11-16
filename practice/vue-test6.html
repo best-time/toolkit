@@ -34,7 +34,6 @@
         template: '<h3>A custom component!</h3>',
         components: {
             // <my-component> 只能用在父组件模板内
-            'cc': Childc
         }
     });
     //register  用作组件之前,需要注册一下
@@ -64,9 +63,11 @@
     //     }
     // })
     </script>
+    <br>
+    <hr>
+    <br>
     <div id="prop-example-1" class="demo">
-        <child msg="hello!"></child>
-        <child ms-tem=" world"></child>
+        <child msg="hello!" ms-tem="world"></child>
     </div>
     <script>
     //不应该在子组件的模板内直接引用父组件的数据
@@ -76,14 +77,17 @@
         el: '#prop-example-1',
         components: {
             child: {
+                //传值给子组件
                 props: ['msg', 'msTem'],
-                template: '<span>{{ msg }} {{msTem}}</span>'
+                template: '<i>{{ msg }} - {{msTem}}</i>'
             }
         }
     })
     </script>
     <br>
+    <hr>
     <br>
+    <!-- 动态 props -->
     <div id="demo-2">
         <input type="text" v-model="parentMsg">
         <br>
@@ -91,14 +95,13 @@
         <child v-bind:my-message="parentMsg"></child>
         <br>
         <!-- 双向绑定 -->
-        <child :my-message.sync="parentMsg"></child>
+        <child v-bind:my-message.sync="parentMsg"></child>
         <br>
         <!-- 单次绑定 -->
-        <child :my-message.once="parentMsg"></child>
+        <child v-bind:my-message.once="parentMsg"></child>
         <br>
     </div>
     <script>
-    //动态 props
     //这种封装也适用于其它资源，如指令、过滤器和过渡。
     //prop 默认是单向绑定：当父组件的属性变化时，将传导给子组件，但是反过来不会。
     //不过，也可以使用 .sync 或 .once 绑定修饰符显式地强制双向或单次绑定：
@@ -111,13 +114,7 @@
     //根实例的后代可以用 this.$root 访问它。
     //父组件有一个数组 this.$children，包含它所有的子元素。
     //
-    //每个 Vue 实例都是一个事件触发器：
-    //使用 $on() 监听事件；
-    //使用 $emit() 在它上面触发事件；
-    //使用 $dispatch() 派发事件，事件沿着父链冒泡；
-    //使用 $broadcast() 广播事件，事件向下 传导给所有的后代。
-    //不同于 DOM 事件，Vue事件在冒泡过程中第一次触发回调之后自动停止冒泡，
-    //除非回调明确返回 true。
+
     new Vue({
         el: '#demo-2',
         data: {
@@ -142,7 +139,6 @@
         }
     })
     </script>
-    <br>
     <br>
     <!-- 子组件模板 
     <template id="child-template">
@@ -189,6 +185,7 @@
     // })
     </script>
     <br>
+    <hr>
     <br>
     <h2>2222(这样v-on绑定自定义事件, 更容易理解)</h2>
     <!-- 子组件模板 -->
@@ -204,6 +201,14 @@
     <script>
     // 注册子组件
     // 将当前消息派发出去
+
+    //每个 Vue 实例都是一个事件触发器：
+    //使用 $on() 监听事件；
+    //使用 $emit() 在它上面触发事件；
+    //使用 $dispatch() 派发事件，事件沿着父链冒泡；
+    //使用 $broadcast() 广播事件，事件向下 传导给所有的后代。
+    //不同于 DOM 事件，Vue事件在冒泡过程中第一次触发回调之后自动停止冒泡，
+    //除非回调明确返回 true。
     Vue.component('child', {
         template: '#child-template', // 注册组件模板的第二种方式
         data: function() {
@@ -280,11 +285,14 @@
     <br>
     <br>
     <div id="transition-mode-demo" class="demo">
-        <input v-model="view" type="radio" value="v-a">
+        <input v-model="view" id="a" type="radio" value="v-a">
         <label for="a">A</label>
-        <input v-model="view" type="radio" value="v-b">
+        <input v-model="view" id="b" type="radio" value="v-b">
         <label for="b">B</label>
+        <!-- 动态组件, 动态地绑定到它的 is 特性 -->
         <component :is="view" transition="fade" transition-mode="out-in">
+            <!-- 组件在 vm.view 变化时改变 -->
+            <!-- 如果非活动组件将被缓存, 添加 keep-alive属性 -->
         </component>
     </div>
     <style>
@@ -308,10 +316,10 @@
         },
         components: {
             'v-a': {
-                template: '<div>Component A</div>'
+                template: '<div>Component AAAAAAAAAAAAAA</div>'
             },
             'v-b': {
-                template: '<div>Component B</div>'
+                template: '<div style="color: maroon">Component BBBBBBBBBBBBBB</div>'
             }
         }
     })

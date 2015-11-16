@@ -13,21 +13,21 @@
     //定义对象可以提供几个钩子函数（都是可选的）：
 
     //bind：只调用一次，在指令第一次绑定到元素上时调用。
-
-    //update： 在 bind 之后立即以初始值为参数第一次调用，之后每当绑定值变化时调用，参数为新值与旧值。
-
+    //update： 在 bind 之后立即以初始值为参数第一次调用，
+    //  之后每当绑定值变化时调用，参数为新值与旧值。
     //unbind：只调用一次，在指令从元素上解绑时调用。
 
 
     //指令实例属性:
-    //	el: 指令绑定的元素。
-    //	vm: 拥有该指令的上下文 ViewModel。
-    //	expression: 指令的表达式，不包括参数和过滤器。
-    //	arg: 指令的参数。
-    //	name: 指令的名字，不包含前缀。
-    //	modifiers: 一个对象，包含指令的修饰符。
-    //	descriptor: 一个对象，包含指令的解析结果。
-    //	你应当将这些属性视为只读的，不要修改它们。你也可以给指令对象添加自定义属性，
+    //  el: 指令绑定的元素。
+    //  vm: 拥有该指令的上下文 ViewModel。
+    //  expression: 指令的表达式，不包括参数和过滤器。
+    //  arg: 指令的参数。
+    //  name: 指令的名字，不包含前缀。
+    //  modifiers: 一个对象，包含指令的修饰符。
+    //  descriptor: 一个对象，包含指令的解析结果。
+    //  你应当将这些属性视为只读的，不要修改它们。你也可以给指令对象添加自定义属性，
+
     //  但是注意不要覆盖已有的内部属性。
     Vue.directive('demo', {
         bind: function() {
@@ -51,8 +51,11 @@
     })
     </script>
     <br>
+    <hr>
     <br>
-    <div id="demo2" v-demoo="{ color: 'white', text: 'hello!' }">{{msg}}</div>
+    <h2>对象字面量方式:</h2>
+    <div id="demo2" v-demoo="{ color: 'white', text: 'hello!' }">{{msg}}
+    </div>
     <script type="text/javascript">
     Vue.directive('demoo', function(value) { //此时相当于只有一个update函数
         console.log(value.color) // "white"
@@ -66,7 +69,9 @@
     })
     </script>
     <br>
+    <hr>
     <br>
+    <h2>字面修饰符:</h2>
     <div id="demo3" v-demooo.literal="foo bar baz">{{msg}}</div>
     <script type="text/javascript">
     Vue.directive('demooo', function(value) { //此时相当于只有一个update函数
@@ -91,8 +96,12 @@
     //这样写 : <my-directive></my-directive>
     </script>
     <br>
+    <hr>
     <br>
-    <div id="box" v-example a="hi">{{msg}}</div>
+    <h2>高级选项:</h2>
+    <div id="box" v-example a="hi">
+        {{msg}}
+    </div>
     <script type="text/javascript">
     //高级选项
     Vue.directive('example', {
@@ -107,6 +116,50 @@
             msg: "params参数的使用"
         }
     })
+    </script>
+    <hr>
+    <button id="box2" v-examplee v-bind:a="someValue" @click="change">{{msg}}</button>
+    <script>
+    //此 API 也支持动态属性。this.params[key] 会自动保持更新。另外，可以指定一个回调，在值变化时调用：
+    Vue.directive('examplee', {
+        params: ['a'],
+        paramWatchers: { //当params内的参数值发生变化,触发此函数
+            a: function(val, oldVal) {
+                console.log('a changed!: ' + oldVal + " -> " + val)
+            }
+        }
+    })
+    new Vue({
+        el: "#box2",
+        data: {
+            msg: "点击a值发生变化,并且触发函数",
+            someValue: 123
+        },
+        methods: {
+            change: function() {
+                this.someValue = 2222
+            }
+        }
+    })
+
+    //如果自定义指令用在一个对象上，当对象内部属性变化时要触发 update，则在指令定义对象中指定 deep: true。
+
+    //<div v-my-directive="obj"></div>
+
+    //Vue.directive('my-directive', {
+    //    deep: true,
+    //    update: function(obj) {
+    //      在 `obj` 的嵌套属性变化时调用
+    //    }
+    //})
+
+    //如果指令想向 Vue 实例写回数据，
+    //则在指令定义对象中指定 twoWay: true 。
+    //该选项允许在指令中使用 this.set(value)
+
+    //传入 acceptStatement:true 可以让自定义指令接受内联语句，就像 v-on 那样：
+
+    //<div v-my-directive="a++"></div>
     </script>
 </body>
 

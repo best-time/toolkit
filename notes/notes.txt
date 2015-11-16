@@ -168,3 +168,7 @@ prototype是函数的内置属性，__proto__是对象的内置属性
 	(1) var p={}; 也就是说，初始化一个对象p
 	(2) p.__proto__ = Person.prototype;
 	(3) Person.call(p); 也就是说构造p，也可以称之为初始化p
+
+
+
+//=========== 看到  vue-test8.html 2015年11月17日00:08:26
