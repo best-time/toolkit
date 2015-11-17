@@ -6,6 +6,27 @@
 </head>
 
 <body>
+    <script>
+    // 定义一个混合对象
+    var myMixin = {
+        created: function() {
+            this.hello()
+        },
+        methods: {
+            hello: function() {
+                console.debug('hello from mixin!')
+            }
+        }
+    }
+
+    // 定义一个组件，使用这个混合对象
+    var Component = Vue.extend({
+        mixins: [myMixin]
+    })
+
+    var component = new Component() // -> "hello from mixin!"
+    </script>
+    <!-- -------------------- -->
     <script type="text/javascript">
     //值为对象的选项，如 methods, components 和 directives 将合并到同一个对象内。如果键冲突则原实例中的选项优先。
     var mixin = {
@@ -26,7 +47,7 @@
                 console.log('bar')
             },
             conflicting: function() {
-                console.log('from self') //调用了 此输出
+                console.log('from self') //原实例中的会覆盖mixin中的相同方法
             }
         }
     })
