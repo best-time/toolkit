@@ -15,15 +15,15 @@ git push -u origin master
 git rm filename
 
 
-查看分支：git branch
+鏌ョ湅鍒嗘敮锛歡it branch
 
-创建分支：git branch name
+鍒涘缓鍒嗘敮锛歡it branch name
 
-切换分支：git checkout name
+鍒囨崲鍒嗘敮锛歡it checkout name
 
-创建+切换分支：git checkout -b name
+鍒涘缓+鍒囨崲鍒嗘敮锛歡it checkout -b name
 
-合并某分支到当前分支：git merge name
+鍚堝苟鏌愬垎鏀埌褰撳墠鍒嗘敮锛歡it merge name
 
-删除分支：git branch -d name
+鍒犻櫎鍒嗘敮锛歡it branch -d name
 
