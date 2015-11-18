@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>pagination</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jPages.css">
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/jPages.js"></script>
+    <script>
+    $(function() {
+
+        /* initiate the plugin */
+        $("div.holder").jPages({
+            containerID: "itemContainer", //只能传一个内容id
+            first: '首页',
+            last: '尾页',
+            previous: '上页',
+            next: '下页',
+            perPage: 2, //每页显示数量
+            startPage: 1,
+            startRange: 2,
+            midRange: 3,
+            endRange: 2,
+            // animation: 'wobble',
+            // keyBrowse: true,
+            callback: function(pages, items) {
+                /* lazy load current images */
+                // items.showing.find("img").trigger("turnPage");
+                /* lazy load next page images */
+                // items.oncoming.find("img").trigger("turnPage");
+            }
+        });
+        $("button").click(function() {
+            /* get given page */
+            var page = parseInt($("input").val());
+
+            /* jump to that page */
+            $("div.holder").jPages(page);
+
+        });
+
+    });
+    </script>
+</head>
+
+<body>
+    <div id="content" class="defaults" style="width:500px; height:300px;">
+        <!-- item container -->
+        <ul id="itemContainer">
+            <li><img src="img/img (1).jpg" alt="image"></li>
+            <li><img src="img/img (2).jpg" alt="image"></li>
+            <li><img src="img/img (3).jpg" alt="image"></li>
+            <li><img src="img/img (4).jpg" alt="image"></li>
+            <li><img src="img/img (5).jpg" alt="image"></li>
+            <li><img src="img/img (6).jpg" alt="image"></li>
+            <li><img src="img/img (7).jpg" alt="image"></li>
+            <li><img src="img/img (8).jpg" alt="image"></li>
+            <li><img src="img/img (9).jpg" alt="image"></li>
+            <li><img src="img/img (10).jpg" alt="image"></li>
+            <li><img src="img/img (11).jpg" alt="image"></li>
+        </ul>
+        <!--         <table>
+            <tbody id="itemContainer">
+                <tr>
+                    <th>111</th>
+                </tr>
+                <tr>
+                    <th>222</th>
+                </tr>
+                <tr>
+                    <th>333</th>
+                </tr>
+                <tr>
+                    <th>44444</th>
+                </tr>
+                <tr>
+                    <th>55555</th>
+                </tr>
+                <tr>
+                    <th>7777</th>
+                </tr>
+                <tr>
+                    <th>999</th>
+                </tr>
+            </tbody>
+        </table> -->
+        <div class="holder">
+            <input type="text">
+            <button>跳转</button>
+        </div>
+    </div>
+    <!--! end of #content -->
+</body>
+
+</html>
