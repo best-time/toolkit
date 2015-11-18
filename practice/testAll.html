@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>the page of test</title>
+    <script src="underscore-1.8.2.js"></script>
 </head>
 
 <body>
@@ -56,6 +57,163 @@
         __proto__: a
     };
     // console.debug(b.calculate(30))
+
+    console.log("======================");
+
+    (function(window, document) {
+        var w = window,
+            doc = document;
+        var Kodo = function(selector) {
+            return new Kodo.prototype.init(selector);
+        };
+        Kodo.prototype = {
+            constructor: Kodo,
+            length: 0,
+            splice: [].splice,
+            selector: '',
+            init: function(selector) { //dom选择的一些判断
+                console.log("init")
+            }
+        };
+        // Kodo.prototype.init();
+        Kodo.prototype.init.prototype = Kodo.prototype;
+
+        Kodo.ajax = function() { //直接挂载方法  可f.ajax调用
+            console.log(this);
+        };
+
+        // console.log(Kodo())
+        window.f = Kodo;
+    })(window, document);
+
+    // f.ajax();
+    // f()
+
+    //在javascript中实例this只跟原型有关系
+    function Sole() {
+        return Sole.prototype.init();
+    }
+    Sole.prototype.init = function() {
+        // console.log(this)
+        return this; //Sole.prototype 原型对象
+    }
+    Sole.prototype.say = function() {
+        console.log(this)
+    }
+
+    console.log(new Sole())
+
+    console.log("-------------------")
+    var aQuery = function(selector, context) {
+        return new aQuery.prototype.init();
+    }
+    aQuery.prototype = {
+        init: function() {
+            this.age = 18;
+            return this;
+        },
+        name: function() {
+            return "name: yinweiyi"
+        },
+        age: 20
+    }
+    aQuery.prototype.init.prototype = aQuery.prototype;
+    console.log(aQuery())
+    console.log(aQuery().name())
+    console.log(aQuery().age)
+
+
+    //===============
+    //实例$函数的时候，返回的是init的实例对象，在后面可以看到，
+    //init的实例对象是通过init.prototype生成的，
+    //而我们把init.prototype = $.prototype了，
+    //所以返回的对象就是以$.prototype生成的！
+    var $ = function(a) {
+        return new $.prototype.init(a);
+    }
+    $.prototype = {
+        constructor: $,
+        //这儿就是对象的原型了，尽管返回的是init的实例对象，也是通过这个原型产生的
+        init: function(a) {
+            this.a = a;
+            //实例初始化a
+        },
+        sayHello: function() { //用实例的a作为参数调用静态方法
+            return $.sayHello(this.a);
+        },
+        a: null
+    }
+    console.log($.prototype)
+    $.prototype.init.prototype = $.prototype;
+
+    $.sayHello = function(args) { //静态方法很容易实现
+        if (args) console.log("Hello," + "I am " + args);
+        else console.log("Hello");
+    }
+
+    $.sayHello();
+    $('Jose').sayHello();
+
+    //==================
+    function bb() {
+
+        function aa() {
+            console.log(this) //指向 window对象
+        }
+        return aa;
+    }
+    // bb()();
+    //===========
+    function Gouzao(name) {
+        this.name = name
+    }
+    Gouzao.prototype.say = function() {
+        console.log(this.name)
+    }
+    var cb = new Gouzao("ywy")
+    cb.say();
+    console.log(cb.__proto__)
+    console.log(cb.__proto__.constructor)
+
+    //=======================
+    var target = {
+        name: "the right value",
+        aux: function() {
+            return this.name
+        },
+        act: function() {
+            // console.log(this)
+            return this.aux();
+        }
+    }
+
+    _.bindAll(target, 'aux', 'act')
+        // console.log(target.act.call(null)) // the right value
+
+    // ===============
+    function strangerIdentity(n) {
+        console.log(this)
+            // intentionally stranger still
+        for (this['i'] = 0; this['i'] < n; this['i']++);
+        return this['i'];
+    }
+
+    // strangerIdentity(108);
+    var oo = {
+        name: "ywy"
+    }
+
+    // 某个方法call在 null  undefined window对象上, 此时该函数中this都是指向window对象
+    console.log(strangerIdentity.call(undefined, 108))
+    console.log(i)
+
+    var arr1 = [
+        [1], 2
+    ];
+    var arr2 = _.clone(arr1);
+    arr2[0] = [1, 3];
+    console.log(arr2)
+    console.log(arr1)
     </script>
 </body>
 
