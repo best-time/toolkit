@@ -49,14 +49,14 @@
 
         <!-- 流程控制也不可以，可使用三元表达式 -->
         {{ if (ok) { return message } }}
-    
+
         v-bind 和 v-on 提供特别的缩写
 
         <!-- 完整语法 -->
         <a v-bind:href="url"></a>
         <!-- 缩写 -->
         <a :href="url"></a>
-    
+
         <!-- 完整语法 -->
         <a v-on:click="doSomething"></a>
         <!-- 缩写 -->
@@ -188,7 +188,7 @@
         vm.$watch('lastName', function (val) {
           this.fullName = this.firstName + ' ' + val
         })
-    
+
         // 计算存储器
         computed: {
           fullName: {
@@ -345,7 +345,7 @@
     //v-if的值为false时,页面上是看不到html源码
     //v-else 元素必须立即跟在 v-if 或 v-show 元素的后面——否则它不能被识别。
     /*
-        一般来说，v-if 有更高的切换消耗而 
+        一般来说，v-if 有更高的切换消耗而
         v-show 有更高的初始渲染消耗。
         因此，如果需要频繁切换 v-show 较好，
         如果在运行时条件不大可能改变 v-if 较好。
@@ -464,7 +464,6 @@
         }
     })
     </script>
-
 </body>
 
 </html>
