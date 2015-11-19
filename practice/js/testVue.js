@@ -5,13 +5,16 @@ new Vue({
     el: '#demo',
     data: {
         title: 'todos',
-        todos: [{
-            done: true,
-            content: 'Learn JavaScript'
-        }, {
-            done: false,
-            content: 'Learn vue.js'
-        }]
+        todos: [
+            {
+                done: true,
+                content: 'Learn JavaScript'
+            },
+            {
+                done: false,
+                content: 'Learn vue.js'
+            }
+        ]
     }
 })
 
@@ -19,11 +22,14 @@ new Vue({
     el: "#demo2",
     data: {
         parentMsg: 'hello',
-        items: [{
-            childMsg: 'Foo'
-        }, {
-            childMsg: 'Bar'
-        }]
+        items: [
+            {
+                childMsg: 'Foo'
+            },
+            {
+                childMsg: 'Bar'
+            }
+        ]
     }
 })
 
@@ -96,7 +102,7 @@ new Vue({
         n: 0
     },
     methods: {
-        onClick: function(e) { // DOM event作为第一个参数传入, 同时这个event会带有targetVM属性,指向触发该事件的响应的ViemModel
+        onClick: function (e) { // DOM event作为第一个参数传入, 同时这个event会带有targetVM属性,指向触发该事件的响应的ViemModel
             console.log(e.target.tagName);
             console.debug(e.targetVM == this)
         }
@@ -107,30 +113,33 @@ new Vue({
 new Vue({
     el: "#demo9",
     data: {
-        items: [{
-            text: 'one',
-            done: true
-        }, {
-            text: 'two',
-            done: true
-        }]
+        items: [
+            {
+                text: 'one',
+                done: true
+            },
+            {
+                text: 'two',
+                done: true
+            }
+        ]
     },
     methods: {
-        toggle: function(item) {
+        toggle: function (item) {
             item.done = !item.done;
         }
     }
-})
+});
 
 
 //键盘监听事件
 new Vue({
     el: '#demo10',
     methods: {
-        submit: function(e) {
+        submit: function (e) {
             console.log(e.target.tagName)
         },
-        submit2: function(e) {
+        submit2: function (e) {
             console.log("按了enter键")
         }
     }

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>notes of the good parts</title>
+</head>
+<body>
+<script>
+    Function.prototype.method = function (name, func) {
+        this.prototype[name] = func;
+        return this;
+    }
+    Function.method("aa", function () {
+        alert("aa")
+    });
+    //    Function.aa()
+    //所有通过对象字面量创建的对象都连接到Object.prototype这个javascript中标准的对象
+
+
+    var stooge = {
+        first_name: "yin",
+        last_name: "yi",
+        age: 26
+    };
+    console.log(stooge.__proto__); //Objec.prototype 标准的对象
+    console.log(stooge.__proto__.__proto__); //null
+
+    //beget方法创建一个使用原对象作为其原型的新对象.
+    if (typeof Object.beget !== 'function') {
+        Object.beget = function (o) {
+            var F = function () {
+            };
+            F.prototype = o;
+            return new F();
+        }
+    }
+    console.log("-----------------")
+
+    var another = Object.beget(stooge);
+    /*
+        原型连接在更新时是补齐作用的,当我们队某个对象做出改变时,不会触及到该对象的原型.
+        这里除非 another.__proto__.age = 44; 才能改变原型上的属性
+     */
+//    another.age= 33;
+    console.log(stooge.first_name)//
+    console.log(another); //F{}
+    console.log(another.__proto__);
+    //Object {first_name: "yin", last_name: "yi", age: 26}
+
+
+    var flight = {
+        airline: "Oceanic",
+        number: 815,
+        departure: {
+            iata: "syd",
+            time: "2005-1-1 14:45",
+            city: "Sydney"
+        },
+        arrival: {
+            iata: "lax",
+            time: "2005-2-1 14:45",
+            city: "Los Angeles"
+        }
+    }
+    console.log(flight.constructor)// function
+    console.log(flight.hasOwnProperty('number')); //true
+    console.log(flight.hasOwnProperty('constructor')); //false
+    //hasOwnProperty, 如果是对象拥有的独有属性,它将返回true,否则false.
+    // 该方法不会检查原型链
+
+    console.debug(another)// F{}
+    for(var name in another){
+//        if(another.hasOwnProperty(name)){ //for in 会循环出原型上包含的属性和方法
+        if(typeof another[name] !== 'function'){
+            document.writeln(name + ":" + another[name] + "<br>")
+        }
+    }
+
+    another.age = 55;
+    delete another.age; //删除某个属性,可能会让原型链中的属性浮现出来(不会触及原型链中的对象)
+    console.log(another.age)
+
+
+    /**
+     * Function
+     *
+     * 对象字面量产生的对象连接到Object.prototype.
+     * 函数对象连接到Function.prototype(该原型对象本身连接到Object.prototype)
+     *
+     * 每个函数对象在创建时也随带有一个prototype属性.该属性指向当前函数的原型对象.
+     * 该原型对象有一个contructor属性,指向该函数本身
+     */
+
+
+</script>
+</body>
+</html>
