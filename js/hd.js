@@ -322,11 +322,7 @@
         }
     }
 
-    /**
-     *  二分查找
-     *  items 必须是排序好的 数组
-     *
-     */
+    // 二分查找 items 必须是排序好的 数组
     _sole.binarySearch = function(items, value) {
         var startIndex = 0;
         var stopIndex = items.length - 1;
@@ -341,6 +337,16 @@
         }
         return (items[middle] != value) ? -1 : middle;
     };
+
+    //阶乘
+    _sole.factorial = function(num, parm) {
+        if(!_sole.isNumber(num)) return;
+        var res = parm || 1;
+        if(num < 2) {
+            return res;
+        }
+        return factorial(num - 1, res * num); //arguments.callee
+    }
     /**
      * ie相关判断
      */
@@ -478,11 +484,11 @@
         return true;
     }
 
-    //测试代码效率的函数
-    _sole.getEfficiency = function(dateString, times, func) {
+    //测试代码效率的函数, 函数参数放在一个数组中
+    _sole.getEfficiency = function(times, func, parm) {
         var startTime = window.performance.now(); //此函数精度较高
         for (var i = 0; i < times; i++) {
-            func(dateString);
+            func(parm.join(","));
         };
         var endTime = window.performance.now();
         var gapTime = endTime - startTime;
