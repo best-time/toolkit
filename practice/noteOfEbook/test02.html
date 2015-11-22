@@ -9,7 +9,6 @@
     Function.prototype.method = function (name, func) {
         console.log(this.prototype[name])
         if(!this.prototype[name]) { //防止覆盖原方法
-            console.log("qqqqqqqqqqqqqqqq")
             this.prototype[name] = func;
         }
         return this;

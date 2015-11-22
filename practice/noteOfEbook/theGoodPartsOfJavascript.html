@@ -9,7 +9,6 @@
 <script>
     Function.prototype.method = function (name, func) {
         if (!this.prototype[name]) { //防止覆盖原方法
-            alert("qqqqqqqqqqqqqqqq")
             this.prototype[name] = func;
         }
         return this;
@@ -355,13 +354,113 @@
     var ccc = new CCt("my jilian");
     console.log(ccc)
     console.log(ccc.get_name)
-    console.log(ccc.purr(3)) //c-c-c
-    console.log(ccc.get_name()) //c-c-c
-    console.log(ccc.says()) //'momomo'
-    console.log()
-    console.log()
+    //    console.log(ccc.purr(3)) //c-c-c
+    //    console.log(ccc.get_name()) //c-c-c
+    //    console.log(ccc.says()) //'momomo'
 
 
+    var myMammal = {
+        name: "yinweiyi",
+        get_name: function () {
+            return this.name;
+        },
+        says: function () {
+            return this.saying || "";
+        }
+    }
+
+    var myCat = Object.beget(myMammal);
+    myCat.name = "henrietta";
+    myCat.saying = "meow";
+    myCat.purr = function (n) {
+        var i, s = '';
+        for (i = 0; i < n; i++) {
+            if (!!s) {
+                s += '-'; //保证字符串开头不是 '-'
+            }
+            s += 'c'
+        }
+        return s;
+    }
+    myCat.get_name = function () {
+        return this.says + " " + this.name + ' ' + this.says;
+    };
+
+
+    //    console.log(myCat)
+    //    console.log(myCat)
+
+
+    console.log("========================================")
+
+
+    //函数化
+/*    var constructor = function(spec, my) {
+        var that,  //其他私有实例变量
+                my = my || {};
+
+    }*/
+
+    var mammal = function(spec) {
+        var that = {};
+        that.get_name = function() {
+            return spec.name;
+        };
+        that.says = function() {
+            return spec.saying || "参数saying未设置";
+        }
+        return that;
+    }
+    var mm = mammal({name: 'ywy'});
+//    console.log(mm.get_name());
+
+    var cct = function(spec) {
+        spec.saying = spec.saying || "meow";
+        var that = mammal(spec);
+        that.purr = function(n) {
+            var i, s = '';
+            for (i = 0; i < n; i++) {
+                if (!!s) {
+                    s += '-'; //保证字符串开头不是 '-'
+                }
+                s += 'c'
+            }
+            return s;
+        };
+        that.get_name = function() {
+            return that.says() + " " + spec.name + ' ' + that.says();
+        };
+        that.testcct = function() {return "testcct方法"}
+        return that;
+    }
+
+    var mcat = cct({name: "Henrietta"});
+//    console.log(mcat.get_name());
+
+
+    Object.method('superior', function(name) {
+        var that = this,
+            method = that[name];
+        return function() {
+            return method.apply(that, arguments);
+        }
+    })
+
+    var coolcat = function(spec) {
+        var that = cct(spec),
+            super_get_name = that.superior('get_name');
+        that.get_name = function(n) {
+            return 'like ' + super_get_name() + ' baby'
+        };
+        that.aa = function() { return "aa"};
+        that.bb = function() { return "bb"};
+        return that;
+    }
+
+    var myCoolCat = coolcat({name: "Bix"});
+    var name = myCoolCat.get_name();
+    console.log(name); // like meow Bix meow baby
+//    console.log(myCoolCat)
 </script>
 </body>
 </html>

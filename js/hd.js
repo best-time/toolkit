@@ -143,17 +143,17 @@
     _sole.identity = function(value) {
         return value;
     };
-    /*---------------------------------------
+    /*-------------------------------------------------
     ===================================================
         工具
-    */
+     -------------------------------------------------*/
 
     //返回当前时间的时间戳(毫秒)
     _sole.now = Date.now || function() {
         return new Date().getTime();
     };
 
-    //返回min-max之间的一个随机整数, 包括min,不包括max值
+    //返回[min, max)之间的一个随机整数
     _sole.random = function(min, max) {
         if (max == null) {
             max = min;
@@ -172,6 +172,24 @@
             return toString.call(obj) === '[object ' + name + ']';
         };
     });
+
+    /*
+        摘自: javascript 语言精粹  P61
+        var isArray = function(value) {
+            return value &&
+                    typeof value === 'object' &&
+                    typeof value.length === 'number' &&
+                    typeof value.splice === 'function' &&
+                    !(value.propertyIsEnumerable('length'));
+        }
+        //propertyIsEnumberable方法是Object类下的一个用来检测是否能用for in的一个方法，
+        //返回布尔值。
+        1. 排除假值
+        2. object array null 都返回 object
+        3. 数组的length总会得到true,对象则不一定
+        4. 判断这个值是否包含splice方法, 数组会得到true
+        5. length是否能通过 for in 遍历出来, 对于数组将得到true
+     */
 
     _sole.isObject = function(obj) {
         var type = typeof obj;
@@ -193,22 +211,22 @@
     _sole.trim = function(str) {
         if (!this.isString(str)) return;
         return str.replace(/^(\s*)|(\s*$)/g, '')
-    }
+    };
 
     //是否是闰年
     _sole.isLeapYear = function(year) {
         if (!this.isNumber(year)) return;
         return year % ((year % 100) ? 4 : 100) ? false : true;
-    }
+    };
 
     //随机生成颜色代码
     _sole.getRandomColor = function() {
         return ('000000' + Math.floor(Math.random() * 0x1000000).toString(16)).slice(-6);
-    }
+    };
 
     _sole.objToArray = function() {
         return Array.prototype.slice.call(arguments);
-    }
+    };
 
     /*
         获取当前时间, 格式如: "2015-5-7 9:04:10"  "2015-7-12 1:10:41"
@@ -220,7 +238,7 @@
         var regex = /\//g;
         return (temp.toLocaleDateString() + ' ' +
             temp.toLocaleTimeString().slice(2)).replace(regex, '-');
-    }
+    };
 
     //数组去重(此方法高效, 但比其他方法占用更多内存)
     _sole.arrayUnique = function(arr) {
@@ -234,16 +252,16 @@
             }
         }
         return r;
-    }
+    };
 
     //随机打乱数组
     _sole.disturbArray = function(arr) {
         if (!this.isArray(arr)) return;
         var arr = arr.sort(function(a, b) {
             return Math.random() > .5 ? -1 : 1;
-        })
+        });
         return arr;
-    }
+    };
 
 
     //获取某年某月的总天数
@@ -255,25 +273,25 @@
             return new Date(year, month, 0).getDate();
         }
         return;
-    }
+    };
 
     _sole.isPhone = function(str) {
         if (!this.isString(str) && !this.isNumber(str)) return;
         var regu = /^(13[0-9])|(147)|(15[0-3])|(15[6-9])|(18[0-3])|(18[5-9])\d{8}$/;
         return regu.test(str);
-    }
+    };
 
     _sole.isEmail = function(str) {
         if (!this.isString(str)) return;
         var regu = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
         return regu.test(str);
-    }
+    };
 
     _sole.isUrl = function(str) {
         if (!this.isString(str)) return;
         var regu = /^((http|https):\/\/)+(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/;
         return regu.test(str);
-    }
+    };
 
     //实现对象拷贝,只拷贝了'第一层',如果第一层保存'第二层'数据的引用, 此方法存在问题
     // _sole.extend = function(target, source) {
@@ -303,7 +321,7 @@
                 destination[p] = source[p];
             }
         }
-    }
+    };
 
     //设置cookie
     _sole.setCookie = function(name, value, hours) { //写cookie
@@ -312,7 +330,7 @@
         if (navigator.cookieEnabled) {
             document.cookie = name + "=" + encodeURI(value) + ";expires=" + exp.toGMTString();
         }
-    }
+    };
 
     //读取cookie
     _sole.getCookie = function(name) { //取cookie
@@ -320,7 +338,7 @@
             var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
             if (arr != null) return decodeURI(arr[2]);
         }
-    }
+    };
 
     // 二分查找 items 必须是排序好的 数组
     _sole.binarySearch = function(items, value) {
@@ -346,7 +364,7 @@
             return res;
         }
         return factorial(num - 1, res * num); //arguments.callee
-    }
+    };
     /**
      * ie相关判断
      */
@@ -466,7 +484,7 @@
             }
         }
         return true;
-    }
+    };
 
     function isValidDate(iY, iM, iD) {
         if (iY > 2200 || iY < 1900 || !isNumber(iY)) {
@@ -489,12 +507,12 @@
         var startTime = window.performance.now(); //此函数精度较高
         for (var i = 0; i < times; i++) {
             func(parm.join(","));
-        };
+        }
         var endTime = window.performance.now();
         var gapTime = endTime - startTime;
         console.log('一共耗时:' + gapTime + 'ms');
         return gapTime;
-    }
+    };
 
     //判断一个值是否存在, javascript中有2个值表示不存在:null undefined
     function existy(X) {
@@ -511,4 +529,4 @@
         root._sole = previousHD;
         return this;
     };
-}()
+}();
