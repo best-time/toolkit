@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>notes of the good parts</title>
+    <script src="../../js/hd.js"></script>
+</head>
+<body>
+<button id="box">点击</button>
+<script>
+   //组件
+    var eventuality = function(that) {
+       var registry = {};
+
+        that.fire = function(event) {
+            var array, func, handler, i,
+                    type = typeof event === 'string' ? event : event.type;
+            if(registry.hasOwnProperty(type)) {
+                array = registry[type];
+                for(i = 0; i < array.length; i++) {
+                    handler = array[i];
+                }
+                func = handler.method;
+                if(typeof func === 'string') {
+                    func = this[func];
+                }
+                func.apply(this, handler.parameters || [event]);
+            }
+            return this;
+        };
+
+        that.on = function(type, method, parameters) {
+            var handler = {
+                method: method,
+                parameters : parameters
+            };
+            if(registry.hasOwnProperty(type)) {
+                registry[type].push(handler);
+            } else {
+                registry[type] = [handler];
+            }
+            return this;
+        };
+        return that;
+   }
+    var bb = eventuality(document.getElementById("box"))
+//   console.log(bb);
+
+   var isArray = function(value) {
+       return value &&
+               typeof value === 'object' &&
+       typeof value.length === 'number' &&
+       typeof value.splice === 'function' &&
+       !(value.propertyIsEnumerable('length'));
+   }
+
+//    console.log(isArray({}))
+
+    //维度
+    Array.matrix = function(m, n, initial) { // 多维数组
+        var a, i, j, mat = [];
+        for(i = 0; i < m; i++){
+            a = [];
+            for(j = 0; j < n; j++){
+                a[j] = initial
+            }
+            mat[i] = a;
+        }
+        return mat;
+    }
+//    console.log(Array.matrix(3, 4, 1))
+
+    //方法:
+    var a = ['a', 'b','c'];
+    var b = ['x', 'y','z'];
+    var c = a.concat(b);  //不会影响原数组
+    console.log(c);
+    var c = a.concat(b, true);
+    console.log(c);
+    c = a.reverse();  //影响原数组
+   console.log(c);
+
+   Function.prototype.method = function (name, func) {
+//       if (!this.prototype[name]) { //防止覆盖原方法
+           this.prototype[name] = func;
+//       }
+       return this;
+   };
+    Function.method('bind', function(that) {
+        var method = this,
+            slice = Array.prototype.slice,
+            args = slice.apply(arguments, [1]);
+        return function() {
+            return method.apply(
+                    that,
+                    args.concat(slice.apply(arguments, [0]))
+            )
+        }
+    })
+//    console.log(Function.bind)
+    var x = function() { return this.value }.bind({value : 666})
+    console.log(x());
+    function ss() {
+        return Array.prototype.slice.apply(arguments, [1]);
+    }
+    console.log(ss(1,2,3,4,5))
+</script>
+</body>
+</html>

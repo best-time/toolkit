@@ -87,16 +87,33 @@
     function getFuncRuntime() {
         var date1 = new Date().getTime(); //window.performance.now()
         var m = 0;
-        for (var i = 0; i < 100000; i++) {
-            getType(null)
+        for (var i = 0; i < 1000000; i++) {
+            f2(9)
         }
         var date2 = new Date().getTime();
-        for (var i = 9999; i >= 0; i--) {
-            m = i;
+        for (var i = 0; i < 1000000; i++) {
+            f2(9)
         }
         var date3 = new Date().getTime();
         r31.value = (date2 - date1);
         r32.value = (date3 - date2);
+    }
+    function factorial(i, a) {
+        var a = a || 1;
+        if(i < 2) {
+            return a;
+        }
+        return factorial(i - 1, a * i);
+    }
+
+    function f2(num){
+//        if(num < 2){
+//            return num;
+//        }else {
+//            return num * f2(--num)
+//        }
+        var res = num < 2 ? num : num * f2(--num);
+        return res;
     }
     //-->
     </script>

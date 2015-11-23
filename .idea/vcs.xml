@@ -2,6 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/cityList" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/lazy.js" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/underscore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/vc-toptip" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/vue" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/vue-mui" vcs="Git" />
   </component>
 </project>
-

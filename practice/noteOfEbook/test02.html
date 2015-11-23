@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    Function.prototype.method = function (name, func) {
+        console.log(this.prototype[name])
+        if(!this.prototype[name]) { //防止覆盖原方法
+            this.prototype[name] = func;
+        }
+        return this;
+    };
+    //定义一个构造器,并扩充原型
+    var Mammal = function(name) {
+        this.name = name;
+    }
+    Mammal.prototype.get_name = function() {
+        return this.name;
+    }
+    Mammal.prototype.says = function() {
+        return this.saying || '';
+    }
+
+    //构造一个实例
+    var myMammal = new Mammal('herb the mammal');
+    var name = myMammal.get_name();
+    console.log(name) // erb the mammal
+
+    //还可以构造另一个伪类来集成Mammal, 这是通过定义它的constructor函数并替换它的prototype为
+    //一个Mammal的实例来实现
+
+    var Cat = function(name) {
+        this.name = name;
+        this.saying = 'meow';
+    }
+
+    //替换Cat.prototype 为一个新的Mammal实例
+    Cat.prototype = new Mammal();
+
+    //扩充新原型对象,增加purr和get_name方法
+    Cat.prototype.purr = function(n) {
+        var i, s = '';
+        for(i = 0; i < n; i++) {
+            if(!!s){
+                s += '-'; //保证字符串开头不是 '-'
+            }
+            s += 'r'
+        }
+        return s;
+    }
+    Cat.prototype.get_name = function() {
+        return this.says() + "  " + this.name + "  " + this.says();
+    }
+
+    //    console.debug(Cat.prototype.__proto__)
+
+    var myCat = new Cat('henrietta');
+    var says = myCat.says(); //meow
+    var purr = myCat.purr(5); //r-r-r-r-r
+    var name = myCat.get_name(); // meow henrietta meow
+
+    //    console.log(says)
+    //    console.log(purr)
+    //    console.log(name)
+
+
+    //伪类本意是相向面向对象靠拢,但它看起来格格不入.
+    //下面的iherits方法隐藏一些'丑陋'的细节
+    Function.method('inherits', function(Parent) {
+        this.prototype = new Parent();
+        return this;
+    })
+
+    //现在只用一行 语句构造一个 自己的对象
+    var CCt = function(name) {
+        this.name = name;
+        this.saying = 'momomo';
+    };
+
+    CCt.prototype.ywy = function() {};
+    CCt.inherits(Mammal)
+//        .method('purr', function(n) {
+//            var i, s = '';
+//            for(i = 0; i < n; i++) {
+//                if(!!s){
+//                    s += '-'; //保证字符串开头不是 '-'
+//                }
+//                s += 'c'
+//            }
+//            return s;
+//        })
+//        .method('get_name', function() {
+//                    alert(this.says())
+//            return this.says() + "  " + this.name + "  " + this.says();
+//        })
+//        .method('says', function() {
+//            alert(123321)
+//        })
+    console.log(CCt.prototype);
+    var ccc = new CCt("my jilian");
+//    console.log(ccc)
+    ccc.get_name = function() {
+        return this.says() + "  " + this.name + "  " + this.says();
+    }
+    console.log(ccc.get_name());
+</script>
+</body>
+</html>

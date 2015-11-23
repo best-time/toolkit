@@ -15,7 +15,7 @@ x逻辑右移2位：001011
 x算术右移2位：111011
 
 
-一下三条语句的效率是: x = x + 1 <  x += 1  < x++
+以下三条语句的效率是: x = x + 1 <  x += 1  < x++
 
 call 在大多数情况下比 apply性能好
 
@@ -30,7 +30,8 @@ $.type()  jquery 获取数据类型
 /============
 function(a){}.length   // 1
 function(a, b){}.length   // 2
-note: 函数的 length 得到的是形参个数     ||   arguments.length   得到实参个数
+note: 函数的 length 得到的是形参个数
+arguments.length   得到实参个数
 
 跳过了 _.intersection
 
@@ -168,6 +169,14 @@ prototype是函数的内置属性，__proto__是对象的内置属性
 
 
 
-//=========== 看到  vue-test8.html 2015年11月17日00:08:26
+//===========   vue-test8.html 2015年11月17日00:08:26
 
-//=========== 看到  vue-test9.html 2015年11月17日22:47:35
+//===========   vue-test9.html 2015年11月17日22:47:35
+
+shift() 通常比 pop() 慢得多
+
+slice()对象array中的某一段做浅复制
+
+============= javascript 精粹 81 2015年11月22日23:22:44
+
+

@@ -3,17 +3,26 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>notes of the good parts</title>
+    <script src="../../js/hd.js"></script>
 </head>
 <body>
 <script>
     Function.prototype.method = function (name, func) {
-        this.prototype[name] = func;
+        if (!this.prototype[name]) { //防止覆盖原方法
+            this.prototype[name] = func;
+        }
         return this;
-    }
+    };
+
     Function.method("aa", function () {
         alert("aa")
     });
+
+    String.method("aa", function (str) {
+        alert(str)
+    });
     //    Function.aa()
+    //    "adf".aa();
     //所有通过对象字面量创建的对象都连接到Object.prototype这个javascript中标准的对象
 
 
@@ -38,10 +47,10 @@
 
     var another = Object.beget(stooge);
     /*
-        原型连接在更新时是补齐作用的,当我们队某个对象做出改变时,不会触及到该对象的原型.
-        这里除非 another.__proto__.age = 44; 才能改变原型上的属性
+     原型连接在更新时是补齐作用的,当我们队某个对象做出改变时,不会触及到该对象的原型.
+     这里除非 another.__proto__.age = 44; 才能改变原型上的属性
      */
-//    another.age= 33;
+    //    another.age= 33;
     console.log(stooge.first_name)//
     console.log(another); //F{}
     console.log(another.__proto__);
@@ -68,10 +77,10 @@
     //hasOwnProperty, 如果是对象拥有的独有属性,它将返回true,否则false.
     // 该方法不会检查原型链
 
-    console.debug(another)// F{}
-    for(var name in another){
+    console.debug(another);// F{}
+    for (var name in another) {
 //        if(another.hasOwnProperty(name)){ //for in 会循环出原型上包含的属性和方法
-        if(typeof another[name] !== 'function'){
+        if (typeof another[name] !== 'function') {
             document.writeln(name + ":" + another[name] + "<br>")
         }
     }
@@ -91,7 +100,367 @@
      * 该原型对象有一个contructor属性,指向该函数本身
      */
 
+    //抛异常
+    function tt2() {
+        try {
+            var a = aa;
+        } catch (e) {
+            throw new Error(e.name);
+        }
+    }
+    //    tt2();
 
+    Number.method('integer', function () {
+        console.log(this < 0)
+        return Math[this < 0 ? 'ceiling' : 'floor'](this);
+    })
+    //    console.log(-2.5.integer()); // -2
+
+    String.method('parse', function () {
+        return this[0].toUpperCase() + this.slice(1);
+    })
+    //    console.log('asdf'.parse()); // 'Asdf'
+
+    // \s 匹配任何空白字符，包括空格、制表符、换页符等等。等价于[ \f\n\r\t\v]。
+    String.method("trim", function () {
+        return this.replace(/^\s|\s+$/g, '');
+    })
+
+    function factorial(i, a) {
+        var a = a || 1;
+        if (i < 2) {
+            return a;
+        }
+        return factorial(i - 1, a * i);
+    }
+
+    function f2(num) {
+        if (num < 2) {
+            return num;
+        } else {
+            return num * f2(--num)
+        }
+    }
+    function f3(num) {
+        if (num < 2) {
+            return num;
+        } else {
+            return num * f3(num - 1)
+        }
+    }
+    //    alert(f2(3))
+    //    console.log(factorial(4))
+    //    alert(__.factorial("a"))
+    //    __.getEfficiency(1000000,f3, [9])
+    //    __.getEfficiency(1000000,f2, [9])
+
+    function add(a, b) {
+        var a = a || 0;
+        var b = b || 0;
+//        var res = a + b;
+        return a + b;
+    }
+    //console.log(add.apply(null,[1, 6]));
+
+    Function.method('curry', function () {
+        var slice = Array.prototype.slice,
+                args = slice.apply(arguments),
+                that = this;
+//        console.log(this);//调用此方法的函数引用
+        return function () {
+            return that.apply(null, args.concat(slice.apply(arguments)))
+        }
+    })
+    var add1 = add.curry(1);
+    //    console.log(add.curry(1)())
+    console.log(add1(6)) // 7
+
+    // function - 记忆性
+
+    //效率较低,fibonacci被调用了多次
+    var fibonacci = function (n) {
+        return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+    }
+
+    for (var i = 0; i < 10; i++) {
+        document.writeln('//' + i + ":" + fibonacci(i) + "<br>")
+    }
+
+    //效率较高. (值的一看)
+    var fibonacci2 = function () {
+        var memo = [0, 1];
+        var fib = function (n) {
+            var result = memo[n];
+            if (typeof result !== 'number') {
+                result = fib(n - 1) + fib(n - 2);
+                memo[n] = result;
+            }
+//        console.log(memo)
+//            console.log(result)
+            return result;
+        }
+        return fib;
+    }
+    document.writeln('---------------------<br>')
+    for (var i = 0; i < 10; i++) {
+        document.writeln('//' + i + ":" + fibonacci2()(i) + "<br>")
+    }
+    /*
+     fib(0) == 0
+     fib(1) == 1
+     fib(2) == fib(0) + fib(1)
+     fib(3) == fib(1) + fib(2)
+     ...
+     ...
+     fib(n) = fib(n -1) + fib(n -2)
+
+     */
+
+    //带记忆功能的函数  ☆☆☆☆☆
+    var memorizer = function (memo, fundamental) {
+        var shell = function (n) {
+            var result = memo[n];
+            if (typeof result !== 'number') {
+                result = fundamental(shell, n);
+                memo[n] = result;
+            }
+            return result;
+        }
+        return shell;
+    }
+
+    //求和
+    var userMemor = memorizer([0, 1], function (shell, n) {
+        return shell(n - 1) + shell(n - 2);
+    })
+
+    console.log(userMemor(9))
+
+    //阶乘
+    var factorialMemor = memorizer([1, 1], function (shell, n) {
+        return n * shell(n - 1)
+    })
+
+    /**
+     * 伪类
+     */
+
+    Function.method('new', function () {
+        //创建一个新对象,它集成自构造器的原型对象
+        var that = Object.beget(this.prototype);
+        //调用构造器函数,绑定 this 到新对象上
+        var other = this.apply(that, arguments);
+        //如果它的返回值不是一个对象,就返回该新对象
+        return (typeof other === 'object' && other) || that;
+    })
+
+    function AB(name) {
+        this.name = name
+    }
+    AB.prototype.ss = function () {
+        console.log("ssssss");
+    }
+
+    var as = AB.new("name")
+    //    console.log(as);
+
+    //定义一个构造器,并扩充原型
+    var Mammal = function (name) {
+        this.name = name;
+    }
+    Mammal.prototype.get_name = function () {
+        return this.name;
+    }
+    Mammal.prototype.says = function () {
+        return this.saying || '';
+    }
+
+    //构造一个实例
+    var myMammal = new Mammal('herb the mammal');
+    var name = myMammal.get_name();
+    console.log(name) // erb the mammal
+
+    //还可以构造另一个伪类来集成Mammal, 这是通过定义它的constructor函数并替换它的prototype为
+    //一个Mammal的实例来实现
+
+    var Cat = function (name) {
+        this.name = name;
+        this.saying = 'meow';
+    }
+
+    //替换Cat.prototype 为一个新的Mammal实例
+    Cat.prototype = new Mammal();
+
+    //扩充新原型对象,增加purr和get_name方法
+    Cat.prototype.purr = function (n) {
+        var i, s = '';
+        for (i = 0; i < n; i++) {
+            if (!!s) {
+                s += '-'; //保证字符串开头不是 '-'
+            }
+            s += 'r'
+        }
+        return s;
+    }
+    Cat.prototype.get_name = function () {
+        return this.says() + "  " + this.name + "  " + this.says();
+    }
+
+    //    console.debug(Cat.prototype.__proto__)
+
+    var myCat = new Cat('henrietta');
+    var says = myCat.says(); //meow
+    var purr = myCat.purr(5); //r-r-r-r-r
+    var name = myCat.get_name(); // meow henrietta meow
+
+    //    console.log(says)
+    //    console.log(purr)
+    //    console.log(name)
+
+
+    //伪类本意是相向面向对象靠拢,但它看起来格格不入.
+    //下面的iherits方法隐藏一些'丑陋'的细节
+    Function.method('inherits', function (Parent) {
+        this.prototype = new Parent();
+        console.debug(this.prototype)
+        return this;
+    })
+
+    //现在只用一行 语句构造一个 自己的对象
+    var CCt = function (name) {
+        this.name = name;
+        this.saying = 'momomo';
+    }
+            .inherits(Mammal)
+    //    .method('purr', function(n) {
+    //        var i, s = '';
+    //        for(i = 0; i < n; i++) {
+    //            if(!!s){
+    //                s += '-'; //保证字符串开头不是 '-'
+    //            }
+    //            s += 'c'
+    //        }
+    //        return s;
+    //    })
+    //    .method('get_name', function() {
+    //                alert(this.says())
+    //        return this.says() + "  " + this.name + "  " + this.says();
+    //    })
+    //    .method('says', function() {
+    //        alert(123321)
+    //    })
+    console.log(CCt.prototype);
+    debugger
+    var ccc = new CCt("my jilian");
+    console.log(ccc)
+    console.log(ccc.get_name)
+    //    console.log(ccc.purr(3)) //c-c-c
+    //    console.log(ccc.get_name()) //c-c-c
+    //    console.log(ccc.says()) //'momomo'
+
+
+    var myMammal = {
+        name: "yinweiyi",
+        get_name: function () {
+            return this.name;
+        },
+        says: function () {
+            return this.saying || "";
+        }
+    }
+
+    var myCat = Object.beget(myMammal);
+    myCat.name = "henrietta";
+    myCat.saying = "meow";
+    myCat.purr = function (n) {
+        var i, s = '';
+        for (i = 0; i < n; i++) {
+            if (!!s) {
+                s += '-'; //保证字符串开头不是 '-'
+            }
+            s += 'c'
+        }
+        return s;
+    }
+    myCat.get_name = function () {
+        return this.says + " " + this.name + ' ' + this.says;
+    };
+
+
+    //    console.log(myCat)
+    //    console.log(myCat)
+
+
+    console.log("========================================")
+
+
+    //函数化
+/*    var constructor = function(spec, my) {
+        var that,  //其他私有实例变量
+                my = my || {};
+
+    }*/
+
+    var mammal = function(spec) {
+        var that = {};
+        that.get_name = function() {
+            return spec.name;
+        };
+        that.says = function() {
+            return spec.saying || "参数saying未设置";
+        }
+        return that;
+    }
+    var mm = mammal({name: 'ywy'});
+//    console.log(mm.get_name());
+
+    var cct = function(spec) {
+        spec.saying = spec.saying || "meow";
+        var that = mammal(spec);
+        that.purr = function(n) {
+            var i, s = '';
+            for (i = 0; i < n; i++) {
+                if (!!s) {
+                    s += '-'; //保证字符串开头不是 '-'
+                }
+                s += 'c'
+            }
+            return s;
+        };
+        that.get_name = function() {
+            return that.says() + " " + spec.name + ' ' + that.says();
+        };
+        that.testcct = function() {return "testcct方法"}
+        return that;
+    }
+
+    var mcat = cct({name: "Henrietta"});
+//    console.log(mcat.get_name());
+
+
+    Object.method('superior', function(name) {
+        var that = this,
+            method = that[name];
+        return function() {
+            return method.apply(that, arguments);
+        }
+    })
+
+    var coolcat = function(spec) {
+        var that = cct(spec),
+            super_get_name = that.superior('get_name');
+        that.get_name = function(n) {
+            return 'like ' + super_get_name() + ' baby'
+        };
+        that.aa = function() { return "aa"};
+        that.bb = function() { return "bb"};
+        return that;
+    }
+
+    var myCoolCat = coolcat({name: "Bix"});
+    var name = myCoolCat.get_name();
+    console.log(name); // like meow Bix meow baby
+//    console.log(myCoolCat)
 </script>
 </body>
 </html>
