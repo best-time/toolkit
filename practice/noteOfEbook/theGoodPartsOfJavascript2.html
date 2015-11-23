@@ -8,20 +8,20 @@
 <body>
 <button id="box">点击</button>
 <script>
-   //组件
-    var eventuality = function(that) {
-       var registry = {};
+    //组件
+    var eventuality = function (that) {
+        var registry = {};
 
-        that.fire = function(event) {
+        that.fire = function (event) {
             var array, func, handler, i,
                     type = typeof event === 'string' ? event : event.type;
-            if(registry.hasOwnProperty(type)) {
+            if (registry.hasOwnProperty(type)) {
                 array = registry[type];
-                for(i = 0; i < array.length; i++) {
+                for (i = 0; i < array.length; i++) {
                     handler = array[i];
                 }
                 func = handler.method;
-                if(typeof func === 'string') {
+                if (typeof func === 'string') {
                     func = this[func];
                 }
                 func.apply(this, handler.parameters || [event]);
@@ -29,12 +29,12 @@
             return this;
         };
 
-        that.on = function(type, method, parameters) {
+        that.on = function (type, method, parameters) {
             var handler = {
                 method: method,
-                parameters : parameters
+                parameters: parameters
             };
-            if(registry.hasOwnProperty(type)) {
+            if (registry.hasOwnProperty(type)) {
                 registry[type].push(handler);
             } else {
                 registry[type] = [handler];
@@ -42,68 +42,138 @@
             return this;
         };
         return that;
-   }
+    }
     var bb = eventuality(document.getElementById("box"))
-//   console.log(bb);
+    //   console.log(bb);
 
-   var isArray = function(value) {
-       return value &&
-               typeof value === 'object' &&
-       typeof value.length === 'number' &&
-       typeof value.splice === 'function' &&
-       !(value.propertyIsEnumerable('length'));
-   }
+    var isArray = function (value) {
+        return value &&
+                typeof value === 'object' &&
+                typeof value.length === 'number' &&
+                typeof value.splice === 'function' && !(value.propertyIsEnumerable('length'));
+    }
 
-//    console.log(isArray({}))
+    //    console.log(isArray({}))
 
     //维度
-    Array.matrix = function(m, n, initial) { // 多维数组
+    Array.matrix = function (m, n, initial) { // 多维数组
         var a, i, j, mat = [];
-        for(i = 0; i < m; i++){
+        for (i = 0; i < m; i++) {
             a = [];
-            for(j = 0; j < n; j++){
+            for (j = 0; j < n; j++) {
                 a[j] = initial
             }
             mat[i] = a;
         }
         return mat;
     }
-//    console.log(Array.matrix(3, 4, 1))
+    //    console.log(Array.matrix(3, 4, 1))
 
     //方法:
-    var a = ['a', 'b','c'];
-    var b = ['x', 'y','z'];
+    var a = ['a', 'b', 'c'];
+    var b = ['x', 'y', 'z'];
     var c = a.concat(b);  //不会影响原数组
     console.log(c);
     var c = a.concat(b, true);
     console.log(c);
     c = a.reverse();  //影响原数组
-   console.log(c);
+    console.log(c);
 
-   Function.prototype.method = function (name, func) {
+    Function.prototype.method = function (name, func) {
 //       if (!this.prototype[name]) { //防止覆盖原方法
-           this.prototype[name] = func;
+        this.prototype[name] = func;
 //       }
-       return this;
-   };
-    Function.method('bind', function(that) {
+        return this;
+    };
+    Function.method('bind', function (that) {
         var method = this,
-            slice = Array.prototype.slice,
-            args = slice.apply(arguments, [1]);
-        return function() {
+                slice = Array.prototype.slice,
+                args = slice.apply(arguments, [1]);
+        return function () {
             return method.apply(
                     that,
                     args.concat(slice.apply(arguments, [0]))
             )
         }
     })
-//    console.log(Function.bind)
-    var x = function() { return this.value }.bind({value : 666})
+    //    console.log(Function.bind)
+    var x = function () {
+        return this.value
+    }.bind({value: 666})
     console.log(x());
     function ss() {
         return Array.prototype.slice.apply(arguments, [1]);
     }
-    console.log(ss(1,2,3,4,5))
+    console.log(ss(1, 2, 3, 4, 5));
+
+    //toExponential 转成指数形式, 参数是小数位数
+    console.log(Math.PI.toExponential(2)) // 3.14e+0
+
+    //number.toFixed([0, 20]) 参数范围为 0 - 20位小数
+
+    //toPrecision 转成十进制形式的字符串, 参数范围为 0 - 21, 参数指有效数字的位数
+    console.log((123).toPrecision(2)); //1.2e+2
+    console.log((123).toPrecision(3)); //123
+    console.log((123).toPrecision(4)); //123.0
+
+
+    //toString 数值转成字符串 参数radix必须在 2 - 36 之间,默认是基数 10
+    console.log(Math.PI.toString(2)) //11.001001000011111101101010100010001000010110100011
+    console.log(Math.PI.toString(16)) //3.243f6a8885a3
+    console.log(Math.PI.toString(20)) //3.2gceg9gbhj9cc1508a2e3jdf
+
+    //String.fromCharCode 函数从一串数字中返回一个字符串
+    console.log(String.fromCharCode(67, 97, 116)) //Cat
+
+    /*
+        javascript'糟粕':
+        1.全局变量
+        2.作用域, 没有块作用域.
+        3.自动插入分号:
+            return
+            {
+                status: true,
+            }这样会返回undefined
+            return {
+                status: true
+                }
+        4.有很多保留字,但是并没有被使用
+        5.unicode, Unicode把一对字符视为一个单一的字符,javascript认为一对字符是两个不同的字符
+        6.typeof
+        7.parseInt,遇到非数字时停止解析. 推荐使用时,传入进制基数
+        8. +  +运算符可以用于加法运算或字符串连接. 如果做运算,请确保两个云算数都是数值
+        9. 浮点数, 二进制的浮点数不能正确的处理十进制小数. 0.1+0.2 不等于0.3. 推荐先转为整数再运算
+        10.NaN
+         判断一个值是否是可用最佳方法是isFinite函数,它会筛除NaN和Infinity,
+         不幸的是isFinite会视图把它的运算数转换为一个数字.
+         function isNumber(value) {
+            return typeof value === 'number' && isFinite(value)
+         }
+         11.伪数组
+         12.假值
+         13.hasOwnProperty是一个方法, 可能被不同的函数替换
+         14.对象, 没有真正的空对象,因为会从原型上继承
+         如果计算某个单词在字符串中出现的次数, 当这个单词和原型的方法名或属性名一样时,会出现问题
+
+     */
+
+    /*
+        javascript 鸡肋:
+        1. ==
+        2. with语句
+        3. eval() 避免使用,它必须运行编译器,效率低
+            传字符串给 setInterval和setTimeout 相当于使用eval()
+        4.continue 语句, 移除continue语句之后, 性能会得到改善
+        5. switch 贯穿
+        6. 缺少块的语句
+        7. ++ --
+        8. 位运算 在javascript中比较慢
+        9. function 语句队比函数表达式. if表达式中推荐不使用function
+        10. 类型的包装对象 new Boolean new String等
+        11. new
+        12. void
+
+     */
 </script>
 </body>
 </html>
