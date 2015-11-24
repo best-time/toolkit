@@ -179,7 +179,7 @@
             return value &&
                     typeof value === 'object' &&
                     typeof value.length === 'number' &&
-                    typeof value.splice === 'function' &&
+                    typeof value.splice === 'function' && //区别arguments和array
                     !(value.propertyIsEnumerable('length'));
         }
         //propertyIsEnumberable方法是Object类下的一个用来检测是否能用for in的一个方法，
@@ -189,6 +189,11 @@
         3. 数组的length总会得到true,对象则不一定
         4. 判断这个值是否包含splice方法, 数组会得到true
         5. length是否能通过 for in 遍历出来, 对于数组将得到true
+
+        P115
+         function isNumber(value) {
+            return typeof value === 'number' && isFinite(value)
+         }
      */
 
     _sole.isObject = function(obj) {

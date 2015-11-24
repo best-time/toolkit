@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>javascript函数式编程</title>
+    <script src="../js/underscore-1.8.2.js"></script>
+</head>
+<body>
+<script>
+    function average(array) {
+        var sum = _.reduce(array, function (a, b) {
+            return a + b
+        });
+        return sum / _.size(array);
+    }
+
+    function averageDamp(fun) {
+        return function (n) {
+            console.log(fun)
+            return average([n, fun(n)]);
+        }
+    }
+
+    var sq = averageDamp(function (n) {
+        return n * n
+    });
+    //    console.log(sq(10)); //55
+
+    function captureShadow(num) {
+        return function (num) {
+            return num + 1;
+        }
+    }
+    var closureShadow = captureShadow(108);
+    console.log(closureShadow(2)); // 3
+
+
+    //使用闭包
+    function complement(PRED) {
+        return function () {
+            return !PRED.apply(null, _.toArray(arguments));
+        };
+    }
+
+    function isEven(n) {
+        return (n % 2) === 0
+    }
+
+    var isOdd = complement(isEven);
+
+    console.log(isOdd(2));//=> false
+
+    console.log(isOdd(413));//=> true
+
+
+    function showObj(obj) {
+        return function () {
+            return obj;
+        }
+    }
+    var o = {a: 42};
+    var showO = showObj(o);
+    console.log(showO()); // {a: 42}
+    console.log(showO()); // {a: 42}
+    o.name = "ttt"; //由于o的引用同事存在闭包内部和外部,它的变化可以跨越看似私有的界限
+    console.log(showO()); //{a: 42, name: "ttt"}
+
+    var b = {a: 44};
+    console.log(b);
+    b.name = "xxx";
+    console.log(b)
+
+    var pingpong = function () { //这样 private属性就是私有变量, 除了通过inc dec函数没法访问到
+        var private = 0;
+        return {
+            inc: function (n) {
+                return private + n;
+            },
+            dec: function () {
+                return private - n;
+            }
+        };
+    }();
+
+
+    function plucker(FIELD) {
+        return function (obj) {
+            return (obj && obj[FIELD]);
+        };
+    }
+
+    var best = {title: "Infinite Jest", author: "DFW"};
+    var getTitle = plucker('title');
+
+    console.log(getTitle(best)); //=> "Infinite Jest"
+
+    var books = [{title: "Chthon"}, {stars: 5}, {title: "Botchan"}];
+    var third = plucker(2);
+
+    console.log(third(books)); //=> {title: "Botchan"}
+
+    var res = _.filter(books, getTitle);
+    console.log(res) // [{title: "Chthon"}, {title: "Botchan"}]
+    _.bind('a', {})
+</script>
+
+</body>
+</html>

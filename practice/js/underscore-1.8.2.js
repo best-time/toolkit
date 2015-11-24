@@ -723,8 +723,12 @@
   // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
   // available.
   _.bind = function(func, context) {
-    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
+    if (nativeBind && func.bind === nativeBind) {
+      return nativeBind.apply(func, slice.call(arguments, 1));
+    }
+    if (!_.isFunction(func)) {
+      throw new TypeError('Bind must be called on a function');
+    }
     var args = slice.call(arguments, 2);
     var bound = function() {
       return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));

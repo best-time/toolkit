@@ -145,9 +145,11 @@
   // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
   var getLength = property('length');
-  var isArrayLike = function(collection) {
+  var isArrayLike = function(collection) {  //类数组
     var length = getLength(collection);
-    return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+    return typeof length == 'number' &&   //有length属性
+        length >= 0 &&              // 0 <= length <= MAX_ARRAY_INDEX
+        length <= MAX_ARRAY_INDEX;
   };
 
   // Collection Functions
@@ -186,7 +188,7 @@
   };
 
   // Create a reducing function iterating left or right.
-  var createReduce = function(dir) {
+  var createReduce = function(dir) { //dir = 1
     // Optimized iterator function as using arguments.length
     // in the main function will deoptimize the, see #1991.
     var reducer = function(obj, iteratee, memo, initial) {
