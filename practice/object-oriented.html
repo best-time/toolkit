@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>javascript 面向对象</title>
+</head>
+<body>
+<script>
+    //1 工厂模式(摒弃, 不推荐)
+    //这个模式没有解决对象识别的问题（即怎样知道一个对象的类型）
+    //创建单个对象
+    var person = {};
+    person.name = "Oliver";
+    person.age = 19;
+    person.say = function() {
+        return this.name;
+    };
+
+    //改成工厂模式:
+    function createPerson(name, age) {
+        var obj = {};
+        obj.name = name;
+        obj.age = age;
+        obj.sayName = function() {
+            return this.name
+        };
+        return obj;
+    }
+    //使用:
+//    var newPerson = new createPerson("oliver", 18);
+
+    //2 构造函数模式
+     function Person(name, age) {
+         this.name = name;
+         this.age = age;
+         this.sayName = function() {
+             return this.name;
+         };
+     }
+     var person1 = new Person("oliver", 18);
+//    console.log(person1.__proto__.constructor);
+    //实例没有constructor属性, 所以沿着原型链上寻找,原型对象上有constructor, 并且指向构造函数本身
+    console.log(person1.constructor === Person); //true
+
+
+
+    function Car(name, color, sound) {
+        this.name = name;
+        this.color = color;
+        this.sound = function() {
+            return sound;
+        };
+        console.log(this.name + ' ' + this.color + " " + this.sound());
+    }
+    //当做构造函数来使用
+    var benz = new Car("C200", "White", "boom boom");
+
+    //作为普通函数来调用
+    Car("benz", "red", "Boom!!!"); //当普通函数调用时, this指向window对象
+    console.log(window.name + ' ' + window.color+ " " + window.sound());
+
+    //在另外一个对象中调用
+    var cars = {};
+    Car.call(cars, "Benz", "White", "Boooooooooom!");
+    document.write(cars.sound()); //Boom Boom!
+
+    //isPrototypeOf()和Object.getProtytypeOf()(ECMAScript 5)。
+    // 前者是用来确定[[Prototype]]；后者是用来返回[[Prototype]]值。(__proto__)
+
+    //方法hasOwnProperty()检测属性如果在对象实例中时，返回true。
+    //单独使用时，in 返回true 说明该属性存在于实例或原型中。
+
+    //所以下面方法可以判断属性是否在原型中
+    function hasPrototypeProperty(object,name) {
+        return (name in object) && !(object.hasOwnProperty(name));
+    }
+
+    Object.defineProperty(person1, "age", { //可以定义实例属性
+        value: 18
+    });
+
+    //Object.keys()方法可以返回所有可枚举属性的字符串数组
+    //Object.getOwnPropertyName()方法，则可以返回无论可否枚举的所有实例属性
+
+    function Person2(){}
+    Person2.prototype = { //其实我们本质上是重写了prototype对象
+        constructor: Person2, //对象字面量方式,需要重新指定constructor,否则指向错误
+        name: "Oliver",
+        age: 18,
+        sayName: function(){
+            console.log(this.name);
+        }
+    };
+
+    var person3 = new Person2();
+    console.log(Person2.prototype.constructor); //不再指向Person()构造函数
+
+    //以上面这种方式重设constructor 属性会导致[[Enumerable]]特性被设置为true。
+    // 因此在支持ECMAScript 5 的js 引擎中可以用Object.defineProperty()方法把它修改为false
+    Object.defineProperty(Person2.prototype, "constructor", {
+        enumerable: false
+    });
+
+    /*
+    原型对象模式:
+     原型对象的问题 ☆☆☆☆
+     就是包含引用类型值的属性来说，问题比较严重。
+     具体体现在原型中的属性被实例共享
+     */
+    function Person4(){}
+    Person4.prototype = {
+        constructor: Person4,
+        name: "Oliver",
+        age: 18,
+        friends: ["Troy","Alice"]
+    };
+    var person5 = new Person4();
+    var person6 = new Person4();
+    person5.friends.push("Ellen");
+
+    console.log(person5.friends); //["Troy", "Alice", "Ellen"]
+    console.log(person6.friends); //["Troy", "Alice", "Ellen"]
+
+    //虽然可以通过重写和覆盖来解决该问题，但是仍然非常麻烦
+    person5.friends = ["Troy", "Alice"];
+    console.log(person5.friends); //["Troy", "Alice"]
+    console.log(person6.friends); //["Troy", "Alice", "Ellen"]
+
+    //这里就可以看到，重写能解决问题是因为重写导致它创建了实例属性"friends"
+    console.log(person5.hasOwnProperty("friends")); //true;
+    console.log(person6.hasOwnProperty("friends")); //false;
+
+
+    //使用构造函数模式和原型模式 ☆☆☆☆
+    function PersonA(name,age){ //独享的部分
+        this.name = name;
+        this.age = age;
+        this.friends = [];
+    }
+    PersonA.prototype = { //共享的部分
+        constructor: PersonA,
+        sayName: function(){
+            return this.name;
+        }
+    };
+    var person11 = new PersonA("Oliver",18);
+    var person12 = new PersonA("Troy",24);
+    person11.friends.push("Alice","Mark");
+    person12.friends.push("Mac");
+    console.log(person11.friends); //["Alice", "Mark"]
+    console.log(person12.friends); //["Mac"]
+
+    // 动态原型模式 ☆☆☆☆☆
+    function Person111(name,age){
+        this.name = name;
+        this.age = age;
+    }
+    // 注意此处和85行的区别
+    //这里相当于在原型对象上添加方法
+    //85行相当于 重写 了原型对象,所以需要重新给constructor赋值
+    Person111.prototype.sayName = function(){
+        return(this.name);
+    };
+//    console.log(Person111.prototype.constructor);
+
+    //寄生构造函数模式 类似工厂模式
+
+    //稳妥构造函数模式。
+    // 稳妥对象，指的是没有公共属性，且其方法也不引用this 的对象
+    function Per(name, age){
+        var obj = new Object();
+        obj.age = age;
+        obj.sayName = function(){
+            console.log(name);
+        };
+        return obj;
+    }
+    var person15 = Per("Oliver",18);
+    person15.sayName(); //Oliver
+</script>
+
+</body>
+</html>
