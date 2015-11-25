@@ -302,8 +302,10 @@
 
   // Return the maximum element (or element-based computation).
   _.max = function(obj, iteratee, context) {
-    var result = -Infinity, lastComputed = -Infinity,
-        value, computed;
+    var result = -Infinity,
+        lastComputed = -Infinity,
+        value,
+        computed;
     if (iteratee == null && obj != null) {
       obj = isArrayLike(obj) ? obj : _.values(obj);
       for (var i = 0, length = obj.length; i < length; i++) {
@@ -316,7 +318,9 @@
       iteratee = cb(iteratee, context);
       _.each(obj, function(value, index, list) {
         computed = iteratee(value, index, list);
-        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+        if (computed > lastComputed ||
+            computed === -Infinity && result === -Infinity
+        ) {
           result = value;
           lastComputed = computed;
         }
