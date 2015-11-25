@@ -3,14 +3,76 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>javascript函数式编程</title>
+    <script src="../js/jquery.1.8.3.min.js"></script>
     <script src="../js/underscore-1.8.2.js"></script>
 </head>
 <body>
 <script>
     //第四章 高阶函数
 
+    var people = [{
+        name: 'Fred',
+        age: 65
+    }, {
+        name: 'Lucy',
+        age: 36
+    }]
+    //    console.log(_.max(people, function (p) {  // {name: 'Fred',age: 65}
+    //        return p.age;
+    //    }))
+
+    function finder(valueFun, bestFun, coll) {
+        return _.reduce(coll, function (best, current) {
+            var bestValue = valueFun(best);
+            var currentValue = valueFun(current);
+            return (bestValue === bestFun(bestValue, currentValue)) ? best : current;
+        });
+    }
+    var res = finder(_.identity, Math.max, [1, 2, 3, 4.7, 4]);
+    console.log(res)
+
+    function identity(value) {
+        return value;
+    }
+    ;
+
+    function repeat(times, VALUE) {
+        return _.map(_.range(times), function () {
+            return VALUE;
+        });
+    }
+//    console.log(repeat(4, "Major"))
+
+    function repeatedly(times, fun) {
+        return _.map(_.range(times), fun);
+    }
+
+    var num1 = repeatedly(3, function() {
+        return Math.floor((Math.random() * 10) + 1);
+    })
+    console.log(num1)
+
+    function map (obj, iteratee, context) {// [0, 1, 2]
+        iteratee = cb(iteratee, context);
+        var keys = false,
+                length = 3,
+                results = Array(3);
+        for (var index = 0; index < length; index++) {
+            var currentKey = keys ? keys[index] : index;
+            results[index] = iteratee(obj[currentKey], currentKey, obj);
+        }
+        return results;
+    }
+
+    repeatedly(3, function(n) {
+        var id = 'id' + n;
+        $("body").append("<p id='"+ id +"'>Odelay!</p>")
+        return id;
+    })
 
 </script>
+
+
 
 </body>
 </html>
