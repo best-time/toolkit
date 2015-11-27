@@ -41,18 +41,18 @@
             return VALUE;
         });
     }
-//    console.log(repeat(4, "Major"))
+    //    console.log(repeat(4, "Major"))
 
     function repeatedly(times, fun) {
         return _.map(_.range(times), fun);
     }
 
-    var num1 = repeatedly(3, function() {
+    var num1 = repeatedly(3, function () {
         return Math.floor((Math.random() * 10) + 1);
     })
     console.log(num1)
 
-    function map (obj, iteratee, context) {// [0, 1, 2]
+    function map(obj, iteratee, context) {// [0, 1, 2]
         iteratee = cb(iteratee, context);
         var keys = false,
                 length = 3,
@@ -64,11 +64,86 @@
         return results;
     }
 
-    repeatedly(3, function(n) {
+    repeatedly(3, function (n) {
         var id = 'id' + n;
-        $("body").append("<p id='"+ id +"'>Odelay!</p>")
+        $("body").append("<p id='" + id + "'>Odelay!</p>")
         return id;
     })
+
+    function iterateUntil(fun, check, init) {
+        var ret = [];
+        var result = fun(init);
+
+        while (check(result)) {
+            ret.push(result);
+            result = fun(result);
+        }
+        return ret;
+    }
+    var rr = iterateUntil(function (n) {
+        return n + n
+    }, function (n) {
+        return n <= 128
+    }, 1);
+    console.log(rr); //[2, 4, 8, 16, 32, 64, 128]
+
+    function always(VALUE) {
+        return function () {
+            return VALUE;
+        }
+    }
+
+    var f = always(function () {
+        return 1
+    })
+    //    console.log(f() === f()); //true
+    //    console.log(f()()) // 1
+
+
+    function invoker(NAME, METHOD) {
+        return function (target /* args ... */) {
+            if (!existy(target)) fail("Must provide a target");
+
+            var targetMethod = target[NAME];
+            var args = _.rest(arguments);
+
+            return doWhen((existy(targetMethod) && METHOD === targetMethod), function () {
+                return targetMethod.apply(target, args);
+            });
+        };
+    }
+
+    function uniqueString(len) { //返回固定长度字符串, 36位长度最长为 16
+        return Math.random().toString(36).substr(2, len);
+    }
+//    console.log(uniqueString(10))
+
+    function makeUniqueStringFunction(start) {
+        var COUNTER = start;
+        return function(prefix) {
+            return [prefix, COUNTER++].join('');
+        }
+    }
+
+    var uniqueString = makeUniqueStringFunction(0);
+    console.log(uniqueString("dari")) //dari0
+    console.log(uniqueString("dari")) //dari1
+
+    var generator = { //这样实现不够安全. generator.count 可以被赋值
+        count: 0,
+        uniqueString: function(prefix) {
+            return [prefix, this.count++].join('');
+        }
+    };
+
+    var omgenerator = (function(init) {
+        var COUNTER = init;
+        return {
+            uniqueString: function(prefix) {
+                return [prefix, COUNTER++].join("");
+            }
+        };
+    })(0);
 
 </script>
 
