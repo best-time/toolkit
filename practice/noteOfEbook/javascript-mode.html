@@ -77,6 +77,16 @@
      *           }
      *     }
      */
+
+    var Gadget = function(price) {
+        this.price =price;
+    }
+    Gadget.isShiny = function() { //公有静态方法
+        return "you bet";
+    }
+    Gadget.prototype.isShiny = function() { //普通方法
+        return "原型方法"
+    }
 </script>
 </body>
 </html>
