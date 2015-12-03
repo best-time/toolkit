@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>javascript 模式</title>
+</head>
+<body>
+<script>
+    (function(who, when) {
+        console.log("I met " + who + " on" + when);
+    }('Joe Black', new Date()));
+
+    ({
+        maxWidth: "1000px",
+        init: function () {
+            console.log(this.maxWidth);
+            return this;
+        },
+        say: function() {
+            console.log("say方法")
+        }
+    }).init().say(); // 1000px 'say方法'
+
+    function func(a, b, c){}
+    console.log(func.length) // 3 '形参的个数'
+
+    //通用curry化函数示例:
+    function schonfinkelize(fn) {
+        var slice = Array.prototype.slice,
+            stored_args = slice.call(arguments, 1);
+        return function() {
+            var new_args = slice.call(arguments),
+                args = stored_args.concat(new_args);
+            return fn.apply(null, args);
+        }
+    }
+    function add(x, y) {
+        return x + y;
+    }
+    var newadd = schonfinkelize(add, 5);
+    console.log(newadd(4)) // 9
+    //何时使用Curry化:
+    //当发现正在调用同一个函数,并且传递的参数绝大多数都是相同的.
+
+    //通用命名空间函数  ☆☆☆☆☆
+    var MYAPP = MYAPP || {};
+    MYAPP.namespace = function(ns_string) {
+        var parts = ns_string.split("."),
+            parent = MYAPP;
+
+        if(parts[0] === "MYAPP") parts = parts.slice(1);
+
+        for(var i = 0, len = parts.length; i < len; i++) {
+            if( (typeof parent[parts[i]]) === "undefined") {
+                parent[parts[i]] = {};
+            }
+            parent = parent[parts[i]]; //这不需要理解
+        }
+        return parent;
+    };
+
+    var module2 = MYAPP.namespace('MYAPP.ywy');
+//    MYAPP.namespace('da.aa.dd.ss');
+    console.log(MYAPP)
+    MYAPP.ywy.say = function() {
+        alert("ywy 的 say方法")
+    }
+    MYAPP.ywy.say()
+    console.log(module2 === MYAPP.ywy)
+    /**
+     * 1. MYAPP = {}
+     * 2. {
+     *      one: {
+     *              two: {
+         *              three: { }
+     *              }
+     *           }
+     *     }
+     */
+</script>
+</body>
+</html>
