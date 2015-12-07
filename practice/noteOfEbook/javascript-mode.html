@@ -6,7 +6,7 @@
 </head>
 <body>
 <script>
-    (function(who, when) {
+    (function (who, when) {
         console.log("I met " + who + " on" + when);
     }('Joe Black', new Date()));
 
@@ -16,21 +16,22 @@
             console.log(this.maxWidth);
             return this;
         },
-        say: function() {
+        say: function () {
             console.log("say方法")
         }
     }).init().say(); // 1000px 'say方法'
 
-    function func(a, b, c){}
+    function func(a, b, c) {
+    }
     console.log(func.length) // 3 '形参的个数'
 
     //通用curry化函数示例:
     function schonfinkelize(fn) {
         var slice = Array.prototype.slice,
-            stored_args = slice.call(arguments, 1);
-        return function() {
+                stored_args = slice.call(arguments, 1);
+        return function () {
             var new_args = slice.call(arguments),
-                args = stored_args.concat(new_args);
+                    args = stored_args.concat(new_args);
             return fn.apply(null, args);
         }
     }
@@ -44,14 +45,14 @@
 
     //通用命名空间函数  ☆☆☆☆☆
     var MYAPP = MYAPP || {};
-    MYAPP.namespace = function(ns_string) {
+    MYAPP.namespace = function (ns_string) {
         var parts = ns_string.split("."),
-            parent = MYAPP;
+                parent = MYAPP;
 
-        if(parts[0] === "MYAPP") parts = parts.slice(1);
+        if (parts[0] === "MYAPP") parts = parts.slice(1);
 
-        for(var i = 0, len = parts.length; i < len; i++) {
-            if( (typeof parent[parts[i]]) === "undefined") {
+        for (var i = 0, len = parts.length; i < len; i++) {
+            if ((typeof parent[parts[i]]) === "undefined") {
                 parent[parts[i]] = {};
             }
             parent = parent[parts[i]]; //这不需要理解
@@ -60,10 +61,10 @@
     };
 
     var module2 = MYAPP.namespace('MYAPP.ywy');
-//    MYAPP.namespace('da.aa.dd.ss');
+    //    MYAPP.namespace('da.aa.dd.ss');
     console.log(MYAPP)
-    MYAPP.ywy.say = function() {
-        alert("ywy 的 say方法")
+    MYAPP.ywy.say = function () {
+        console.debug("ywy 的 say方法")
     }
     MYAPP.ywy.say()
     console.log(module2 === MYAPP.ywy)
@@ -78,15 +79,364 @@
      *     }
      */
 
-    var Gadget = function(price) {
-        this.price =price;
+    var Gadget = function (price) {
+        this.price = price;
     }
-    Gadget.isShiny = function() { //公有静态方法
+    Gadget.isShiny = function () { //公有静态方法
         return "you bet";
     }
-    Gadget.prototype.isShiny = function() { //普通方法
+    Gadget.prototype.isShiny = function () { //普通方法
         return "原型方法"
     }
+
+    console.log("========================")
+
+    var Gadget = (function () {
+        var counter = 0, //静态属性/变量
+                NewGadget;
+
+        NewGadget = function () {
+            counter++; //在实例中共享
+        };
+        NewGadget.prototype.getLastId = function () {
+            return counter;
+        };
+        return NewGadget;
+    }());
+    var i1 = new Gadget();
+    console.log(i1.getLastId()); //1
+    var i2 = new Gadget();
+    console.log(i2.getLastId()); //2
+    var i3 = new Gadget();
+    console.log(i3.getLastId()); //3
+
+    console.log("========================")
+
+    //设置一个不可变的变量值
+    var constant = (function () {
+        var constants = {},
+                ownProp = Object.prototype.hasOwnProperty,
+                allowed = {
+                    string: 1,
+                    number: 1,
+                    boolean: 1
+                },
+                prefix = (Math.random() + "_").slice(2);
+        return {
+            set: function (name, value) {
+                if (this.isDefined(name)) {
+                    return false;
+                }
+                if (!ownProp.call(allowed, typeof value)) { //定义的变量值只能为 字符串 数值 布尔值
+                    return false;
+                }
+                constants[prefix + name] = value;
+                return true;
+            },
+            isDefined: function (name) {
+                return ownProp.call(constants, prefix + name);
+            },
+            get: function (name) {
+                if (this.isDefined(name)) {
+                    return constants[prefix + name];
+                }
+                return null;
+            },
+            showCon: function () {
+                return constants;
+            }
+        }
+    }());
+    console.log(constant.isDefined("maxWidth"));
+    constant.set("maxWidth", 480);
+    console.log(constant.isDefined("maxWidth"));
+    constant.set("maxWidth", 320); //试图重新定义
+    console.log(constant.get("maxWidth")); //480
+
+    console.log("========================")
+
+    //链式
+    var oo = {
+        value: 1,
+        increment: function (n) {
+            this.value += n || 1;
+            return this;
+        },
+        add: function (v) {
+            this.value += v || 1;
+            return this;
+        },
+        show: function () {
+            return this.value;
+        }
+    };
+
+    var res = oo.increment().add(98).show(); // 100
+    console.log(res);
+
+
+    console.log("===========代码复用-类继承=============")
+
+    //代码复用
+    function inhreit(Child, Parent) {
+        Child.prototype = new Parent();
+    }
+    //类继承模式1 - 默认模式 (一个缺点:同事继承了两个对象的属性,即添加到this的属性以及原型属性)
+    function Parent(name) {
+        this.name = name || "Adam"
+    }
+    Parent.prototype.say = function () {
+        return this.name;
+    }
+    function Child() {
+    }
+    inhreit(Child, Parent);
+    var d1 = new Child();
+    console.log(d1.say()); //"Adam"
+
+    console.log("/")
+
+    //类继承模式2 - 借用构造函数 (无法从原型中继承任何东西)
+    //    function Child2(a, b, c, d) {
+    //        Parent.apply(this, arguments);
+    //    }
+    function Article() {
+        this.tag = ["js", "css"];
+    }
+    Article.prototype.say = function () {
+        return this.tag
+    };
+    var article = new Article();
+    function BlogPost() {
+    }
+    BlogPost.prototype = article;
+    var blog = new BlogPost();
+    function StaticPage() {
+        Article.call(this);
+    }
+    var page = new StaticPage();
+    console.log(article.hasOwnProperty("tag")) //true
+    //默认模式导致了blog对象通过原型以获得对tags属性的访问,因此blog对象没有将tags属性作为自身的属性
+    console.log(blog.hasOwnProperty("tag"))  //false
+    //借用构造函数的时候,新对象会获得父对象中tags成员的副本,(而不是引用)
+    console.log(page.hasOwnProperty("tag"))  //true
+
+    blog.tag.push("html")
+    page.tag.push("java")
+    console.log(article.tag); //["js", "css", "html"]
+    //可以看出,本质上 blog.tag 和article.tag指向了同一个数组
+    //而page.tab不会影响父对象article,是由于在继承过程中page.tag是独立创建的一个副本
+    console.log(blog.say()) //["js", "css", "html"]
+    //    console.log(page.say()) //报错,方法未定义
+
+    console.log("//")
+    //类继承模式3- 借用构造函数+设置原型 (父构造函数被调用了两次)
+    function Parent2(name) {
+        this.name = name || "Bot"
+    }
+    Parent2.prototype.say = function () {
+        return this.name;
+    }
+    function Child2(name) {
+        Parent2.apply(this, arguments)
+    }
+    Child2.prototype = new Parent2();
+    var kk = new Child2("Patrick");
+    console.log(kk.name)
+    console.log(kk.say())
+    delete kk.name;
+    console.log(kk.say())
+
+    console.log("///")
+
+    //类继承模式4- 共享原型 (子孙对象都可能修改了父构造函数)
+    function inhreit4(C, P) {
+        C.prototype = P.prototype;
+    }
+
+    //类继承模式5 - 临时构造函数
+    //父构造函数添加到this的任何成员都不会被继承
+    //这种模式称之为代理构造函数
+    //    function inhreit5(C, P) {
+    //        var F = function () { //充当子父对象之间的代理
+    //        };
+    //        F.prototype = P.prototype;
+    //        C.prototype = new F();
+    //        C.uper = P.prototype; //存储超类, super是关键字
+    //        C.prototype.constructor = C;
+    //    }
+
+    //优化(避免每次继承都创建临时代理构造函数)
+    var inhreit5 = (function () {
+        var F = function () {
+        };
+        return function (C, P) {
+            F.prototype = P.prototype;
+            C.prototype = new F();
+            C.uper = P.prototype; //存储超类, super是关键字
+            C.prototype.constructor = C;
+        }
+    }());
+    function Parent5(name) {
+        this.name = name || "Bot";
+        this.color = "red"
+    }
+    Parent5.prototype.say = function () {
+        return this.name;
+    }
+    function Child5(name) {
+        this.name = name || "default name"
+    }
+    inhreit5(Child5, Parent5);
+    //    console.log(Child5.prototype.constructor)
+    var rr5 = new Child5("yyy")
+    console.log(rr5.say());
+    //    console.log(rr5);
+    //    console.log(rr5.constructor.name)
+
+    //模拟 类 继承
+    var klass = function (Parent, props) {
+        var Child, F, i;
+        Child = function () {
+            if (Child.uber && Child.uber.hasOwnProperty("__construct")) {
+                Child.uber.__construct.apply(this, arguments);
+            }
+            if (Child.prototype.hasOwnProperty("__construct")) {
+                Child.prototype.__construct.apply(this, arguments)
+            }
+        };
+
+        //继承
+        Parent = Parent || Object;
+        F = function () {
+        };
+        F.prototype = Parent.prototype;
+        Child.prototype = new F();
+        Child.uber = Parent.prototype;
+        Child.prototype.constructor = Child;
+
+        //添加实现方法
+        for (i in props) {
+            if (props.hasOwnProperty(i)) {
+                Child.prototype[i] = props[i]
+            }
+        }
+        return Child;
+    };
+
+    var Man = klass(null, {
+        __construct: function (name) {
+            console.log("Man's constructor");
+            this.name = name;
+        },
+        getname: function () {
+            return this.name
+        }
+    });
+    console.log(Man.prototype);
+    var first = new Man("Adam");
+    console.log(first.getname());
+    console.log("-----");
+
+    var SuperMan = klass(Man, {
+        __construct: function (name) {
+            console.log("SuperMan's constructor")
+        },
+        getname: function () {
+            var name = SuperMan.uber.getname.call(this);
+            return "I am " + name;
+        },
+        getcolor: function () {
+            return "red"
+        }
+    });
+    console.log(SuperMan.prototype);
+    var clark = new SuperMan("clark Kent");
+    console.log(clark.getname());
+
+    console.log("////////")
+
+    //原型继承
+    function extendobj(o) { //并不一定要使用对象字面量,也可用构造函数创建父对象
+        function F() {
+        }
+
+        F.prototype = o;
+        return new F();
+    }
+    var parent6 = {
+        name: "Paparazzi"
+    };
+    var child6 = extendobj(parent6);
+    console.log(child6.name); // Paparazzi
+
+    //传入构造函数
+    function Parent7() {
+        this.name = "Adam"
+    }
+    Parent7.prototype.say = function () {
+        return this.name || "没有设置name";
+    }
+    var kid = extendobj(new Parent7());
+    console.log(kid.say());
+    //也可以选择仅继承 构造函数的原型对象
+    var kid2 = extendobj(Parent7.prototype)
+    console.log(kid2.say());
+
+    var kid3 = Object.create(parent6, {
+        age: {value: 25},
+        say: {
+            value: function () {
+                return "hello"
+            }
+        }
+    });
+    console.log(kid3)
+
+
+    //通过复制属性实现继承
+    function extendDeep(parent, child) {
+        var i,
+                toStr = Object.prototype.toString,
+                astr = "[object Array]";
+        var child = child || {};
+        for (i in parent) {
+            if (parent.hasOwnProperty(i)) {
+                if (typeof parent[i] === "object") {
+                    child[i] = (toStr.call(parent[i]) === astr) ? [] : {};
+                    extendDeep(parent[i], child[i]);
+                } else {
+                    child[i] = parent[i];
+                }
+            }
+        }
+        return child;
+    }
+
+    var dad = {
+        counter: [1, 2, 3],
+        reads: {paper: true}
+    }
+    var kkid = extendDeep(dad);
+    kkid.counter.push(4)
+    console.log(kkid.counter)
+    console.log(dad.counter)
+
+    console.log("------------")
+
+    function mix() {
+        var i, prop, child = {}, len = arguments.length;
+        console.log(len)
+        for (i = 0; i < len; i++) {
+            for (prop in arguments[i]) {
+                child[prop] = arguments[i][prop];
+            }
+        }
+        return child;
+    }
+    var cake = mix({egg: 2, large: true}, {flour: "3 cups", yes: {name: "ywy"}}, {suger: "sure"});
+    console.log(cake); //{egg: 2, large: true, flour: "3 cups", suger: "sure"}
+
 </script>
 </body>
 </html>

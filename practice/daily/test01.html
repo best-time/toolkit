@@ -7,11 +7,27 @@
 <body>
 <script>
 
-    var arr = [1,2,141,22,66,53];
-    var i = arr.length;
-    while( --i > -1) {
-        console.log(arr[i])
+    function A1() {
+
     }
+    A1.prototype.say = function () {
+        console.log("A1的say方法");
+    };
+
+    function B1() {
+
+    }
+    B1.prototype = new A1();
+
+    var c = new B1();
+    c.say();
+    console.log(c)
+    console.log(c.__proto__.__proto__)
+
+    console.log("======================")
+
+
+
 
 </script>
 </body>
