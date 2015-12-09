@@ -437,6 +437,128 @@
     var cake = mix({egg: 2, large: true}, {flour: "3 cups", yes: {name: "ywy"}}, {suger: "sure"});
     console.log(cake); //{egg: 2, large: true, flour: "3 cups", suger: "sure"}
 
+    //绑定和借用
+    function binding(obj, func) {
+        return function () {
+            func.apply(obj, [].slice.call(arguments));
+        }
+    }
+
+    if (typeof Function.prototype.bind === "undefined") {
+        Function.prototype.bind = function (thisArg) {
+            var fn = this,
+                    slice = Array.prototype.slice,
+                    args = slice.call(arguments, 1);
+            return function () {
+                return fn.apply(thisArg, args.concat(slice.call(arguments)))
+            }
+        }
+    }
+
+
+    //设计模式
+    //单体模式
+    //1.静态属性中的实例
+    /*    function Universe() {
+     console.log(this.__proto__)
+     if(typeof Universe.instance === "object") {
+     return Universe.instance;
+     }
+     this.start_time = 0;
+     this.bang = "big";
+
+     Universe.instance = this;
+     return this
+     }
+     var uni1 = new Universe();*/
+
+    //2.闭包中的实例
+    function Universe() {
+//        console.log(this.__proto__)
+        //缓存实例
+        var instance;
+
+        //重写构造函数
+        Universe = function () {
+            return instance;
+        };
+        //保留原型属性
+        Universe.prototype = this;
+        //实例
+        instance = new Universe();
+        //重置构造函数指针
+        instance.constructor = Universe;
+
+        return instance
+
+    }
+
+    var uni11 = new Universe();
+    var uni12 = new Universe();
+    console.log(uni11 == uni12); //true
+    Universe.prototype.nothing = true; //向原型添加属性
+    var unia = new Universe()
+    Universe.prototype.everything = true; //向原型添加属性
+    var unib = new Universe()
+    console.log(Universe.prototype)
+
+    console.log(unia.nothing)
+    console.log(unib.nothing)
+    console.log(unia.everything)
+    console.log(unib.everything)
+
+    /*
+     2.
+     var Universe;
+     (function() {
+     var instance;
+     Universe = function Universe() {
+     if(instance) {
+     return instance;
+     }
+     instance = this;
+
+     this.bang = "big
+     }
+     }())
+
+     */
+
+    //2 工厂模式
+    function CarMaker() {
+    }
+    CarMaker.prototype.drive = function () {
+        return "Vroom, i have " + this.doors + " doors"
+    };
+    //静态工厂方法
+    CarMaker.factory = function (type) {
+        var constr = type, newcar;
+        //如果构造函数不存在, 报错
+        if (typeof CarMaker[constr] !== "function") {
+            throw new TypeError(constr + " does't exist");
+        }
+        //使原型继承父类, 但仅继承一次
+        if (typeof CarMaker[constr].prototype.drive !== "function") {
+            CarMaker[constr].prototype = new CarMaker();
+        }
+        newcar = new CarMaker[constr]();
+        console.log(newcar)
+        console.log(newcar.__proto__)
+        console.log(newcar.__proto__.__proto__)
+        return newcar;
+    };
+    CarMaker.Compact = function () {
+        this.doors = 4;
+    };
+    CarMaker.Convertible = function () {
+        this.doors = 2;
+    };
+    CarMaker.Suv = function () {
+        this.doors = 24;
+    };
+    var corolla = CarMaker.factory("Compact");
+    console.log(corolla.drive())
+
 </script>
 </body>
 </html>
