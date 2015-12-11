@@ -559,6 +559,96 @@
     var corolla = CarMaker.factory("Compact");
     console.log(corolla.drive())
 
+    //迭代器模式
+    var agg = (function () {
+        var index = 0,
+                data = [1, 2, 3, 4, 5],
+                length = data.length;
+        return {
+            next: function () {
+                var element;
+                if (!this.hasNext()) {
+                    return null;
+                }
+                element = data[index];
+                index = index + 2;
+                return element;
+            },
+            hasNext: function () {
+                return index < length;
+            },
+            rewind: function() {
+                index = 0;
+            },
+            current: function() {
+                return data[index]
+            }
+        }
+    }());
+    while(agg.hasNext()) {
+        console.log(agg.next()); // 1 3 5
+    }
+    agg.rewind();
+    console.log(agg.current()); //1
+
+    //装饰者模式
+    function Sale(price) {
+        this.price = price || 100;
+    }
+    Sale.prototype.getPrice = function() {
+        return this.price;
+    };
+    //装饰者对象都是以构造函数的属性方式实现
+    Sale.decorators = {};
+    Sale.decorators.fedtax = {
+        getPrice : function() {
+            var price = this.uber.getPrice();
+            price += price * 5 / 100;
+            return price;
+        }
+    };
+    Sale.decorators.quebec = {
+        getPrice : function() {
+            var price = this.uber.getPrice();
+            price += price * 7.5 / 100;
+            return price;
+        }
+    };
+    Sale.decorators.money = {
+        getPrice : function() {
+            return "$" + this.uber.getPrice().toFixed(2);
+        }
+    };
+    Sale.decorators.cdn = {
+        getPrice : function() {
+            return "CDN$" + this.uber.getPrice().toFixed(2);
+        }
+    };
+    Sale.prototype.decorate = function(decorator) {
+        var F = function() {},
+                overrides = this.constructor.decorators[decorator],
+                i,
+                newobj;
+        F.prototype = this;
+        newobj = new F();
+        newobj.uber = F.prototype;
+        for(i in overrides) {
+            if(overrides.hasOwnProperty(i)) {
+                newobj[i] = overrides[i];
+            }
+        }
+        return newobj;
+    };
+    var sale = new Sale(100);
+    sale = sale.decorate("fedtax")
+    console.log(sale)
+//    sale = sale.decorate("money")
+    console.log(sale.getPrice())
+
+
+
+    //外观模式
+
 </script>
 </body>
 </html>
