@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    function Waffle() {
+        if(!(this instanceof Waffle)) {
+            return new Waffle();
+        }
+        this.tastes = 'yummy';
+    }
+    Waffle.prototype.wantAnother = true;
+
+//    var one = new Waffle();
+//    console.log(one.tastes);
+    var two = Waffle();
+    console.log(two.tastes)
+</script>
+
+</body>
+</html>
