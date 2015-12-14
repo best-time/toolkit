@@ -649,6 +649,69 @@
 
     //外观模式
 
+    console.log("-------------------")
+    //策略模式
+    var validator = {
+        types: {},
+        messages: [],
+        config: {},
+        validate: function(data) {
+            var i, msg, type, checker, result_ok;
+            this.messge = [];
+            for(i in data) {
+                if(data.hasOwnProperty(i)) {
+                    type = this.config[i];
+                    checker = this.types[type];
+                    alert(type)
+                    if(!type) {
+                        throw new TypeError("No handler to validate type" + type);
+                    }
+                    result_ok = checker.validate(data[i]);
+                    if(!result_ok) {
+                        msg = "Invalid value for *" + i + "*," + checker.instructions;
+                        this.messages.push(msg);
+                    }
+                }
+            }
+            return this.hasErrors();
+        },
+        hasErrors: function() {
+            return this.messages.length !== 0;
+        }
+    };
+
+    var data = {
+        first_name: "Super",
+        age: "unknown",
+        username: "o_O"
+    };
+    validator.config = {
+        first_name: "isNonEmpty",
+        age: "isNumber",
+        username: "isAlphaNum"
+    };
+    validator.types.isNonEmpty = {
+        validate: function(value) {
+            return value !== "";
+        },
+        instructions: "the value cann't be empty"
+    };
+    validator.types.isNumber = {
+        validate: function(value) {
+            return !isNaN(value);
+        },
+        instructions: "the value can only be a valid number"
+    };
+    validator.types.isAlphaNum = {
+        validate: function(value) {
+            return !/[^a-z0-9]/.test(value);
+        },
+        instructions: "the value can only contain characters and numbers"
+    };
+    validator.validate(data);
+    if(validator.hasErrors()) {
+        console.debug(validator.messages.join("-"))
+    }
 </script>
 </body>
 </html>
