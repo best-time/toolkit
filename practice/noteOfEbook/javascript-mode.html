@@ -649,7 +649,9 @@
 
     //外观模式
 
-    console.log("-------------------")
+    console.log("-------------------");
+
+
     //策略模式
     var validator = {
         types: {},
@@ -662,9 +664,8 @@
                 if(data.hasOwnProperty(i)) {
                     type = this.config[i];
                     checker = this.types[type];
-                    alert(type)
                     if(!type) {
-                        throw new TypeError("No handler to validate type" + type);
+                        throw new TypeError("No handler to validate type: " + type);
                     }
                     result_ok = checker.validate(data[i]);
                     if(!result_ok) {
@@ -708,9 +709,10 @@
         },
         instructions: "the value can only contain characters and numbers"
     };
-    validator.validate(data);
-    if(validator.hasErrors()) {
-        console.debug(validator.messages.join("-"))
+
+
+    if(validator.validate(data)) {
+        console.debug(validator.messages.join("\n"))
     }
 </script>
 </body>

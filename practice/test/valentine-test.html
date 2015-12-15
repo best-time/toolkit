@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="valentine.js"></script>
+</head>
+<body>
+<script>
+    var arr = [1, 2,3];
+    var res2 = v.each(arr, function(value, index) {
+        return value > 2
+    })
+    console.log(res2)
+    var res = v.map(arr, function(value, index) {
+        if(value > 2) {
+            console.log(";;;;;;;;;")
+        }
+    })
+
+
+    /*var inhreit5 = (function () {
+        var F = function () {
+        };
+        return function (C, P) {
+            F.prototype = P.prototype;
+            C.prototype = new F();
+            C.uper = P.prototype; //存储超类, super是关键字
+            C.prototype.constructor = C;
+        }
+    }());
+
+    function Parent5(name) {
+        this.name = name || "Bot";
+        this.color = "red"
+    }
+    Parent5.prototype.say = function () {
+        return this.name;
+    }
+    function Child5(name) {
+        this.name = name || "default name"
+    }
+    inhreit5(Child5, Parent5);
+    var rr5 = new Child5("yyy")
+    console.log(rr5.say());
+        console.log(rr5);
+    //    console.log(rr5.constructor.name)*/
+</script>
+</body>
+</html>
