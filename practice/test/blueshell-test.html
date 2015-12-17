@@ -7,66 +7,71 @@
 </head>
 <body>
 <script>
-/*    var obj = B.create({
-        name: "ywy",
-        age: 26
-    })
-    console.log(obj)
+    /*    var obj = B.create({
+     name: "ywy",
+     age: 26
+     })
+     console.log(obj)
 
-    var obj2 = B.create({
-        name: "aaa",
-        age: 33
-    })
+     var obj2 = B.create({
+     name: "aaa",
+     age: 33
+     })
+     console.log(obj2)
+
+     console.log("==============")
+
+     var kid = B.create(obj2, B.create({
+     age: 42,
+     hair: 'brown'
+     }));
+     console.log(kid.__proto__);
+     console.log("==============")
+
+
+
+     var personActions = B.create({
+     getName: function () { return this.name; },
+     getAge: function () { return this.age; }
+     });
+     console.log(personActions)
+     var person = B.bindProto(personActions, B.create({
+     name: 'john',
+     age: 28
+     }));
+     console.log(person)
+
+     console.log(person.getName());// => 'john'
+
+     console.log(person.getAge()); // 28*/
+
+    /* var T = function(name) {
+     this.name = name || "aa";
+     }
+     T.prototype.say = function() {
+     return "my name is: " + this.name
+     }
+     function Extend(parent, child) {
+     var F = function() {};
+     F.prototype = parent.prototype;
+     child.prototype = new F();
+     child.prototype.constructor = child;
+     }
+     var C = function() {
+     this.name = name || "default name";
+     }
+     Extend(T, C);
+     console.log(new C())
+     console.log(new C().__proto__)
+     console.log(new C().__proto__.__proto__)*/
+
+    //var person = B.bindProto({name: "ywy"}, B.create({age: 25}));
+    //    console.log(person)
+
+    var obj1 = B.create({name: "yinweiyi"})
+//    console.log(obj1);
+    var obj2 = B.create(obj1, {age: 25})
     console.log(obj2)
-
-    console.log("==============")
-
-    var kid = B.create(obj2, B.create({
-        age: 42,
-        hair: 'brown'
-    }));
-    console.log(kid.__proto__);
-    console.log("==============")
-
-
-
-    var personActions = B.create({
-        getName: function () { return this.name; },
-        getAge: function () { return this.age; }
-    });
-    console.log(personActions)
-    var person = B.bindProto(personActions, B.create({
-        name: 'john',
-        age: 28
-    }));
-    console.log(person)
-
-    console.log(person.getName());// => 'john'
-
-    console.log(person.getAge()); // 28*/
-
-   /* var T = function(name) {
-        this.name = name || "aa";
-    }
-    T.prototype.say = function() {
-        return "my name is: " + this.name
-    }
-    function Extend(parent, child) {
-        var F = function() {};
-        F.prototype = parent.prototype;
-        child.prototype = new F();
-        child.prototype.constructor = child;
-    }
-    var C = function() {
-        this.name = name || "default name";
-    }
-    Extend(T, C);
-    console.log(new C())
-    console.log(new C().__proto__)
-    console.log(new C().__proto__.__proto__)*/
-
-var person = B.bindProto({name: "ywy"}, B.create({age: 25}));
-    console.log(person)
 
 </script>
 </body>
