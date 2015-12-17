@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> Objs 2.1.2 "Hello, Name!" example </title>
+    <script type="text/javascript" src="objs-2.1.2.js"></script>
+</head>
+
+<body>
+
+<input type="text" id="nameField" value="Ricky" />
+<button onclick="clickHandler()">Say Hello</button>
+
+<script type="text/javascript">
+    // Class declaration
+//console.debug(Objs("com.ywy.aa", null))
+    /**
+     * Create a constructor for the "HelloWorld" class using the
+     * "myclasspath.myapp" namespace.
+     */
+    Objs( "com.example.helloworld.HelloWorld",
+            {
+
+                /**
+                 * Declare a "message" class property.
+                 *
+                 * @type {String}
+                 */
+                message: null,
+
+                /**
+                 * Declare an "initialize" method that will automatically be called on
+                 * construct.
+                 *
+                 * @param {String} message
+                 *		Add a message parameter that will be passed from the "HelloWorld"
+                 *		constructor to this method on construct.
+                 */
+                initialize: function( message )
+                {
+                    this.message = message;
+                },
+
+                /**
+                 * Declare a public giveMeHello method.
+                 */
+                sayHello: function()
+                {
+                    alert(this.message);
+                }
+
+            });
+
+    // Class inheritance
+
+    /**
+     * This creates a constructor for the "HelloName" class using the
+     * "com.example.helloworld.HelloName" namespace and subclassing
+     * "com.example.helloworld.HelloWorld" class.
+     */
+   var HelloName = Objs( "com.example.helloworld.HelloName", "com.example.helloworld.HelloWorld",
+            {
+                /**
+                 * Add an override to the "initialize" method of the HelloWorld class
+                 * that will automatically be called on construct.
+                 *
+                 * @param {String} name
+                 *		Add a name parameter that will be passed from the "HelloName"
+                 *		constructor to this method on construct.
+                 */
+                initialize: function( name )
+                {
+                    /*
+                     * As we override our superclass initialize method it is necessary
+                     * to call it on construct. This is how its made.
+                     */
+                    HelloName.$super.initialize.call( this, "Hello, " + name + "!" );
+                }
+            });
+
+    var res = Objs("com.ywy.a.b.c", "com.example.helloworld.HelloName", {name:"ywy"})
+    // Class construction and instance use
+
+    //Some click handler to catch clicks on the button.
+    /*    function clickHandler() {
+        var name = document.getElementById("nameField").value;
+
+        //Build an HelloName class instance using JavaScript native "new" keyword.
+        var helloNameInstance = new HelloName(name);
+        helloNameInstance.sayHello();
+    }*/
+
+
+</script>
+
+</body>
+</html>
