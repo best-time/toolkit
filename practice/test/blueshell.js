@@ -72,7 +72,7 @@
             i;
 
         // Start with a timestamp in milliseconds
-        //»ñÈ¡Ê±¼ä´Á
+        //è·å–æ—¶é—´æˆ³
         newStr += (new Date()).getTime();
 
         // Add 1 to the incrementor and add on the new number

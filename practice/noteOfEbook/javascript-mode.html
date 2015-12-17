@@ -49,25 +49,30 @@
         var parts = ns_string.split("."),
                 parent = MYAPP;
 
-        if (parts[0] === "MYAPP") parts = parts.slice(1);
+        if (parts[0] === "MYAPP") {
+            parts = parts.slice(1);
+        }
 
         for (var i = 0, len = parts.length; i < len; i++) {
             if ((typeof parent[parts[i]]) === "undefined") {
+                //如果当前属性不再parent中, 则把当前属性赋个空对象{}
                 parent[parts[i]] = {};
             }
-            parent = parent[parts[i]]; //这不需要理解
+            parent = parent[parts[i]]; //这需要理解
         }
         return parent;
     };
 
+    var module22 = MYAPP.namespace('MYAPP.ywy.a.v.c');
+    console.log(module22);
     var module2 = MYAPP.namespace('MYAPP.ywy');
     //    MYAPP.namespace('da.aa.dd.ss');
-    console.log(MYAPP)
+    console.log(MYAPP);
     MYAPP.ywy.say = function () {
         console.debug("ywy 的 say方法")
-    }
-    MYAPP.ywy.say()
-    console.log(module2 === MYAPP.ywy)
+    };
+    MYAPP.ywy.say();
+    console.log(module2 === MYAPP.ywy);
     /**
      * 1. MYAPP = {}
      * 2. {
@@ -181,7 +186,7 @@
     function inhreit(Child, Parent) {
         Child.prototype = new Parent();
     }
-    //类继承模式1 - 默认模式 (一个缺点:同事继承了两个对象的属性,即添加到this的属性以及原型属性)
+    //类继承模式1 - 默认模式 (一个缺点:同时继承了两个对象的属性,即添加到this的属性以及原型属性)
     function Parent(name) {
         this.name = name || "Adam"
     }
@@ -296,29 +301,29 @@
 
     //模拟 类 继承
     var klass = function (Parent, props) {
-        var Child, F, i;
-        Child = function () {
-            if (Child.uber && Child.uber.hasOwnProperty("__construct")) {
+
+        function Child () {
+            if (Child.uber && Child.uber.hasOwnProperty("__construct")) { //构造函数静态方法
                 Child.uber.__construct.apply(this, arguments);
             }
-            if (Child.prototype.hasOwnProperty("__construct")) {
-                Child.prototype.__construct.apply(this, arguments)
+            if (Child.prototype.hasOwnProperty("__construct")) { //如果原型上又__construct,则执行
+                Child.prototype.__construct.apply(this, arguments); //相当于给实例添加属性
             }
-        };
+        }
 
         //继承
-        Parent = Parent || Object;
-        F = function () {
+        var Parent = Parent || Object;
+        var F = function () {
         };
         F.prototype = Parent.prototype;
-        Child.prototype = new F();
-        Child.uber = Parent.prototype;
-        Child.prototype.constructor = Child;
+        Child.prototype = new F(); // 因为给Child.prototype赋值了, 相当于重写了Child.prototype
+        Child.uber = Parent.prototype; //相当于是构造函数静态方法
+        Child.prototype.constructor = Child; //所以要手动指向Child构造函数
 
-        //添加实现方法
-        for (i in props) {
+        //添加方法
+        for (var i in props) {
             if (props.hasOwnProperty(i)) {
-                Child.prototype[i] = props[i]
+                Child.prototype[i] = props[i]; //child原型上添加 方法
             }
         }
         return Child;
@@ -333,14 +338,18 @@
             return this.name
         }
     });
-    console.log(Man.prototype);
-    var first = new Man("Adam");
-    console.log(first.getname());
-    console.log("-----");
+
+
+//    console.log(Man.prototype);
+//    var first = new Man("Adam");
+//
+//    console.log(first);
+//    console.log(first.getname());
+//    console.log("-----");
 
     var SuperMan = klass(Man, {
         __construct: function (name) {
-            console.log("SuperMan's constructor")
+            console.log("SuperMan's constructor");
         },
         getname: function () {
             var name = SuperMan.uber.getname.call(this);
@@ -350,11 +359,12 @@
             return "red"
         }
     });
-    console.log(SuperMan.prototype);
-    var clark = new SuperMan("clark Kent");
-    console.log(clark.getname());
 
-    console.log("////////")
+    var clark = new SuperMan("clark Kent");
+    console.log(clark);
+    console.log(clark.getname()); // I am clark Kent
+
+    console.log("////////");
 
     //原型继承
     function extendobj(o) { //并不一定要使用对象字面量,也可用构造函数创建父对象
