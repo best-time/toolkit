@@ -489,11 +489,12 @@
     //2.闭包中的实例
     function Universe() {
 //        console.log(this.__proto__)
+//        console.log(this)
         //缓存实例
         var instance;
 
         //重写构造函数
-        Universe = function () {
+        Universe = function () { //重写构造函数
             return instance;
         };
         //保留原型属性
@@ -508,6 +509,8 @@
     }
 
     var uni11 = new Universe();
+    //    console.log(uni11)
+
     var uni12 = new Universe();
     console.log(uni11 == uni12); //true
     Universe.prototype.nothing = true; //向原型添加属性
@@ -515,6 +518,7 @@
     Universe.prototype.everything = true; //向原型添加属性
     var unib = new Universe()
     console.log(Universe.prototype)
+    console.log(Universe.prototype.__proto__)
 
     console.log(unia.nothing)
     console.log(unib.nothing)
@@ -539,6 +543,7 @@
      */
 
     //2 工厂模式
+    // (我的理解: 相当于把构造函数的原型上的方法,用到构造函数的静态方法中, 是通过实例化构造函数赋值给静态方法的原型)
     function CarMaker() {
     }
     CarMaker.prototype.drive = function () {
@@ -546,14 +551,15 @@
     };
     //静态工厂方法
     CarMaker.factory = function (type) {
-        var constr = type, newcar;
+        var constr = type,
+                newcar;
         //如果构造函数不存在, 报错
         if (typeof CarMaker[constr] !== "function") {
             throw new TypeError(constr + " does't exist");
         }
         //使原型继承父类, 但仅继承一次
-        if (typeof CarMaker[constr].prototype.drive !== "function") {
-            CarMaker[constr].prototype = new CarMaker();
+        if (typeof CarMaker[constr].prototype.drive !== "function") { //判断当前静态方法是否有drive方法
+            CarMaker[constr].prototype = new CarMaker(); //如果没有, 实例化赋值到静态方法的原型上
         }
         newcar = new CarMaker[constr]();
         console.log(newcar)
@@ -573,6 +579,7 @@
     var corolla = CarMaker.factory("Compact");
     console.log(corolla.drive())
 
+    //----------------------------------------
     //迭代器模式
     var agg = (function () {
         var index = 0,
@@ -605,6 +612,8 @@
     agg.rewind();
     console.log(agg.current()); //1
 
+
+    //------------------------------------
     //装饰者模式
     function Sale(price) {
         this.price = price || 100;
@@ -650,13 +659,28 @@
         for (i in overrides) {
             if (overrides.hasOwnProperty(i)) {
                 newobj[i] = overrides[i];
+                overrides = this.constructor.decorators[decorator], //获取构造函数的静态方法
+                i,
+                newobj;
+        F.prototype = this; //this指向当前实例化的对象
+        newobj = new F(); // newobj.__proto__ == F.prototype == 实例化的对象, 此时newobj是当前new的实例化对象
+        newobj.uber = F.prototype; //即当前实例化的对象 赋值给 当前实例化对象uber属性,
+                                    // 此时 实例化对象的uber属性和 实例化对象的__proto__属性都指向当前的实例化对象
+        for (i in overrides) {
+            if (overrides.hasOwnProperty(i)) {
+                newobj[i] = overrides[i]; //构造函数的对应静态方法赋值给 newobj对象,作为实例化对象newobj的'私有'方法
+
             }
         }
         return newobj;
     };
     var sale = new Sale(100);
     sale = sale.decorate("fedtax")
+
     console.log(sale)
+
+    console.log(sale);
+
     //    sale = sale.decorate("money")
     console.log(sale.getPrice())
 

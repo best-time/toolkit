@@ -203,7 +203,11 @@ slice()对象array中的某一段做浅复制
 //=========== javascript模式 2015年12月14日15:26:47  第一遍
 
 
+//=========== javascript-mode.html  line-368
+=======
+
 getBoundingClientRect()来获取页面元素的位置, 注意兼容性
 
 =======
 //=========== javascript-mode.html  line-368
+
