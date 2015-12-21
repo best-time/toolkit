@@ -370,7 +370,6 @@
     function extendobj(o) { //并不一定要使用对象字面量,也可用构造函数创建父对象
         function F() {
         }
-
         F.prototype = o;
         return new F();
     }
@@ -378,6 +377,7 @@
         name: "Paparazzi"
     };
     var child6 = extendobj(parent6);
+    console.log(child6);
     console.log(child6.name); // Paparazzi
 
     //传入构造函数
@@ -386,11 +386,13 @@
     }
     Parent7.prototype.say = function () {
         return this.name || "没有设置name";
-    }
+    };
     var kid = extendobj(new Parent7());
+    console.log(kid)
     console.log(kid.say());
     //也可以选择仅继承 构造函数的原型对象
-    var kid2 = extendobj(Parent7.prototype)
+    var kid2 = extendobj(Parent7.prototype);
+    console.log(kid2)
     console.log(kid2.say());
 
     var kid3 = Object.create(parent6, {
@@ -404,7 +406,7 @@
     console.log(kid3)
 
 
-    //通过复制属性实现继承
+    //通过 '深' 复制属性实现继承
     function extendDeep(parent, child) {
         var i,
                 toStr = Object.prototype.toString,
@@ -412,8 +414,8 @@
         var child = child || {};
         for (i in parent) {
             if (parent.hasOwnProperty(i)) {
-                if (typeof parent[i] === "object") {
-                    child[i] = (toStr.call(parent[i]) === astr) ? [] : {};
+                if (typeof parent[i] === "object") { //如果引用类型 子属性 仍然是对象
+                    child[i] = (toStr.call(parent[i]) === astr) ? [] : {}; // 判断是数组还是对象
                     extendDeep(parent[i], child[i]);
                 } else {
                     child[i] = parent[i];
@@ -435,8 +437,10 @@
     console.log("------------")
 
     function mix() {
-        var i, prop, child = {}, len = arguments.length;
-        console.log(len)
+        var i,
+                prop,
+                child = {},
+                len = arguments.length;
         for (i = 0; i < len; i++) {
             for (prop in arguments[i]) {
                 child[prop] = arguments[i][prop];
@@ -646,6 +650,15 @@
     Sale.prototype.decorate = function (decorator) {
         var F = function () {
                 },
+                overrides = this.constructor.decorators[decorator],
+                i,
+                newobj;
+        F.prototype = this;
+        newobj = new F();
+        newobj.uber = F.prototype;
+        for (i in overrides) {
+            if (overrides.hasOwnProperty(i)) {
+                newobj[i] = overrides[i];
                 overrides = this.constructor.decorators[decorator], //获取构造函数的静态方法
                 i,
                 newobj;
@@ -656,13 +669,18 @@
         for (i in overrides) {
             if (overrides.hasOwnProperty(i)) {
                 newobj[i] = overrides[i]; //构造函数的对应静态方法赋值给 newobj对象,作为实例化对象newobj的'私有'方法
+
             }
         }
         return newobj;
     };
     var sale = new Sale(100);
     sale = sale.decorate("fedtax")
+
+    console.log(sale)
+
     console.log(sale);
+
     //    sale = sale.decorate("money")
     console.log(sale.getPrice())
 
