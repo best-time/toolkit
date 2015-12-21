@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="js/sea.js" data-main="js/main"></script>
+    <script>
+/*        seajs.config({
+//            base: "./js",
+            alias: {
+                "jquery": "../js/jquery.1.8.3.min"
+            }
+        })*/
+    </script>
 </head>
 <body>
-
+    <button id="box">点击</button>
+    <script>
+        seajs.use(["../seajs/js/t1"], function(tt) {
+            tt.t1()
+            tt.t2();
+        })
+    </script>
 </body>
 </html>

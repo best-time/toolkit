@@ -71,7 +71,7 @@ new function() {
 	 * 		The constructor method of the class corresponding to the given
 	 * 		classpath.
 	 */
-	Objs = function( classpath, second, third ) {console.log(map)
+	Objs = function( classpath, second, third ) {
 		var 
 			func/*Function*/,
 			path/*String*/,
