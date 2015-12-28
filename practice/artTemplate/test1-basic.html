@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/template.js"></script>
+    <script src="js/jquery.1.8.3.min.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script id="test" type="text/html">
+    {{if isAdmin}}
+
+        <h1>{{title}}</h1>
+        <ul>
+            {{each list as value i}}
+                <li>索引 {{i + 1}} ：{{value}}</li>
+            {{/each}}
+        </ul>
+    {{else if is}} <b>else if 语句</b>
+    {{else}} <i>else 语句</i>
+    {{/if}}
+</script>
+
+<script>
+    var data = {
+        title: '基本例子',
+        isAdmin: false,
+        is: true,
+        list: ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
+    };
+    var html = template('test', data);
+//    document.getElementById ('content').innerHTML = html;
+    $("#content").html(html)
+</script>
+
+
+
+</body>
+</html>

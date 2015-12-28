@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="js/sea.js" data-main="js/main"></script>
+    <script src="js/sea.js"></script>
     <script>
 /*        seajs.config({
 //            base: "./js",
@@ -16,7 +16,7 @@
 <body>
     <button id="box">点击</button>
     <script>
-        seajs.use(["../seajs/js/t1"], function(tt) {
+        seajs.use(["./js/t1"], function(tt) {
             tt.t1()
             tt.t2();
         })

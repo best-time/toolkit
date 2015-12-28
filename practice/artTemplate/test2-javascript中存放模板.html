@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/template.js"></script>
+    <script src="js/jquery.1.8.3.min.js"></script>
+</head>
+<body>
+
+<h1>在javascript中存放模板</h1>
+<div id="content">
+
+</div>
+<script>
+    var source = '<ul>'
+            +    '{{each list as value i}}'
+            +        '<li>索引 {{i + 1}} ：{{value}}</li>'
+            +    '{{/each}}'
+            + '</ul>';
+
+    var render = template.compile(source);
+    var html = render({
+        list: ['摄影', '电影', '民谣', '旅行', '吉他']
+    });
+
+    document.getElementById('content').innerHTML = html;
+</script>
+
+
+
+</body>
+</html>
