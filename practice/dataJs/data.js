@@ -43,19 +43,19 @@
         return isFun(Array.isArray) ? Array.isArray(arr) :
                                         toString.call(arr) === '[object Array]';
     }
-    function extendDeep() {
-        var target = arguments[0] || {};
-        var arrs = slice.call(arguments, 1);
-        var len = arrs.length;
+    function extendDeep() { //深复制对象
+        var target = arguments[0] || {};    //取第一个参数
+        var arrs = slice.call(arguments, 1); //取第2个参数, 并写入数组
+        var len = arrs.length;              //数组长度
         var copyIsArr;
         var clone;
-console.log(arrs)
+
         for (var i = 0; i < len; i++) {
             var arr = arrs[i];
             for (var name in arr) {
-                var src = target[name];
+                var src = target[name];     //获取第一个参数对象是否含有继承对象的属性
                 var copy = arr[name];
-                
+                console.log(copy)
                 //避免无限循环
                 if (target === copy) {
                     continue;
@@ -156,11 +156,11 @@ console.log(arrs)
         if (!(this instanceof Data)) {
             return new Data();
         }
-        this._init();
+        this._init();   //初始化时,掉一次原型上的_init方法
     };
     
     //扩展Data原型
-    extendDeep(Data.prototype, {
+    extendDeep(Data.prototype, {  //扩展Data原型上的方法
         _init: function () {
             this._context = {};
             this._events = {
@@ -171,19 +171,16 @@ console.log(arrs)
             };
         },
         set: function (key, val) {
-            var ctx = this._context;            
-            
-            if (typeof key !== 'string') {
-                return false;
-            }
+            var ctx = this._context;
+            if (typeof key !== 'string') return false;  //第一个参数不是字符串 ,直接返回false
             
             var keys = parseKey(key);
             var len = keys.length;
             var i = 0; 
             var name; 
             var src;
-            //键值为 单个的情况      
-            if (len < 2) {
+
+            if (len < 2) {      //键值为 单个的情况
                 src = {};
                 src[key] = val;
                 extendData(undefined, this._events, ctx, src);
@@ -193,7 +190,6 @@ console.log(arrs)
             //切换到对应上下文
             for (; i < len - 1; i++) {
                 name = keys[i];
-                
                 //若不存在对应上下文自动创建
                 if (!isArr(ctx[name]) && !isObj(ctx[name])) {
                     //删除操作不存在对应值时，提前退出
@@ -203,7 +199,6 @@ console.log(arrs)
                     //若键值为数组则新建数组，否则新建对象
                     ctx[name] = isNaN(Number(name)) ? {} : [];               
                 }
-
                 ctx = ctx[name];
             }
             
@@ -281,9 +276,9 @@ console.log(arrs)
     
     //新建默认数据中心
     var data = new Data();
-    console.log(Data.prototype)
+
     //扩展Data接口
-    extendDeep(Data, {
+    extendDeep(Data, {      //扩展静态属性和方法
         version: '0.2.1',
         has: function (key) {
             return data.has(key);
@@ -301,6 +296,6 @@ console.log(arrs)
             return data.unsub(type, key, id);
         }
     });
-    
+    console.log(Data.has)
     return Data;//return Data
 }));
