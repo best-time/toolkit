@@ -4,24 +4,23 @@
  * Licensed under MIT (https://github.com/yanhaijing/data.js/blob/master/MIT-LICENSE.txt)
  */
 (function (root, factory) {
-    var Data = factory(root);
-    if ( typeof define === 'function' && define.amd) {
-        // AMD
+    var Data = factory(root); //返回Data构造函数
+
+    if ( typeof define === 'function' && define.amd) {// AMD
         define('data', function() {
             return Data;
         });
-    } else if ( typeof exports === 'object') {
-        // Node.js
+    } else if ( typeof exports === 'object') {// Node.js
         module.exports = Data;
     } else {
-        // Browser globals
-        var _Data = root.Data;
+
+
+        var _Data = root.Data;// Browser globals
         
         Data.noConflict = function () {
             if (root.Data === Data) {
                 root.Data = _Data;
             }
-            
             return Data;
         };
         root.Data = Data;
@@ -43,7 +42,7 @@
         return isFun(Array.isArray) ? Array.isArray(arr) :
                                         toString.call(arr) === '[object Array]';
     }
-    function extendDeep() { //深复制对象
+    function extendDeep() { //深复制对象 Data {a:1,b:2}
         var target = arguments[0] || {};    //取第一个参数
         var arrs = slice.call(arguments, 1); //取第2个参数, 并写入数组
         var len = arrs.length;              //数组长度
@@ -55,11 +54,8 @@
             for (var name in arr) {
                 var src = target[name];     //获取第一个参数对象是否含有继承对象的属性
                 var copy = arr[name];
-                console.log(copy)
                 //避免无限循环
-                if (target === copy) {
-                    continue;
-                }
+                if (target === copy) continue;
                 
                 if (copy && (isObj(copy) || (copyIsArr = isArr(copy)))) {
                     if (copyIsArr) {
@@ -71,12 +67,10 @@
                     }
                     target[ name ] = extendDeep(clone, copy);
                 } else if (typeof copy !== 'undefined'){
-                    target[name] = copy;
+                    target[name] = copy;  //把第一个参数之后的方法都复制到第一个参数上
                 }
             }
-
         }
-
         return target;
     }
     
@@ -87,11 +81,9 @@
             var copy = src[name];
             var copyIsArr;
             //避免无限循环
-            if (context === copy) {
-                continue;
-            }
+            if (context === copy) continue;
             
-            nkey = (typeof key === 'undefined' ? '' : (key + '.')) + name;
+            nkey = (typeof key === 'undefined' ? '' : (key + '.')) + name; // a
             
             pub(events, 'set', nkey, copy);
             
@@ -116,7 +108,6 @@
                 context[name] = copy;
             }
         }
-        
         return context;
     }
     
@@ -135,7 +126,8 @@
         
         return src;
     }
-    function pub(events, event, key, data) {
+    function pub(events, event, key, data) { //(events, 'set', "a", 3)
+        //debugger;
         events = events[event][key];
         
         if (isObj(events)) {
@@ -156,19 +148,26 @@
         if (!(this instanceof Data)) {
             return new Data();
         }
-        this._init();   //初始化时,掉一次原型上的_init方法
+        //this._init();   //初始化时,掉一次原型上的_init方法
+        this._context = {};
+        this._events = {
+            'set': {},
+            'delete': {},
+            'add': {},
+            'update': {}
+        };
     };
     
     //扩展Data原型
     extendDeep(Data.prototype, {  //扩展Data原型上的方法
         _init: function () {
-            this._context = {};
-            this._events = {
-                'set': {},
-                'delete': {},
-                'add': {},
-                'update': {}
-            };
+            //this._context = {};
+            //this._events = {
+            //    'set': {},
+            //    'delete': {},
+            //    'add': {},
+            //    'update': {}
+            //};
         },
         set: function (key, val) {
             var ctx = this._context;
@@ -206,17 +205,15 @@
 
             src = isArr(ctx) ? [] : {};
 
-            src[name] = val;                                   
-            
+            src[name] = val;
+
             ctx = extendData(keys.join('.'), this._events, ctx, src);
             
             return true;
         },
         get: function (key) {
             //key不为字符串返回undefined
-            if (typeof key !== 'string') {
-                return undefined;
-            }
+            if (typeof key !== 'string') return undefined;
             
             var keys = parseKey(key);
             var len = keys.length;
@@ -273,12 +270,13 @@
             return true;
         }
     });
-    
+
+
     //新建默认数据中心
     var data = new Data();
 
     //扩展Data接口
-    extendDeep(Data, {      //扩展静态属性和方法
+    extendDeep(Data, {      //扩展构造函数Data    静态属性和方法
         version: '0.2.1',
         has: function (key) {
             return data.has(key);
@@ -296,6 +294,6 @@
             return data.unsub(type, key, id);
         }
     });
-    console.log(Data.has)
-    return Data;//return Data
+
+    return Data;
 }));

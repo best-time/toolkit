@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    function Gouzao() {
+        this.obj = {};
+        this.hs = {
+            add: {},
+            minus: {}
+        }
+    }
+    Gouzao.prototype.say = function() {
+        var b = this.obj;
+        b = {name: "ywy"};
+        console.log(this.obj)
+    }
+    var aa = new Gouzao();
+//    aa.say();
+
+    //⭐️⭐️️⭐️️⭐️️⭐️ 注意一下两种方式的区别
+    function cc(b) {
+//        b = {name: "ywy"} //如果重新赋值, 就切断了b的原来引用, 这样b 和 c 就还是{age 25}. 一定要注意区别
+        b.age = 30
+        return b;
+    }
+    function ac() {
+        var c= {age: 25};
+//        var c= 22
+        var b = c;   //引用类型 b c 同时指向 {age: 25}这个对象
+        cc(b);
+//        console.log(c2)
+        console.log(b) // {age: 30}
+        console.log(c) // {age: 30}
+    }
+    ac();
+
+    function cc2(b) {
+        b = 30
+        return b;
+    }
+    function ac2() {
+//        var c= {age: 25}
+        var c= 25
+        var b = c;
+        cc2(b);
+        console.log(b) // 25
+        console.log(c) // 25
+    }
+    ac2();
+
+    var o1 = {name: "ywy"};
+    var o2 = o1;
+    o2.name = "yyy";
+    console.log(o2)
+    console.log(o1)
+</script>
+</body>
+</html>
