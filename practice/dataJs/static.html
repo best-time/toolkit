@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    (function () {
+        function T() {
+            this._context = {};
+            this._event = {};
+        }
+
+        T.prototype.set = function (key, value) {
+            this._context[key] = value;
+        };
+        T.prototype.get = function (key) {
+           return this._context[key]
+        };
+        var rr = new T();
+        T.set = function(key, value) {
+            rr.set(key, value)
+        };
+        T.get = function(key) {
+            rr.get(key)
+        };
+        console.log(new T())
+        window.T = T;
+    }());
+    T.set("name", "yinweiyi");
+    console.log(new T())
+    console.log(T.get("name"))
+</script>
+</body>
+</html>

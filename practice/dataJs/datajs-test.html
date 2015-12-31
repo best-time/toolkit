@@ -8,10 +8,16 @@
 <body>
 
 <script>
-    Data.set('a', 1);//存入数据
-    //console.log(Data.get("a"))
-    //console.log(window.Data.prototype)
-//    console.log(new window.Data()._context)
+//    var ddata = Data.noConflict();
+
+
+    Data.set('a', 2222);//存入数据
+//console.log(new Data())
+//    console.log(Data.get("a"));
+Data.set("b.c-=``d|.f|\\.a", "ui")
+//console.log(Data.get("b.c-=``d|.f|\\.a"));
+Data.set("c.set.add", 123321)
+    console.log(Data.get("c.set.add"))
 </script>
 </body>
 </html>
