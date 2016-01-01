@@ -6,31 +6,50 @@
 </head>
 <body>
 <script>
-    (function () {
+    new function() {
         function T() {
-            this._context = {};
-            this._event = {};
+            this._context = {
+                age: 25
+            };
+            this._event = {
+                "set": {},
+                "get": {}
+
+            };
         }
 
+        function pub(key, value, o) {
+            o[key] = value;
+        }
         T.prototype.set = function (key, value) {
-            this._context[key] = value;
+            var ctx = this._context;
+//            ctx[key] = value;
+            pub(key, value, ctx)
+//            this._context[key] = value;
+//            console.log(new T())
         };
         T.prototype.get = function (key) {
-           return this._context[key]
+
+            console.log(this._context[key])
+            return this._context[key]
         };
         var rr = new T();
-        T.set = function(key, value) {
+        console.log(rr)
+        T.set = function (key, value) {
             rr.set(key, value)
+//            console.log(new T())
         };
-        T.get = function(key) {
-            rr.get(key)
+        T.get = function (key) {
+           return rr.get(key)
         };
-        console.log(new T())
+//        console.log(new T())
         window.T = T;
-    }());
+    };
+
     T.set("name", "yinweiyi");
-    console.log(new T())
+//    console.log(new T())
     console.log(T.get("name"))
+//    console.log(T.get("name"))
 </script>
 </body>
 </html>
