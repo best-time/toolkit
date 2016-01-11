@@ -149,7 +149,7 @@
      -------------------------------------------------*/
 
     //返回当前时间的时间戳(毫秒)
-    _sole.now = Date.now || function() {
+    _sole.now = Date.now() || function() {
         return new Date().getTime();
     };
 
