@@ -16,7 +16,10 @@
      *
      * 从计算效率上来说，
      * Date.prototype.getTime()≈Date.prototype.valueOf()>+Date≈Number(Date)>>Date.parse()
-     * 
+     *
+     *
+
+
      */
 
     // "use strict";

@@ -211,3 +211,49 @@ getBoundingClientRect()来获取页面元素的位置, 注意兼容性
 
 //=========== javascript-mode.html  line-368
 
+
+ 不需要第三个变量的转换2个变量值:
+  var a = 10;
+    var b = 99;
+
+    a^=b, b^=a, a^=b;
+    a //99
+    b // 10
+
+    左移0位可用于取整
+     13.5 << 0  // 13
+     -13.5 << 0 // -13
+
+ 右移运算可以模拟2的整除运算：
+     5 >> 1     // 相当于 5 / 2 = 2
+
+     21 >> 2     // 相当于 21 / 4 = 5
+
+     21 >> 3    // 相当于 21 / 8 = 2
+
+     21 >> 4    // 相当于 21 / 16 = 1
+
+1////
+function add(num){
+  num += ~~add;
+  add.num = num;
+  return add;
+}
+add.valueOf = add.toString = function(){return add.num};
+var ans = add(3)(4)(5)(6);  // 18
+alert(ans);
+
+2////
+function add(a) {
+  var temp = function(b) {
+    return add(a + b);
+  }
+  temp.valueOf = temp.toString = function() {
+    return a;
+  };
+  return temp;
+}
+var ans = add(2)(3)(4);
+
+
+
