@@ -469,8 +469,11 @@
     is.year.api = ['not'];
 
     // is the given year a leap year?
-    is.leapYear = function(year) {
-        return is.number(year) && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0);
+    is.leapYear = function(year) { //闰年指能被4整除并且不能被100整除, 或者能被400整除
+        return is.number(year) &&
+            (
+                (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+            );
     };
 
     // is a given date weekend?
@@ -784,7 +787,7 @@
     is.inArray.api = ['not'];
 
     // is a given array sorted?
-    is.sorted = function(arr) {
+    is.sorted = function(arr) { // [1,2,3] [3,2,1]
         if(is.not.array(arr)) {
             return false;
         }
@@ -797,7 +800,7 @@
     // API
     // Set 'not', 'all' and 'any' interfaces to methods based on their api property
     /* -------------------------------------------------------------------------- */
-    //把is对象上的方法, 复制到is.not is.all is.any 对象上
+    //把is对象上的方法, 复制到is.not    is.all     is.any 对象上
     function setInterfaces() {
         var options = is;
         for(var option in options) {
@@ -843,6 +846,6 @@
         root.is = previousIs;
         return this;
     };
-
+    //console.log(Object.keys(is))
     return is;
 }));
