@@ -256,4 +256,12 @@ function add(a) {
 var ans = add(2)(3)(4);
 
 
-
+lazyLoad my-class extnd TinyDom delayed namespacer.js datediff  cookie.js
+https://github.com/jasonmoo/t.js
+https://github.com/james2doyle/saltjs/tree/master/js
+https://github.com/malko/l.js
+https://github.com/jgallen23/cookie-monster
+https://github.com/leonidas/transparency
+https://github.com/Cedriking/is.js
+https://github.com/pvorb/node-clone
+http://dkraczkowski.github.io/js.class/

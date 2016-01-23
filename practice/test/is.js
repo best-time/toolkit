@@ -54,12 +54,12 @@
         return function() {
             var parameters = arraySlice.call(arguments);
             var length = parameters.length;
-            if(length === 1 && is.array(parameters[0])) {    // Ö»´«ÈëÒ»¸öÊý×é²ÎÊý support array
+            if(length === 1 && is.array(parameters[0])) {    // Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ support array
                 parameters = parameters[0];
                 length = parameters.length;
             }
             for (var i = 0; i < length; i++) {
-                if (!func.call(null, parameters[i])) { //ÓÐÒ»¸öÊÇfalse, Ôò·µ»Øfalse
+                if (!func.call(null, parameters[i])) { //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½false, ï¿½ò·µ»ï¿½false
                     return false;
                 }
             }
@@ -78,7 +78,7 @@
                 length = parameters.length;
             }
             for (var i = 0; i < length; i++) {
-                if (func.call(null, parameters[i])) { //ÓÐÒ»¸öÊÇtrue,Ôò·µ»Øtrue
+                if (func.call(null, parameters[i])) { //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½true,ï¿½ò·µ»ï¿½true
                     return true;
                 }
             }
@@ -395,7 +395,7 @@
     is.endWith.api = ['not'];
 
     // is a given string or sentence capitalized?
-    is.capitalized = function(str) {    // ¾ä×ÓÖÐ Ã¿¸ö¶Î»°  Ê×µ¥´ÊÊÇ·ñÊÇ´óÐ´
+    is.capitalized = function(str) {    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¿ï¿½ï¿½ï¿½Î»ï¿½  ï¿½×µï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ç´ï¿½Ð´
         if(is.not.string(str)) return false;
 
         var words = str.split(' ');
@@ -407,7 +407,7 @@
     };
 
     // is a given string palindrome?
-    is.palindrome = function(str) {     //×Ö·û·´×ªºó ºÍ Ô­×Ö·ûÒ»Ñù
+    is.palindrome = function(str) {     //ï¿½Ö·ï¿½×ªï¿½ï¿½ ï¿½ï¿½ Ô­ï¿½Ö·ï¿½Ò»ï¿½ï¿½
         return is.string(str) && str == str.split('').reverse().join('');
     };
 
@@ -469,7 +469,7 @@
     is.year.api = ['not'];
 
     // is the given year a leap year?
-    is.leapYear = function(year) { //ÈòÄêÖ¸ÄÜ±»4Õû³ý²¢ÇÒ²»ÄÜ±»100Õû³ý, »òÕßÄÜ±»400Õû³ý
+    is.leapYear = function(year) { //ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½Ü±ï¿½4ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Ü±ï¿½100ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Ü±ï¿½400ï¿½ï¿½ï¿½
         return is.number(year) &&
             (
                 (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
@@ -800,7 +800,7 @@
     // API
     // Set 'not', 'all' and 'any' interfaces to methods based on their api property
     /* -------------------------------------------------------------------------- */
-    //°Ñis¶ÔÏóÉÏµÄ·½·¨, ¸´ÖÆµ½is.not    is.all     is.any ¶ÔÏóÉÏ
+    //ï¿½ï¿½isï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ·ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Æµï¿½is.not    is.all     is.any ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     function setInterfaces() {
         var options = is;
         for(var option in options) {
@@ -842,7 +842,7 @@
     // var preferredName = is.setNamespace();
     // preferredName.odd(3);
     // => true
-    is.setNamespace = function() {      // ½â¾ö±äÁ¿³åÍ»
+    is.setNamespace = function() {      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»
         root.is = previousIs;
         return this;
     };
