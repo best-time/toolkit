@@ -123,7 +123,7 @@
         var doc = document,
             bodyWidth = this.bodyWidth = doc.documentElement.clientWidth || doc.body.clientWidth,
             bodyHeight = this.bodyHeight = doc.documentElement.clientHeight || doc.body.clientHeight,
-            Div = doc.createElement("div");
+            Div = doc.createElement("div");console.debug(bodyHeight)
         Div.id = "shadeDiv";
         Div.style.height = bodyHeight + "px";
         Div.style.width = bodyWidth + "px";
@@ -143,14 +143,14 @@
             height = this.defaults.height;
         }
         var Iframe = document.createElement('iframe');
-        Iframe.style.position = 'absolute';
-        Iframe.style.zIndex = '-1';
-        Iframe.style.left = '-1px';
-        Iframe.style.top = 0;
-        Iframe.style.border = 0;
-        Iframe.style.filter = 'alpha(opacity=0)';
-        Iframe.style.width = width + 'px';
-        Iframe.style.height = height + 'px';
+            Iframe.style.position = 'absolute';
+            Iframe.style.zIndex = '-1';
+            Iframe.style.left = '-1px';
+            Iframe.style.top = 0;
+            Iframe.style.border = 0;
+            Iframe.style.filter = 'alpha(opacity=0)';
+            Iframe.style.width = width + 'px';
+            Iframe.style.height = height + 'px';
         return Iframe;
     },
     drag: function() { //添加拖拽事件
