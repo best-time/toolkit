@@ -265,3 +265,36 @@ https://github.com/leonidas/transparency
 https://github.com/Cedriking/is.js
 https://github.com/pvorb/node-clone
 http://dkraczkowski.github.io/js.class/
+
+/*------------------------------
+
+var a = 10;
+if (a & 1) {  // use this
+  // ...
+}
+
+if (a % 2) { // not use this
+  // ...
+}
+
+// use << 1 instead of *2
+var a = 10;
+var b = a << 1; // use this
+var b = a * 2;  // not use this
+
+var a = 10;
+var b = a >> 1; // use this
+var b = a / 2;  // not use this
+
+-----------------------------------------*/
+
+//函数和对象互为对方实例
+console.log(Function instanceof Object);  // true
+console.log(Object instanceof Function);  // true
+
+var f = new Function();
+var o = new Object();
+console.log(f instanceof Function);  //true
+console.log(o instanceof Function);  // false
+console.log(f instanceof Object);    // true
+console.log(o instanceof Object);   // true
