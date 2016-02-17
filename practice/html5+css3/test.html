@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        article, aside, dialog, figure, footer, header, legend, nav, section {
+            display: block;
+        }
+    </style>
+    <script>
+        var html5Element = ["article", "aside", "dialog", "figure", "footer", "header", "legend", "nav", "section"];
+        var i = -1;
+        while (++i < html5Element.length) {
+            document.createElement(html5Element[i]);
+        }
+    </script>
+</head>
+<body>
+<header>头部</header>
+<nav>导航</nav>
+<section>主体
+
+    <article>表示独立内容</article>
+    <aside>表示article 之外的内容</aside>
+    <figure><!-- 独立的流内容 -->
+        <figcaption>PRC</figcaption>
+        <p>the people's repulic of china was born in 1949</p>
+    </figure>
+    <p>
+        <mark>asdf</mark>
+        <progress>sadf</progress>
+        <time datetime="2016">2016</time>
+        <meter>11:20:00</meter>
+        <ruby>
+            <rt>瀚</rt>
+            <rp>瀚</rp>
+            <!-- 不支持ruby的浏览器就显示 -->
+        </ruby>
+    <p>the people's republic of china
+        <wbr>
+        was born in 1949 ....
+    </p>
+    <details>
+        <summary>HTML 5</summary>
+        this document teaches you everything you have to learn about html 5
+    </details>
+    <datagrid>asdf</datagrid>
+    </p>
+    <ul contenteditable="true">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <hr/>
+    <ol start="5" reversed>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+    </ol>
+    <p hidden="true"> 使用 hidden</p>
+</section>
+<footer>页脚</footer>
+<script>
+    //    document.designMode = "on"; //页面都可以编辑
+</script>
+<!--
+vedio
+audio
+embed
+progress  进度条
+wbr 软换行
+
+
+<article>	定义外部的内容。比如来自一个外部的新闻提供者的一篇新的文章，或者来自 blog 的文本，或者是来自论坛的文本。亦或是来自其他外部源内容。
+<aside>	定义页面内容之外的内容，但应该与页面内容相关
+<audio>	定义声音，比如音乐或其他音频流
+<canvas>	定义图形，比如图表和其他图像。
+<command>	定义命令按钮，比如单选按钮、复选框或按钮。
+<datatemplate>	定义数据模板的一个容器。该元素必须有定义模板的子元素：<rule> 元素
+<datagrid>	定义可选数据的列表。datagrid 作为树列表来显示
+<datalist>	定义可选数据的列表。与 input 元素配合使用，就可以制作出输入值的下拉列表
+<dialog>	定义对话，比如交谈
+<embed>	定义嵌入的内容，比如插件
+<event-source>	定义由服务器发送的事件的来源
+<figure>	定义媒介内容的分组，以及它们的标题
+<footer>	定义 section 或 document 的页脚
+<header>	定义 section 或 document 的页眉
+<hgroup>	将标题分组
+<keygen>	定义生成密钥
+<m>	定义带有记号的文本
+<mark>	主要的功能就是在页面中高亮显示那些需要在视觉上向用户突出其重要性的文字。个比较典型的应用就是在搜索结果中向用户高亮显示搜索关键词
+<meter>	定义度量（单位）。仅用于已知最大和最小值的度量
+<nav>	定义导航链接
+<nest>	在数据模板中为子元素定义嵌套点。与 <datatemplate> 和 <rule> 元素一同使用
+<output>	定义不同类型的输出，比如脚本的输出
+<progress>	运行中的进程。可以用来来显示 JavaScript 中耗费时间的函数的进程或下载的进度
+<rule>	定义更新数据模板的规则。与 <datatemplate> 和 <nest> 元素一起使用
+<rp>	在 ruby 注释中使用，以定义不支持 ruby 元素的浏览器所显示的内容
+<rt>	定义汉字的拼音或日语汉字的平假名
+<ruby>	定义亚洲语言中的“附注文字”
+<section>	定义文档中的节（section）。比如章节、页眉、页脚或文档中的其他部分
+<source>	为媒介元素（比如 <video> 和 <audio>）定义媒介资源
+<summary>	定义一个摘要，即 detail 的头部。不等同于表格中的 summary 属性
+<time>	定义日期或时间，或者两者
+<video>	定义视频，比如电影片段或其他视频流
+
+废除的标签
+
+<acronym>	可以使用 <abbr> 代替
+<applet>	不再支持
+<basefont>	用 CSS 代替
+<big>	    用 CSS 代替
+<center>	用 CSS 代替
+<dir>	    用 CSS 代替
+<font>	    用 CSS 代替
+<frame>	    不再支持
+<frameset>	不再支持
+<noframes>	不再支持
+<s>	        用 CSS 代替
+<small>	    用 CSS 代替
+<strike>	用 CSS 代替
+<tt>	    用 CSS 代替
+<u>	        用 CSS 代替
+
+
+-->
+<section class="form">
+    选择文件: <input type="file" id="file" multiple accept="image/*"/>
+    <input type="button" value="文件上传" onclick="showFileName()"/>
+</section>
+<script>
+    function showFileName() {
+        var fileDom = document.getElementById("file");
+        console.log(fileDom.files)
+        var fileName = [];
+        var fileSize = [];
+        var fileType = []
+        for(var i = 0; i < fileDom.files.length; i++) {
+            fileName.push(fileDom.files[i].name);
+            fileSize.push(fileDom.files[i].size)
+            fileType.push(fileDom.files[i].type)
+        }
+        console.log("文件名:" + fileName); //输出上传文件的文件名
+        console.log("文件大小:" + fileSize); //读取文件字节数
+        console.log("文件类别:" + fileType);
+    }
+</script>
+<br/>
+<hr/>
+<style>
+    :empty {
+        background: yellow;
+    }
+    :target {
+        background-color: maroon;
+    }
+    p img {
+        position: relative;
+    }
+    img:after {
+        content: attr(alt);
+        display: block;
+        position: absolute;
+    }
+    .counter h1:before {
+        content: "第"counter(mycounter)"行 ";
+    }
+    h1 {
+        counter-increment: mycounter;
+    }
+    .quote h1:before {
+        content: open-quote;
+    }
+    .quote h1:after {
+        content: close-quote;
+    }
+    .quote h1 {
+        /*quotes: "("")";*/
+        quotes: "\"""\"";
+    }
+    .shadow p {
+        text-shadow: 5px 5px 5px #333;
+    }
+</style>
+<table>
+    <tr><td>1</td><td>1</td></tr>
+    <tr><td>2</td><td>1</td></tr>
+    <tr><td>3</td><td></td></tr>
+</table>
+<a href="#text1">text1</a> | <a href="#text2">text2</a> | <a href="#text3">text3</a> | <a href="#text4">text4</a>
+<div id="text1">
+    <h2>111111111</h2>
+    <p>asdfassssss</p>
+</div>
+<div id="text2">
+    <h2>111111111</h2>
+    <p>asdfassssss</p>
+</div>
+<div id="text3">
+    <h2>111111111</h2>
+    <p>asdfassssss</p>
+</div>
+<div id="text4">
+    <h2>111111111</h2>
+    <p>asdfassssss</p>
+</div>
+<br/>
+<p><img src="./images/image.png" width="20" height="20" alt="图片图片图片"/></p>
+
+<div class="counter">
+    <h1>大标题</h1>
+    <p>示例文字</p>
+    <h1>大标题</h1>
+    <p>示例文字</p>
+    <h1>大标题</h1>
+    <p>示例文字</p>
+</div>
+<div class="quote">
+    <h1>标题</h1>
+</div>
+<div class="shadow">
+    <p>text-shadow</p>
+</div>
+<div style="display: inline-block;">123321</div>
+<span style="display: inline-block;">123321</span>
+<br/>
+<br/>
+<br/>
+<style>
+    table {
+        border: 3px solid #00aaff;
+        display: inline-table;
+        vertical-align: bottom;
+    }
+    table th {
+        border: 2px solid #ccff00;
+        padding: 5px
+    }
+</style>
+你好
+<table>
+    <tr>
+        <th>A</th>
+        <th>B</th>
+        <th>C</th>
+        <th>D</th>
+        <th>E</th>
+    </tr>
+    <tr>
+        <th>F</th>
+        <th>G</th>
+        <th>H</th>
+        <th>I</th>
+        <th>J</th>
+    </tr>
+    <tr>
+        <th>K</th>
+        <th>L</th>
+        <th>M</th>
+        <th>N</th>
+        <th>O</th>
+    </tr>
+</table>
+你好
+<br/>
+<p style="width:200px; border: 2px solid #c00058; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;">123321</p>
+
+<br/>
+<style>
+    .rotate {
+        width: 200px;
+        height: 20px;
+        margin: 0 auto;
+        background-color: #c00058;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>
+<div class="rotate"></div>
+<br/>
+<br/>
+<style>
+    .scale {
+        width: 200px;
+        height: 100px;
+        background-color: #0081c2;
+        -webkit-transform: scale(0.5);
+        -moz-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+        -o-transform: scale(0.5);
+        transform: scale(0.5);
+    }
+</style>
+<div class="scale"></div>
+<br/>
+<style>
+    .skew {
+        width: 200px;
+        height: 100px;
+        margin: 0 auto;
+        background-color: #0081c2;
+        -webkit-transform: skew(30deg, 30deg);
+        -moz-transform: skew(30deg, 30deg);
+        -ms-transform: skew(30deg, 30deg);
+        -o-transform: skew(30deg, 30deg);
+        transform: skew(30deg, 30deg);
+    }
+</style>
+<div class="skew"></div>
+<br/>
+<style>
+    .translate {
+        width: 200px;
+        height: 100px;
+        background-color: #0081c2;
+        -webkit-transform: translate(100px, 50px);
+        -moz-transform: translate(100px, 50px);
+        -ms-transform: translate(100px, 50px);
+        -o-transform: translate(100px, 50px);
+        transform: translate(100px, 50px);
+    }
+</style>
+<div class="translate"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</body>
+</html>

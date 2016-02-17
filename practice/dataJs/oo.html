@@ -137,7 +137,7 @@
                             .split("\t").join("');")
                             .split("%>").join("p.push('")
                     + "');} return p.join('');");
-        console.debug(str.replace(/[\r\t\n]/g, " ") //回车符 制表符 换行符
+        console.log(str.replace(/[\r\t\n]/g, " ") //回车符 制表符 换行符
                     .split("<%").join("\t")
                     .replace(/\t=(.*?)%>/g, "',$1,'")
                     .split("\t").join("');")
@@ -157,6 +157,8 @@ function ww(obj) {
     return p.join('');
 }
     console.info(ww({name: "ywy"}))
+    window.localStorage.setItem("day", JSON.stringify([1,2,3]))
+    console.log(JSON.parse(window.localStorage.getItem("day")))
 </script>
 </body>
 </html>
