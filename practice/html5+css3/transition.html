@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .transition {
+            width: 200px;
+            height: 50px;
+            background-color: #e0eaf0;
+            -webkit-transition: background-color 1s linear, width 1s ease-in;
+            -moz-transition: background-color 1s linear, width 1s ease-in;
+            -ms-transition: background-color 1s linear, width 1s ease-in;
+            -o-transition: background-color 1s linear, width 1s ease-in;
+            transition: background-color 1s linear, width 1s ease-in;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        .transition:hover {
+            background-color: #c00058;
+            width: 400px;
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            -o-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="transition"></div>
+<br/>
+<hr/>
+<br/>
+<style>
+    .keyframe {
+        width: 200px;
+        height: 50px;
+        background-color: red;
+    }
+    @keyframes mycolor {
+        0% {
+            background-color: red;
+        }
+        40% {
+            background-color: darkblue;
+        }
+        70% {
+            background-color: yellow;
+        }
+        100% {
+            background-color: red;
+        }
+    }
+    .keyframe:hover {
+        animation-name: mycolor;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+</style>
+<div class="keyframe"></div>
+<br/>
+<hr/>
+<br/>
+<style>
+    .translate {
+        width: 200px;
+        height: 50px;
+        background-color: red;
+        -webkit-transition: all 1s;
+        -moz-transition: all 1s;
+        -ms-transition: all 1s;
+        -o-transition: all 1s;
+        transition: all 1s;
+    }
+    .translate:hover {
+        -webkit-transform: translateX(100px);
+        -moz-transform: translateX(100px);
+        -ms-transform: translateX(100px);
+        -o-transform: translateX(100px);
+        transform: translateX(100px);
+    }
+</style>
+<div class="translate"></div>
+
+</body>
+</html>
