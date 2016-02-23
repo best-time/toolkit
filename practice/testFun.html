@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function commafy(num) {
+            num = num + '';
+            var reg = /(-?\d+)(\d{3})/;
+
+            if(reg.test(num)){
+                num = num.replace(reg, '$1,$2');
+            }
+
+            return num;
+        }
+
+       console.log(commafy(1234123234234));
+    </script>
+</head>
+<body>
+
+</body>
+</html>

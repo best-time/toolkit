@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<h2>使用props传递数据</h2>
+<div id="example">
+    <child msg="hello Vue.js!"></child>
+</div>
+<script>
+    new Vue({
+        el: "#example",
+        components: {
+            child: {
+                props: ['msg'],// prop 可以用在模板内
+                                // 可以用 `this.msg` 设置
+                template: '<span>{{ msg }}</span>'
+            }
+        }
+    })
+</script>
+<br/>
+
+<h2>动态 props</h2>
+<!-- 父组件属性变化时会传递给子组件, 但反过来不会 -->
+<div id="demo-2">
+    <input v-model="parentMsg">
+    <br>
+    <child v-bind:my-message="parentMsg"></child>
+</div>
+<script>
+    new Vue({
+        el: '#demo-2',
+        data: {
+            parentMsg: 'from parent'
+        },
+        components: {
+            child: {
+                props: ['myMessage'],
+                template: '<span>{{myMessage}}</span>'
+            }
+        }
+    })
+
+    /*
+
+        <!-- 默认为单向绑定 -->
+    <child :msg="parentMsg"></child>
+
+                <!-- 双向绑定 -->
+     <child :msg.sync="parentMsg"></child>
+
+                <!-- 单次绑定 -->
+     <child :msg.once="parentMsg"></child>
+
+    ⭐️:注意如果 prop 是一个对象或数组，是按引用传递。
+    在子组件内修改它会影响父组件的状态，不管是使用哪种绑定类型。
+    */
+</script>
+<br/>
+
+<h2>自定义事件</h2>
+<!-- 子组件模板 -->
+<template id="child-template">
+    <input v-model="msg">
+    <button v-on:click="notify">派发事件(沿着父链冒泡)</button>
+</template>
+
+<!-- 父组件模板 -->
+<div id="events-example">
+    <p>Messages: {{ messages | json }}</p>
+    <child></child>
+</div>
+<script>
+    // 注册子组件  将当前消息派发出去
+    Vue.component('child', {
+        template: '#child-template',
+        data: function () {
+            return { msg: 'hello' }
+        },
+        methods: {
+            notify: function () {
+                if (this.msg.trim()) {
+                    this.$dispatch('child-msg', this.msg)
+                    this.msg = ''
+                }
+            }
+        }
+    })
+
+    // 启动父组件
+    // 将收到消息时将事件推入一个数组
+    var parent = new Vue({
+        el: '#events-example',
+        data: {
+            messages: []
+        },
+        // 在创建实例时 `events` 选项简单地调用 `$on`
+        events: {
+            'child-msg': function (msg) {
+                // 事件回调内的 `this` 自动绑定到注册它的实例上
+                this.messages.push(msg)
+            }
+        }
+    })
+</script>
+</body>
+</html>

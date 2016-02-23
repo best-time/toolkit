@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        /*
+        function Person(age) {
+            this.age = age;
+        }
+        Person.prototype.say = function() {
+            console.log("我的名字是")
+        }
+        function Student(score, age) {
+//            Person.call(this, age)
+            this.score = score;
+        }
+//        Student.prototype = new Person(); // 这样无法继承父类 静态属性
+
+
+        function F() {}
+        F.prototype = Person.prototype;
+        Student.prototype = new F();
+        Student.prototype.constructor = Student;
+
+        var res = new Student(100, 25);
+        console.log(res)
+
+
+        */
+
+        //推荐的继承函数  "圣杯"
+        // 构造函数的实例 __proto__指向构造函数的原型对象
+        function inherit(C, P) {
+            function F() {}
+            F.prototype = P.prototype;
+            C.prototype = new F();   //临时构造函数
+            C.prototype.constructor = C; //修复constructor
+            C.uper = P; // 存储超类
+        }
+        function Person(age) {
+            this.age = age;
+        }
+        Person.prototype.getAge = function() {
+            console.log(this.age)
+        };
+
+        function Student(num, age) {
+            Person.call(this, age);  //借用父类静态属性
+            this.num = num;
+        }
+        inherit(Student, Person);
+        Student.prototype.getNum = function() {
+            console.log(this.num)
+        };
+
+        var res = new Student(100, 27)
+        res.getAge();
+        res.getNum();
+        console.log(res);
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
