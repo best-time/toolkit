@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .popwindow {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            width: 500px;
+            height: 400px;
+            background-color: #eee;
+        }
+        .poptitle {
+            height: 40px;
+            color: #fff;
+            line-height: 40px;
+            background-color: maroon;
+            cursor: move;
+        }
+        .poptitle a {
+            float: right;
+        }
+        .shame {
+            position: absolute;
+            display: none;
+            top: 0;
+            left: 0;
+            opacity: 0.2;
+            filter: alpha(opacity=20);
+            z-index: 9998;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="shame" id="shame"></div>
+<button id="box">点击弹窗</button>
+<div class="popwindow" id="popwindow">
+    <div class="poptitle" id="poptitle"><span>标题</span> <a href="javascript:;">关闭</a></div>
+    <div class="popbody" id="popbody"></div>
+</div>
+<script>
+    var utilEvent = {
+        stopPropagation : function(ev) {
+            if (ev.stopPropagation) {
+                ev.stopPropagation();
+            } else {
+                ev.cancelBubble = true;
+            }
+        },
+        // 取消事件的默认行为
+        preventDefault : function(event) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
+        }
+    }
+    window.onload = function() {
+        addHandler(document.getElementById("box"), "click", function() {
+            popup()
+        });
+        addHandler(window, "resize", function() {
+            showShame()
+        })
+        function popup() {
+            var isDown = false;
+            var popwindow = document.getElementById("popwindow"),
+                titleDom = document.getElementById("poptitle");
+            var mouseX, mouseY, objY, objX;
+            showShame();
+            popwindow.style.display = "block";
+            var popwidth = popwindow.offsetWidth,
+                popheight = popwindow.offsetHeight;
+            var clientHeight = document.documentElement.clientHeight || document.body.clientHeight,
+                clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+
+            popwindow.style.left = (clientWidth - popwidth) / 2 +"px";
+            popwindow.style.top =(clientHeight - popheight) / 2 + "px";
+
+            addHandler(titleDom, "mousedown", function(ev) {
+                var event = ev || window.ev;
+                utilEvent.preventDefault(event);
+
+                mouseX = event.clientX;
+                mouseY = event.clientY; //获取按下鼠标的 x y 坐标
+
+                objY = parseInt(popwindow.style.top, 10);
+                objX = parseInt(popwindow.style.left, 10);
+                isDown = true
+            });
+
+            addHandler(document, "mousemove", function(ev) {
+                var event = ev || window.ev;
+                if (isDown) {
+                    popwindow.style.top = ev.clientY - (mouseY - objY) + "px";
+                    popwindow.style.left = ev.clientX - (mouseX - objX) + "px"; //mouseX - objX 等于按下鼠标的坐标到弹窗左侧的位置
+                }
+            }, false);
+
+            addHandler(document, "mouseup", function(ev) {
+                isDown = false;
+            }, false)
+        }
+
+        function showShame() {
+            var domShame = document.getElementById("shame");
+            domShame.style.display = "block";
+            domShame.style.width = (document.documentElement.clientWidth || document.body.clientWidth) + "px";
+            domShame.style.height = (document.documentElement.clientHeight || document.body.clientHeight) + "px";
+        }
+        function addHandler(node, type, handler) {
+            return node.addEventListener ?
+                    node.addEventListener(type, handler, false) :
+                    node.attachEvent("on" + type, handler); //ie 内核
+        }
+    }
+
+</script>
+
+</body>
+</html>

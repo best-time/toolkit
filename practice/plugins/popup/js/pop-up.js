@@ -176,7 +176,6 @@
         });
 
         that.addHandler(document, "mousemove", function(event) {
-            console.log(isDown)
             if (isDown) {
                 var event = window.event || event;
                 (!window.ActiveXObject) ?
@@ -184,7 +183,6 @@
                     event.returnValue = false; //取消默认行为
                 var leftPos = event.clientX - (mouseX - objX); //鼠标点击处离屏幕左侧距离- 鼠标点击离弹窗左侧距离=弹窗离左边距离
                 var topPos = event.clientY - (mouseY - objY);
-                console.log(leftPos, topPos)
                 if (leftPos < 0) { //弹窗不外溢
                     leftPos = 0;
                 } else if (leftPos > document.documentElement.clientWidth - that.defaults.width) {
@@ -250,7 +248,7 @@ document.getElementById("bt4").onclick = function(){
         "</select>" +
         "<br>" +
         "<h2>可以自己添加修改css样式</h2>" +
-        "<iframe src='http://www.baidu.com' width='900' height='200'></iframe>" +
+        "<iframe src='http://www.baidu.plugins' width='900' height='200'></iframe>" +
         "<h6>也可以自己添加方法</h6>";
     Prompt.init({
         title :"自定义html内容的弹出框",

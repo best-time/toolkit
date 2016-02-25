@@ -124,7 +124,6 @@
         return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
     };
 
-
     _.each = function (obj, iteratee, context) {
         iteratee = optimizeCb(iteratee, context);
         var i, length;

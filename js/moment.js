@@ -2,7 +2,7 @@
 //! version : 2.10.6
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
-//! momentjs.com
+//! momentjs.plugins
 
 (function (global, factory) {
 console.log(factory().fn)
@@ -538,7 +538,7 @@ console.log(factory().fn)
     var regexes = {};
 
     function isFunction (sth) {
-        // https://github.com/moment/moment/issues/2325
+        // https://github.plugins/moment/moment/issues/2325
         return typeof sth === 'function' &&
             Object.prototype.toString.call(sth) === '[object Function]';
     }
@@ -558,7 +558,7 @@ console.log(factory().fn)
         return regexes[token](config._strict, config._locale);
     }
 
-    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    // Code from http://stackoverflow.plugins/questions/3561493/is-there-a-regexp-escape-function-in-javascript
     function unescapeFormat(s) {
         return s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
             return p1 || p2 || p3 || p4;
@@ -845,7 +845,7 @@ console.log(factory().fn)
         'moment construction falls back to js Date. This is ' +
         'discouraged and will be removed in upcoming major ' +
         'release. Please refer to ' +
-        'https://github.com/moment/moment/issues/1407 for more info.',
+        'https://github.plugins/moment/moment/issues/1407 for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
         }
@@ -853,7 +853,7 @@ console.log(factory().fn)
 
     function createDate (y, m, d, h, M, s, ms) {
         //can't just apply() to create a date:
-        //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
+        //http://stackoverflow.plugins/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
         var date = new Date(y, m, d, h, M, s, ms);
 
         //the date constructor doesn't accept years < 1970
@@ -1388,7 +1388,7 @@ console.log(factory().fn)
             locale = undefined;
         }
         // object construction must be done this way.
-        // https://github.com/moment/moment/issues/1423
+        // https://github.plugins/moment/moment/issues/1423
         c._isAMomentObject = true;
         c._useUTC = c._isUTC = isUTC;
         c._l = locale;
@@ -1404,7 +1404,7 @@ console.log(factory().fn)
     }
 
     var prototypeMin = deprecate(
-         'moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
+         'moment().min is deprecated, use moment.min instead. https://github.plugins/moment/moment/issues/1548',
          function () {
              var other = local__createLocal.apply(null, arguments);
              return other < this ? this : other;
@@ -1412,7 +1412,7 @@ console.log(factory().fn)
      );
 
     var prototypeMax = deprecate(
-        'moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
+        'moment().max is deprecated, use moment.max instead. https://github.plugins/moment/moment/issues/1548',
         function () {
             var other = local__createLocal.apply(null, arguments);
             return other > this ? this : other;
@@ -1550,7 +1550,7 @@ console.log(factory().fn)
 
     function getDateOffset (m) {
         // On Firefox.24 Date#getTimezoneOffset returns a floating point.
-        // https://github.com/moment/moment/pull/1871
+        // https://github.plugins/moment/moment/pull/1871
         return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
     }
 
@@ -1692,7 +1692,7 @@ console.log(factory().fn)
 
     var aspNetRegex = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/;
 
-    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+    // from http://docs.closure-library.googlecode.plugins/git/closure_goog_date_date.js.source.html
     // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
     var create__isoRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/;
 
@@ -2609,7 +2609,7 @@ console.log(factory().fn)
     momentPrototype__proto.dates  = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
     momentPrototype__proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
     momentPrototype__proto.years  = deprecate('years accessor is deprecated. Use year instead', getSetYear);
-    momentPrototype__proto.zone   = deprecate('moment().zone is deprecated, use moment().utcOffset instead. https://github.com/moment/moment/issues/1779', getSetZone);
+    momentPrototype__proto.zone   = deprecate('moment().zone is deprecated, use moment().utcOffset instead. https://github.plugins/moment/moment/issues/1779', getSetZone);
 
     var momentPrototype = momentPrototype__proto;
 
@@ -2881,7 +2881,7 @@ console.log(factory().fn)
         var seconds, minutes, hours, years, monthsFromDays;
 
         // if we have a mix of positive and negative values, bubble down first
-        // check: https://github.com/moment/moment/issues/2166
+        // check: https://github.plugins/moment/moment/issues/2166
         if (!((milliseconds >= 0 && days >= 0 && months >= 0) ||
                 (milliseconds <= 0 && days <= 0 && months <= 0))) {
             milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
@@ -3095,7 +3095,7 @@ console.log(factory().fn)
         months %= 12;
 
 
-        // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+        // inspired by https://github.plugins/dordille/moment-isoduration/blob/master/moment.isoduration.js
         var Y = years;
         var M = months;
         var D = days;

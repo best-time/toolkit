@@ -18,7 +18,7 @@
         return reg.exec(str);
     }
     var res = execReg(/b+/g, "bbs.bblueidea.com");
-    console.log(res);// ["bb", index: 0, input: "bbs.bblueidea.com"], 类对象数组
+    console.log(res);// ["bb", index: 0, input: "bbs.bblueidea.plugins"], 类对象数组
     console.log(res.length);
     for (var i = 0; i < res.length; i++) {
         console.debug(i + "---" + res[i]); // bb (index/ input索引不展示)
@@ -27,18 +27,18 @@
 
     var res2 = execReg(/(\w)(\w)(.+)/g, "bbs.bblueidea.com");
     console.log(res2);
-    //output: ["bbs.bblueidea.com", "b", "b", "s.bblueidea.com", index: 0, input: "bbs.bblueidea.com"]
-    console.log(res2[0]);//bbs.bblueidea.com
+    //output: ["bbs.bblueidea.plugins", "b", "b", "s.bblueidea.plugins", index: 0, input: "bbs.bblueidea.plugins"]
+    console.log(res2[0]);//bbs.bblueidea.plugins
     console.log(res2[1]); //b
     console.log(res2[2]); //b
-    console.log(res2[3]); //s.bblueidea.com
+    console.log(res2[3]); //s.bblueidea.plugins
     console.log(res2[4]); // undefined
 
     console.log("-----------------");
     var reg = /b/g;
     var str = 'bbs.blueidea.com';
-    console.log(execReg(reg, str));//["b", index: 0, input: "bbs.blueidea.com"]
-    console.log(execReg(reg, str));//["b", index: 1, input: "bbs.blueidea.com"]
+    console.log(execReg(reg, str));//["b", index: 0, input: "bbs.blueidea.plugins"]
+    console.log(execReg(reg, str));//["b", index: 1, input: "bbs.blueidea.plugins"]
     /*
      可以看得出来，第二次匹配的是字符串的字符串的第二个b。这也就是g修饰符的作用了，下面来看exec是如何区别对待g和非g正则表达式的。
      如果正则表达式没有设置g，那么exec方法不会对正则表达式有任何的影响，如果设置了g，那么exec执行之后会更新正则表达式的 lastIndex属性，
@@ -61,7 +61,7 @@
         return str.match(reg);
     }
     var res3 = matchReg(/b/, "bbs.blue.com"); //当正则表达式没有'g'修饰时,和exec() 输出结果一致
-    console.log(res3); //["b", index: 0, input: "bbs.blue.com"]
+    console.log(res3); //["b", index: 0, input: "bbs.blue.plugins"]
 
     /*
      设置了g修饰符的正则表达式在完成一次成功匹配后不会停止，而是继续找到所有可以匹配到的字符。
@@ -84,8 +84,8 @@
     }
     var res5 = replaceReg(/b/, "bbs.blue.com", "c");
     var res6 = replaceReg(/b/g, "bbs.blue.com", "c");
-    console.log(res5); //cbs.blue.com 只替换了第一个匹配到的字符
-    console.log(res6); //ccs.clue.com
+    console.log(res5); //cbs.blue.plugins 只替换了第一个匹配到的字符
+    console.log(res6); //ccs.clue.plugins
     var res7 = replaceReg(/\w+/g, "bbs.blue.com", "word");
     console.log(res7); //word.word.word
     var res8 = replaceReg(/\w+?/g, "bbs.blue.com", "word");
@@ -94,7 +94,7 @@
     console.log(res9);//wordwordwordword.wordwordwordwordword.wordwordwordword
 
     var res10 = replaceReg(/(\w+).(\w+).(\w+)/, "bbs.blue.com", "$3.$1.$2");
-    //com.bbs.blue
+    //plugins.bbs.blue
     console.log(res10);
 
     console.log("-------search()--------");
@@ -113,7 +113,7 @@
     }
     console.log(splitReg(/\W/, "bl.ue.idea")); //["bl", "ue", "idea"]
     console.log(splitReg(/\W/, "http://www.baidu.com/"));
-    //["http", "", "", "www", "baidu", "com", ""]
+    //["http", "", "", "www", "baidu", "plugins", ""]
 </script>
 
 </body>

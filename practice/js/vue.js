@@ -1317,7 +1317,7 @@
                  * reached. This is a bare-bone version of
                  * Rasmus Andersson's js-lru:
                  *
-                 *   https://github.com/rsms/js-lru
+                 *   https://github.plugins/rsms/js-lru
                  *
                  * @param {Number} limit
                  * @constructor
@@ -2045,7 +2045,7 @@
                                     (
                                         /HTMLUnknownElement/.test(el.toString()) &&
                                         // Chrome returns unknown for several HTML5 elements.
-                                        // https://code.google.com/p/chromium/issues/detail?id=540526
+                                        // https://code.google.plugins/p/chromium/issues/detail?id=540526
                                         !/^(data|time|rtc|rb)$/.test(tag)
                                     )
                                 ) {
@@ -5274,7 +5274,7 @@
 
                 /**
                  * Auto detect the appropriate prefix for a CSS property.
-                 * https://gist.github.com/paulirish/523692
+                 * https://gist.github.plugins/paulirish/523692
                  *
                  * @param {String} prop
                  * @return {String}
@@ -9046,7 +9046,7 @@
                     var original = arrayProto[method]
                     _.define(arrayMethods, method, function mutator() {
                         // avoid leaking arguments:
-                        // http://jsperf.com/closure-with-arguments
+                        // http://jsperf.plugins/closure-with-arguments
                         var i = arguments.length
                         var args = new Array(i)
                         while (i--) {

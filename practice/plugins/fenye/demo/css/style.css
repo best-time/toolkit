@@ -21,12 +21,12 @@ audio[controls], canvas, video { display: inline-block; *display: inline; *zoom:
 
 /*
  * 1. Correct text resizing oddly in IE6/7 when body font-size is set using em units
- *    http://clagnut.com/blog/348/#c790
+ *    http://clagnut.plugins/blog/348/#c790
  * 2. Force vertical scrollbar in non-IE
  * 3. Remove Android and iOS tap highlight color to prevent entire container being highlighted
- *    www.yuiblog.com/blog/2010/10/01/quick-tip-customizing-the-mobile-safari-tap-highlight-color/
+ *    www.yuiblog.plugins/blog/2010/10/01/quick-tip-customizing-the-mobile-safari-tap-highlight-color/
  * 4. Prevent iOS text size adjust on device orientation change, without disabling user zoom
- *    www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/
+ *    www.456bereastreet.plugins/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/
  */
 
 html { font-size: 100%; overflow-y: scroll; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
@@ -37,7 +37,7 @@ body, button, input, select, textarea { font-family: sans-serif; color: #707070;
 
 /* 
  * These selection declarations have to be separate
- * No text-shadow: twitter.com/miketaylr/status/12228805301
+ * No text-shadow: twitter.plugins/miketaylr/status/12228805301
  * Also: hot pink!
  */
 
@@ -53,7 +53,7 @@ a { color: #606060; text-decoration: none; }
 a:visited { color: #222; }
 a:focus { outline: thin dotted; }
 
-/* Improve readability when focused and hovered in all browsers: people.opera.com/patrickl/experiments/keyboard/test */
+/* Improve readability when focused and hovered in all browsers: people.opera.plugins/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: 0; }
 
 
@@ -86,7 +86,7 @@ q:before, q:after { content: ""; content: none; }
 
 small { font-size: 85%; }
 
-/* Position subscript and superscript content without affecting line-height: gist.github.com/413930 */
+/* Position subscript and superscript content without affecting line-height: gist.github.plugins/413930 */
 sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
 sup { top: -0.5em; }
 sub { bottom: -0.25em; }
@@ -107,7 +107,7 @@ nav ul, nav ol { list-style: none; margin: 0; padding: 0; }
 
 /*
  * Improve image quality when scaled in IE7
- * code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/
+ * code.flickr.plugins/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/
  */
 
 img { border: 5px solid #303030; -ms-interpolation-mode: bicubic; border-radius: 5px 5px 5px 5px;box-shadow: 0px 0px 5px #505050}
@@ -176,7 +176,7 @@ input[type="search"] { -moz-box-sizing: content-box; -webkit-box-sizing: content
 
 /* 
  * Remove inner padding and border in FF3/4
- * www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/ 
+ * www.sitepen.plugins/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/
  */
 
 button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
@@ -322,7 +322,7 @@ div#content.author p { width: 590px; position: relative; }
 .ir br { display: none; }
 
 /* Hide for both screenreaders and browsers:
-   css-discuss.incutio.com/wiki/Screenreader_Visibility */
+   css-discuss.incutio.plugins/wiki/Screenreader_Visibility */
 .hidden { display: none; visibility: hidden; }
 
 /* Hide only visually, but have it available for screenreaders: by Jon Neal.
@@ -335,7 +335,7 @@ div#content.author p { width: 590px; position: relative; }
 /* Hide visually and from screenreaders, but maintain layout */
 .invisible { visibility: hidden; }
 
-/* Contain floats: nicolasgallagher.com/micro-clearfix-hack/ */ 
+/* Contain floats: nicolasgallagher.plugins/micro-clearfix-hack/ */
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
@@ -361,17 +361,17 @@ div#content.author p { width: 590px; position: relative; }
 
 /* =============================================================================
    Print styles.
-   Inlined to avoid required HTTP connection: www.phpied.com/delay-loading-your-print-css/
+   Inlined to avoid required HTTP connection: www.phpied.plugins/delay-loading-your-print-css/
    ========================================================================== */
  
 @media print {
-  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: sanbeiji.com/archives/953 */
+  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: sanbeiji.plugins/archives/953 */
   a, a:visited { color: #444 !important; text-decoration: underline; }
   a[href]:after { content: " (" attr(href) ")"; }
   abbr[title]:after { content: " (" attr(title) ")"; }
   .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
   pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
-  thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
+  thead { display: table-header-group; } /* css-discuss.incutio.plugins/wiki/Printing_Tables */
   tr, img { page-break-inside: avoid; }
   img { max-width: 100% !important; }
   @page { margin: 0.5cm; }

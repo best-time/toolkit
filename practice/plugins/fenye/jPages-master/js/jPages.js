@@ -1,11 +1,11 @@
  /**
  * jQuery jPages v0.7
  * Client side pagination with jQuery
- * http://luis-almeida.github.com/jPages
+ * http://luis-almeida.github.plugins/jPages
  *
  * Licensed under the MIT license.
  * Copyright 2012 Luís Almeida
- * https://github.com/luis-almeida
+ * https://github.plugins/luis-almeida
  */
 
 ;(function($, window, document, undefined) {
