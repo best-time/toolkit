@@ -12,6 +12,10 @@ a:hover{ text-decoration:none;}
 .tcdPageCode a:hover{text-decoration: none;border: 1px solid #428bca;}
 .tcdPageCode span.current{display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;color: #fff;background-color: #428bca;	border: 1px solid #428bca;border-radius: 4px;vertical-align: middle;}
 .tcdPageCode span.disabled{	display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;	color: #bfbfbf;background: #f2f2f2;border: 1px solid #bfbfbf;border-radius: 4px;vertical-align: middle;}
+    li {
+        display: none;
+        background: #eee;
+    }
 </style>
 </head>
 <body>
@@ -39,12 +43,18 @@ a:hover{ text-decoration:none;}
 	var len = $("ul > li").length;
 	var pageSize = 2;
 	var current = 1;
+    $("ul > li").each(function(index, val) {
+        if(index >= (current - 1) * pageSize && index < current * pageSize){
+            this.style.display = "block"
+        } else {
+            $(this).hide()
+        }
+    })
     $(".tcdPageCode").createPage({
         pageCount: Math.ceil(len / pageSize), //总页数
         current: current,	//当前页
         backFn:function(p){
             //console.log(p); //p是当前页码
-			
 			$("ul > li").each(function(index, val) {
 				if(index >= (p-1) * pageSize && index < p * pageSize){
 					this.style.display = "block"
