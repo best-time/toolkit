@@ -747,6 +747,14 @@
         };
     }
 
+    /**
+     * 获取字符串长度，中文算2个
+     */
+    function getStrLength(str) {
+        var cArr = str.match(/[^\x00-\xff]/ig);
+        return str.length + (cArr == null ? 0 : cArr.length);
+    }
+
     //返回ie版本号 6/7/8/9
     var ie = (function () {
         var undef,
