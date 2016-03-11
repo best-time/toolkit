@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>正则表达式使用</title>
+    <script type="text/javascript" src="http://localhost:8080/protal/html/public/js/jquery.min.js"></script>
+
+</head>
+<body>
+<script>
+    //url
+    //    /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
+    var urlReg = /^(https?:\/\/)?([0-9a-z\.-]+)\.([a-z\.]{2,6})([\/\w-])*\/?$/;
+    console.log(urlReg.test("https://www.a3.com/"));
+    //    var urlReg2 = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    //    console.log( urlReg2.test("http://3g.baidu.sdafasdf...s.daf///s.ay/") )
+    //密码
+    var passUrl = /(.){6,18}/;
+    console.log("17--  ", passUrl.test("asd$^&fa.,/!~~~"))
+
+    //html
+    var htmlReg1 = /^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/
+    var htmlReg = /^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>)/;
+
+    var res = "border-radius".replace(/-([a-zA-Z]+)/, function (a, b, c, d) {
+        console.log(a);
+        console.debug(b);
+        console.info(c);
+        console.info(d);
+        /*
+         -radius
+         radius
+         6
+         border-radius
+         */
+//        console.log(value + "= yinweiyi ")
+    })
+    //console(res)
+
+    console.log("====================>1")
+
+    /*
+     对于没有变量的正则 replacement 函数有3个参数:
+        1-匹配到的字符串 2-匹配到的字符串在原字符串中的位置 3-原字符串
+     */
+    var replacement = ["Javascript", "String"]
+    var str1 = "here is a $s test of $s replace";
+    var i = -1;
+    str1 = str1.replace(/\$s/, function (a, b, c, d) {
+        i++;
+        console.log(a + " | " + b + " | " + c + " | " + d + " | " + i);
+        //$s | 10 | here is a $s test of $s replace | undefined | 0
+        return replacement[i];
+    });
+    console.log(str1);
+
+    console.log("====================>2")
+    /*
+     对于有变量的正则replacement 函数有4个参数:
+        1-匹配到的字符串 2-变量值 3-匹配到的字符串在原字符串中的位置 4-原字符串
+     */
+    str2 = "here is a $0 test of $1 replace";
+    str2 = str2.replace(/\$(\d+)/, function (a, b, c, d) {
+        console.log(a + " | " + b + " | " + c + " | " + d);
+        //$0 | 0 | 10 | here is a $0 test of $1 replace
+        return replacement[b];
+    });
+    console.log(str2);
+    //here is a Javascript test of $1 replace
+
+
+</script>
+
+<a>baidu</a>
+<a href="" title="" target="_blank"> baidu </a>
+<hr/>
+<br/>
+</body>
+</html>

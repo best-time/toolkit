@@ -114,6 +114,19 @@
     console.log(splitReg(/\W/, "bl.ue.idea")); //["bl", "ue", "idea"]
     console.log(splitReg(/\W/, "http://www.baidu.com/"));
     //["http", "", "", "www", "baidu", "plugins", ""]
+
+    /**
+     * replace 第二个参数为函数时:
+     * 对于没有变量的正则 replacement 函数有3个参数:
+     *                  匹配到的字符串 匹配到的字符串在原字符串中的位置 原字符串
+     * 对于有变量的正则replacement 函数有4个参数:
+     *                  匹配到的字符串 变量值 匹配到的字符串在原字符串中的位置 原字符串
+     *
+     */
+
+
+
+
 </script>
 
 </body>
