@@ -431,7 +431,9 @@
             if (args.length == 2) {
                 for (prop in properties) {
                     value = properties[prop];
-                    if (value !== undefined && properties.hasOwnProperty(prop)) applyCss(element, prop, value);
+                    if (value !== undefined && properties.hasOwnProperty(prop)) {
+                        applyCss(element, prop, value);
+                    }
                 }
             } else {
                 applyCss(element, args[1], args[2]);
