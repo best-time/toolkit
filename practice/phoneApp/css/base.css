@@ -39,7 +39,9 @@ a, body {
     -webkit-appearance: none
 }
 
-article, aside, blockquote, body, button, code, dd, dialog, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, input, legend, li, nav, ol, p, pre, section, td, textarea, th, ul {
+article, aside, blockquote, body, button, code, dd, dialog, div, dl, dt,
+fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header,
+hgroup, input, legend, li, nav, ol, p, pre, section, td, textarea, th, ul {
     margin: 0;
     padding: 0
 }
@@ -91,6 +93,7 @@ a:active {
     opacity: .7
 }
 
+/*--------*/
 * {
     -webkit-tap-highlight-color: transparent
 }
@@ -224,13 +227,6 @@ body {
     white-space: nowrap
 }
 
-.snPrice {
-    color: #E21D1D
-}
-
-.snPrice em {
-    padding-left: 2px
-}
 
 img.liprice {
     height: 20px !important;
@@ -372,6 +368,8 @@ img.liprice {
     border-width: 1px 0 0 1px;
     -webkit-transform: rotateZ(135deg)
 }
+
+/* 设置相应的分辨率 字体大小 */
 
 html {
     font-size: 50px
@@ -531,12 +529,26 @@ body {
 
 @-webkit-keyframes rotate {
     0% {
-        -webkit-transform: rotate(0)
+        -webkit-transform: rotate(0deg)
     }
     100% {
         -webkit-transform: rotate(360deg)
     }
 }
+
+
+
+
+
+
+/*------------------------------------
+------------------------------------
+------------------------------------
+------------------------------------
+------------------------------------*/
+
+
+
 
 .sn-html5-loading {
     position: relative;
