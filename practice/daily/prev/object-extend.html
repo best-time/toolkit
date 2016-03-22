@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        /*
+        function Person(age) {
+            this.age = age;
+        }
+        Person.prototype.say = function() {
+            console.log("我的名字是")
+        }
+        function Student(score, age) {
+//            Person.call(this, age)
+            this.score = score;
+        }
+//        Student.prototype = new Person(); // 这样无法继承父类 静态属性
+
+
+        function F() {}
+        F.prototype = Person.prototype;
+        Student.prototype = new F();
+        Student.prototype.constructor = Student;
+
+        var res = new Student(100, 25);
+        console.log(res)
+
+
+        */
+
+        //推荐的继承函数  "圣杯"
+        // 构造函数的实例 __proto__指向构造函数的原型对象
+        function inherit(C, P) {
+            function F() {}
+            F.prototype = P.prototype;
+            C.prototype = new F();   //临时构造函数
+            C.prototype.constructor = C; //修复constructor
+            C.uper = P; // 存储超类
+        }
+        function Person(age) {
+            this.age = age;
+        }
+        Person.prototype.getAge = function() {
+            console.log(this.age)
+        };
+
+        function Student(num, age) {
+            Person.call(this, age);  //借用父类静态属性
+            this.num = num;
+        }
+        inherit(Student, Person);
+        Student.prototype.getNum = function() {
+            console.log(this.num)
+        };
+
+        var res = new Student(100, 27)
+        res.getAge();
+        res.getNum();
+        console.log(res);
+
+
+       // 1、工厂模式 ----- (这种模式抽象了创建具体对象的过程)
+                function createPerson(name, age, job){
+                    var o = new Object();
+                    o.name = name;
+                    o.age = age;
+                    o.job = job;
+                    o.sayName = function(){
+                        alert(this.name);
+                    };
+                    return o;
+                }
+        var person1 = createPerson("Nicholas", 29, "Software Engineer");
+        /*
+        存在的问题:
+                工厂模式虽然解决了创建多个相似对象的问题，
+        但却没有解决对象识别的问题（即怎样知道一个对象的类型）
+    */
+
+        /*
+        2、构造函数模式 -----
+                ECMAScript 中的构造函数可用来创建特定类型的对象。
+        像 Object 和 Array这样的原生构造函数，在运行时会自动出现在执行环境中。
+        */
+        function Person(name, age, job){
+            this.name = name;
+            this.age = age;
+            this.job = job;
+            this.sayName = function(){
+                alert(this.name);
+            };
+        }
+        var person1 = new Person("Nicholas", 29, "Software Engineer");
+
+        /*
+        * 必须使用 new 操作符。以这种方式调用构造函数实际上会经历以下 4个步骤：
+         (1) 创建一个新对象；
+         (2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）；
+         (3) 执行构造函数中的代码（为这个新对象添加属性）；
+         (4) 返回新对象
+         */
+
+/*
+        3、原型模式 -----
+                我们创建的每个函数都有一个 prototype （原型）属性，这个属性是一个指针，指向一个对象，
+        而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法
+        例子：*/
+        function Person(){
+        }
+        Person.prototype.name = "Nicholas";
+        Person.prototype.age = 29;
+        Person.prototype.job = "Software Engineer";
+        Person.prototype.sayName = function(){
+            alert(this.name);
+        };
+        var person1 = new Person();
+        var person2 = new Person();
+        person1.sayName(); //"Nicholas"
+
+        /*
+        4、组合使用构造函数模式和原型模式：
+        构造函数模式用于定义实例属性，而原型模式用于定义方法和共享的属性。
+        例子：
+        */
+        function Person(name, age, job){
+            this.name = name;
+            this.age = age;
+            this.job = job;
+            this.friends = ["Shelby", "Court"];
+        }
+        Person.prototype = {
+            constructor : Person,
+            sayName : function(){
+                alert(this.name);
+            }
+        }
+        var person1 = new Person("Nicholas", 29, "Software Engineer");
+        var person2 = new Person("Greg", 27, "Doctor");
+
+
+       // 5、动态原型模式  例子：
+        function Person(name, age, job){
+            //属性
+            this.name = name;
+            this.age = age;
+            this.job = job;
+            // 方法
+            if (typeof this.sayName != "function"){
+                Person.prototype.sayName = function(){
+                    alert(this.name);
+                };
+            }
+        }
+        var friend = new Person("Nicholas", 29, "Software Engineer");
+        friend.sayName();  // Nicholas
+
+/*
+        5、寄生构造函数模式
+        基本思想是创建一个函数,该函数的作用仅仅是封装创建对象的的代码,然后再返回新创建的对象.这个函数很像典型的构造函数;
+        例子:
+        */
+                function Person() {
+                    var o = new Object();
+                    o.name = "ywy";
+                    o.age = 26;
+                    o.sayName = function() {
+                        alert(this.name);
+                    }
+                    return o;
+                }
+        var friend = new Person("Nicholas", 29, "Software Engineer");
+        friend.sayName(); //"Nicholas"
+
+
+        //6、稳妥构造函数模式
+        function Person(name, age, job){
+//创建要返回的对象
+            var o = new Object();
+//可以在这里定义私有变量和函数
+//添加方法
+            o.sayName = function(){
+                alert(name);
+            };
+//返回对象
+            return o;
+        }
+        var friend = Person("Nicholas", 29, "Software Engineer");
+        friend.sayName(); //"Nicholas"
+
+        //完美的方式
+
+        function SuperType(name){
+            this.name = name;
+            this.colors = ["red", "blue", "green"];
+        }
+        SuperType.prototype.sayName = function(){
+            alert(this.name);
+        };
+        function SubType(name, age){
+            //继承属性
+            SuperType.call(this, name); //借用构造函数
+            this.age = age;
+        }
+        //继承方法
+        SubType.prototype = new SuperType(); //即[[prototype]]属性指向SuperType原型对象
+        SubType.prototype.constructor = SubType;    //使用原型链
+        SubType.prototype.sayAge = function(){
+            alert(this.age);
+        };
+        var instance1 = new SubType("Nicholas", 29);
+        instance1.colors.push("black");
+        alert(instance1.colors); //"red,blue,green,black"
+        instance1.sayName(); //"Nicholas";
+        instance1.sayAge(); //29
+
+        /*
+        组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继
+        承模式。而且， instanceof 和 isPrototypeOf() 也能够用于识别基于组合继承创建的对象.
+        */
+        /*
+        * 6、原型式继承：
+         他的想法是借助原型可以基于已有的对象创建新对象，同时还不必因此创建自定义类型。
+         function object(o){
+         function F(){}
+         F.prototype = o;
+         return new F();
+         }
+
+         ECMAScript 5 通过新增 Object.create() 方法规范化了原型式继承。这个方法接收两个参数：
+         一 个用作新对象原型的对象和（可选的）一个为新对象定义额外属性的对象。在传入一个参数的情况下，
+         Object.create() 与 object() 方法的行为相同。
+
+         7、寄生式继承：
+         寄生式继承的思路与寄生构造函数和工厂模式类似，即创建一个仅用于封装继承过程的函数，该
+         函数在内部以某种方式来增强对象，最后再像真地是它做了所有工作一样返回对象。
+         function createAnother(original){
+         var clone = object(original); //通过调用函数创建一个新对象
+         clone.sayHi = function(){ //以某种方式来增强这个对象
+         alert("hi");
+         };
+         return clone; //返回这个对象
+         }
+         使用寄生式继承来为对象添加函数，会由于不能做到函数复用而降低效率；这一 点与构造函数模式类似
+
+         8、寄生组合式继承 （190页）
+
+         function inheritPrototype(subType, superType){
+         var prototype = object(superType.prototype); //创建对象
+         prototype.constructor = subType; //增强对象
+         subType.prototype = prototype; //指定对象
+         }
+         开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。
+        *
+        * */
+
+        /*
+        * 1, 大概看一下 lo-dash框架源码, 熟悉一两个好的函数实现
+        * 2, 看一下jquery插件的开发
+        * 3, 实现一下弹窗 和 拖动
+        * 4, 跨域的实现
+        * 5, 事件捕获和事件冒泡过程.
+        * 6, ie和firefox 常见bug
+        * 7, 写一个事件侦听器函数
+        *
+        *
+        * */
+
+
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

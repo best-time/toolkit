@@ -329,14 +329,14 @@
     };
 
     // create regexp checks methods from 'regexp' object
-    for(var regexp in regexps) {
-        if(regexps.hasOwnProperty(regexp)) {
+    for (var regexp in regexps) {
+        if (regexps.hasOwnProperty(regexp)) {
             regexpCheck(regexp, regexps);
         }
     }
 
     function regexpCheck(regexp, regexps) {
-        _.is[regexp] = function(value) {
+        _.is[regexp] = function (value) {
             return regexps[regexp].test(value);
         };
     }
@@ -754,6 +754,33 @@
         var cArr = str.match(/[^\x00-\xff]/ig);
         return str.length + (cArr == null ? 0 : cArr.length);
     }
+
+    //url 格式校验
+    function isURL(str_url) {
+        var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+            + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+            + "(([0-9]{1,3}.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+            + "|" // 允许IP和DOMAIN（域名）
+            + "([0-9a-z_!~*'()-]+.)*" // 域名- www.
+            + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]." // 二级域名
+            + "[a-z]{2,6})" // first level domain- .com or .museum
+            + "(:[0-9]{1,4})?" // 端口- :80
+            + "((/?)|" // a slash isn't required if there is no file name
+            + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+        var re = new RegExp(strRegex);
+        //re.test()
+        if (re.test(str_url)) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    //汉字 字母 数字 reg
+    var reg1 = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+    var reg2 = /^[-]{0,1}(\d+)[\.]+(\d+)$/; //小数
+
+
 
     //返回ie版本号 6/7/8/9
     var ie = (function () {
