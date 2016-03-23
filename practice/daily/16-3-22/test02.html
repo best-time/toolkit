@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function a() {
+            var count = 3;
+            return function() {
+                return count++
+            }
+        }
+        var res = a();
+        console.log(res())
+        console.log(res())
+        console.log(res())
+    </script>
+</head>
+<body>
+
+</body>
+</html>
