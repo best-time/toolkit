@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>javascript DOM高级程序设计 note</title>
+    <style>
+        #box {
+            background: #eee;
+        }
+    </style>
+
+</head>
+<body>
+<a href="#a" onclick="javascript:window.open('http://www.baidu.com');return false;">点击我</a>
+<div id="box" class="div-con">div块</div>
+<div id="a" class="aaa">div块</div>
+<div id="b" class="bbb">div块</div>
+<div id="c" class="ccc">div块</div>
+<script src="../js/ADS.js"></script>
+<script>
+    var domA = document.getElementsByTagName("a")[0];
+//    console.log(domA.nodeName, domA.nodeType); // A 1
+    var domDiv = document.getElementById("box");
+//    console.log(domDiv.nodeName, domDiv.nodeType, domDiv.nodeValue);
+    console.log(ADS.$("box").className)
+    var res = ADS.$("a", "b", "c");
+    var len = res.length;
+    var i = len;
+    while(i--) {
+        console.debug(res[len - i - 1].className)
+    }
+</script>
+</body>
+</html>
