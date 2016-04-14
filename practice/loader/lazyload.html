@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>懒加载实例</title>
+    <style type="text/css">
+        /*一定要有预先高度*/
+        img {
+            width: 600px;
+            height: 260px;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/11de79502d0af.jpg!v1sell" alt=""/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/33f99f823ed3d.jpg!v1sell" alt=""/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/680120973b82.jpg!v1sell" alt=""/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/67f87ba08cf0.jpg!v1sell"/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/22ec075a17c33.jpg!v1sell" alt=""/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/2e4a699680788.jpg!v1sell" alt=""/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/c2f4043a4991.jpg!v1sell" alt=""/>
+</div>
+<div>
+    <img class="samLazyImg" src="http://a.tbcdn.cn/mw/webapp/fav/img/grey.gif"
+         data-img="http://yangege.b0.upaiyun.com/33f996b4386ab.jpg!v1sell" alt=""/>
+</div>
+</body>
+<script src="../../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    var lazyload = {
+        init: function (opt) {
+            /*
+             * selectorName，要懒加载的选择器名称
+             * extend_height  扩展高度
+             * anim  是否开启动画
+             * realSrcAtr  图片真正地址*/
+            var op = {
+                anim: true,
+                extend_height: 0,
+                selectorName: "img",
+                realSrcAtr: "data-img"
+            };
+            $.extend(op, opt);
+            
+            this.img.init(op);
+
+        },
+        img: {
+            init: function (n) {
+                var selectorName = n.selectorName,
+                        realSrcAtr = n.realSrcAtr,
+                        anim = n.anim;
+
+                // 要加载的图片是不是在指定窗口内
+                function inViewport(el) {
+                    // 滚动条在y轴滑动的距离,即滚动条距离顶部的距离
+                    var top = window.pageYOffset,
+                    // 当前窗口的底部
+                            btm = window.pageYOffset + window.innerHeight,
+                    // 元素所在整体页面内的y轴位置
+                            elTop = $(el).offset().top;
+
+                    return elTop >= top && elTop - n.extend_height <= btm;
+                }
+
+                // 展示图片
+                function act(_self) {
+                    // 已经加载过了，则中断后续代码
+                    if (_self.attr('lazyImgLoaded')) return;
+
+                    var img = new Image(),
+                            original = _self.attr(realSrcAtr);
+
+                    // 图片请求完成后的事件，把data-img指定的图片，放到src里面，浏览器显示
+                    img.onload = function () {
+                        _self.attr('src', original);
+                        anim && _self.css({opacity: .2}).animate({opacity: 1}, 280);
+                    };
+                    // 当你设置img.src的时候，浏览器就在发送图片请求了
+                    original && (img.src = original);
+
+                    _self.attr('lazyImgLoaded', true);
+                }
+
+                // 滚动事件里判断，加载图片
+                $(window).on('scroll', function () {
+                    $(selectorName).each(function (index, node) {
+                        var $this = $(this);
+                        if (!$this.attr(realSrcAtr) || !inViewport(this))  return;
+
+                        act($this);
+                    })
+                }).trigger('scroll');
+
+            }
+        }
+    };
+
+    lazyload.init({
+        anim: true,
+        selectorName: ".samLazyImg"
+    });
+</script>
+
+</html>

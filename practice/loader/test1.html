@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/lazyload.js"></script>
+</head>
+<body>
+
+<p>11111111111</p>
+<script>
+    var doc = document;
+    function loader(url, callback) {
+        var head = doc.head || doc.getElementsByName("head")[0];
+        var _script = doc.createElement("script");
+        _script.type = "text/javascript";
+        _script.setAttribute("charset", "utf-8")
+        _script.setAttribute("defer", true);
+        _script.src = url;
+        head.appendChild(_script);
+    }
+//    loader("js/b.js");
+//    console.log(name)
+    LazyLoad.js("./js/a.js", function() {
+        console.log("a b c.js 加载完成")
+    })
+//    LazyLoad.js(["./js/b.js", "./js/a.js", "./js/c.js"], function() {
+//        console.log("a b c.js 加载完成")
+//    })
+</script>
+</body>
+</html>
