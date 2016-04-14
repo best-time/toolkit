@@ -4,6 +4,10 @@
 1.所有非数值转换成0
 2.所有大于等于 0 数取整数部分
 
+>> 0 有符号右移
+1. 所有非数值转换成0
+2. 数值取整数部分
+
 >>>1
 1.非数值转为 0
 2.正数时, 相当于 val/2 然后取整数部分
@@ -36,10 +40,8 @@ arguments.length   得到实参个数
 跳过了 _.intersection
 
 *****************_.pull 方法 2015年10月26日00:19:39
-
  
 *****************_.remove 2015年10月28日00:04:07
-
 
 *****************_.takeWhile 2015年10月29日00:06:05
 
@@ -81,8 +83,6 @@ js正则函数详细使用 没理清
 =======================================/
 
 
-
-
 *****************_.isArguments 2015年11月02日23:23:16
 *****************_.add 2015年11月6日00:08:12
 
@@ -95,11 +95,6 @@ vue.js 笔记
 
 注意: 以 _ 或 $ 开头的属性将不会被代理在 Vue 实例上
 
-
-
-//===============================
-需要买的东西列单:
-办公室面纸
 
 //============================
 
@@ -129,7 +124,11 @@ url: http://www.zhangxinxu.com/wordpress/2013/04/es5新增数组方法/
 看到vue-test4.html结束
 vue.js 看到过渡  2015年11月15日23:49:47
 
-有很多函数式库：underscore.js， lodash，Fantasy Land, Functional.js, Bilby.js, fn.js, Wu.js, Lazy.js, Bacon.js, sloth.js, stream.js, Sugar, Folktale, RxJs 
+有很多函数式库：
+underscore.js，
+lodash，Fantasy Land, Functional.js,
+Bilby.js, fn.js, Wu.js, Lazy.js, Bacon.js,
+sloth.js, stream.js, Sugar, Folktale, RxJs
 
 多种javascript变成方式:
 命令式编程: 是建立在直接操作和检查程序状态之上.
@@ -157,7 +156,6 @@ prototype是函数的内置属性，__proto__是对象的内置属性
 该属性的值会被赋值给该函数创建的对象的"proto"属性
 所有的原型对象都有"constructor"属性，该属性对应创建所有指向该原型的实例的构造函数
 函数对象和原型对象通过"prototype"和"constructor"属性进行相互关联
-
 
 
 	var Person = function(){};
@@ -201,3 +199,100 @@ slice()对象array中的某一段做浅复制
 //=========== javascript模式 P159 2015年12月8日15:49:01
 
 //=========== javascript模式 2015年12月14日15:26:47  第一遍
+
+
+//=========== javascript-mode.html  line-368
+
+
+getBoundingClientRect()来获取页面元素的位置, 注意兼容性
+
+
+//=========== javascript-mode.html  line-368
+
+
+ 不需要第三个变量的转换2个变量值:
+  var a = 10;
+    var b = 99;
+
+    a^=b, b^=a, a^=b;
+    a //99
+    b // 10
+
+    左移0位可用于取整
+     13.5 << 0  // 13
+     -13.5 << 0 // -13
+
+ 右移运算可以模拟2的整除运算：
+     5 >> 1     // 相当于 5 / 2 = 2
+
+     21 >> 2     // 相当于 21 / 4 = 5
+
+     21 >> 3    // 相当于 21 / 8 = 2
+
+     21 >> 4    // 相当于 21 / 16 = 1
+
+1////
+function add(num){
+  num += ~~add;
+  add.num = num;
+  return add;
+}
+add.valueOf = add.toString = function(){return add.num};
+var ans = add(3)(4)(5)(6);  // 18
+alert(ans);
+
+2////
+function add(a) {
+  var temp = function(b) {
+    return add(a + b);
+  }
+  temp.valueOf = temp.toString = function() {
+    return a;
+  };
+  return temp;
+}
+var ans = add(2)(3)(4);
+
+
+lazyLoad my-class extnd TinyDom delayed namespacer.js datediff  cookie.js
+https://github.com/jasonmoo/t.js
+https://github.com/james2doyle/saltjs/tree/master/js
+https://github.com/malko/l.js
+https://github.com/jgallen23/cookie-monster
+https://github.com/leonidas/transparency
+https://github.com/Cedriking/is.js
+https://github.com/pvorb/node-clone
+http://dkraczkowski.github.io/js.class/
+
+/*------------------------------
+
+var a = 10;
+if (a & 1) {  // use this
+  // ...
+}
+
+if (a % 2) { // not use this
+  // ...
+}
+
+// use << 1 instead of *2
+var a = 10;
+var b = a << 1; // use this
+var b = a * 2;  // not use this
+
+var a = 10;
+var b = a >> 1; // use this
+var b = a / 2;  // not use this
+
+-----------------------------------------*/
+
+//函数和对象互为对方实例
+console.log(Function instanceof Object);  // true
+console.log(Object instanceof Function);  // true
+
+var f = new Function();
+var o = new Object();
+console.log(f instanceof Function);  //true
+console.log(o instanceof Function);  // false
+console.log(f instanceof Object);    // true
+console.log(o instanceof Object);   // true

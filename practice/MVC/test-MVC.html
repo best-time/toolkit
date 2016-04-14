@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    function Model(value) {
+        this._value = typeof value === "undefined" ? "" : value;
+        this._listeners = [];
+    }
+    Model.prototype.watch = function (listener) {
+        this._listeners.push(listener);
+    };
+    Model.prototype.set = function (value) {
+        var self = this;
+        self._value = value;
+        // model中的值改变时，应通知注册过的回调函数
+        // 按照Javascript事件处理的一般机制，我们异步地调用回调函数
+        // 如果觉得setTimeout影响性能，也可以采用requestAnimationFrame
+        setTimeout(function () {
+            self._listeners.forEach(function (listener) {
+                listener.call(self, value)
+            })
+        })
+    };
+    Model.prototype.bind = function (node) {
+        // 将watch的逻辑和通用的回调函数放到这里
+        this.watch(function (value) {
+            node.innerHTML = value;
+        });
+    };
+    function Controller(callback) {
+        var modelLists = {};
+
+        var views = document.querySelectorAll('[bind]');// 找到所有有bind属性的元素
+        views = Array.prototype.slice.call(views, 0);// 将views处理为普通数组
+        views.forEach(function (view) {
+            var modelName = view.getAttribute('bind'); // hour minute second
+            // 取出或新建该元素所绑定的model
+            modelLists[modelName] = modelLists[modelName] || new Model(); //models= {hour: Model, minute: Model, second: Model}
+            // 完成该元素和指定model的绑定
+            modelLists[modelName].bind(view);
+        });
+        // 调用controller的具体逻辑，将modelLists传入，方便业务处理
+        callback.call(this, modelLists);
+    }
+</script>
+<div id="div1"></div>
+<script>
+    /*
+    // 逻辑代码：
+    (function () {
+        var model = new Model();
+        var div1 = document.getElementById('div1');
+        model.watch(function (value) {
+            div1.innerHTML = value;
+        });
+        model.set('hello, this is a div');
+    })();
+    */
+</script>
+
+<span bind="hour"></span> : <span bind="minute"></span> : <span bind="second"></span>
+<script>
+    // controller:
+    new Controller(function (models) {
+        function setTime() {
+            var date = new Date();
+            models.hour.set(date.getHours());
+            models.minute.set(date.getMinutes() < 10 ? "0" + date.getMinutes(): date.getMinutes());
+            models.second.set(date.getSeconds() < 10 ? "0" + date.getSeconds(): date.getSeconds());
+        }
+
+        setTime();
+        setInterval(function() {
+            setTime();
+        }, 1000);
+    });
+</script>
+<br/>
+<hr/>
+    <button id="button">点击</button>
+<br/>
+<span id="text">id为text的span标签</span>
+<script>
+    var but = document.getElementById("button");
+    var text = document.getElementById("text");
+    but.onclick = function() {
+        alert(this.id); // 弹出button
+    }.bind(text);
+</script>
+
+<br/>
+
+<input type="button" id="box" value="click me"/>
+<script>
+    var OOO = {
+        color: "red",
+        element: document.getElementById("text"),
+        events: function() {
+            document.getElementById("box").addEventListener("click", function(e) {
+                this.element.style.color = this.color;
+            }.bind(this));
+            return this;
+        },
+        init: function() {
+            this.events();
+        }
+    };
+    OOO.init()
+</script>
+
+<script>
+    //重写 bind
+    if (!function() {}.bind) {
+        Function.prototype.bind = function(context) {
+            var self = this
+                    , args = Array.prototype.slice.call(arguments);
+
+            return function() {
+                return self.apply(context, args.slice(1));
+            }
+        };
+    }
+</script>
+<a href="mailto:website@huawei.com?subject=我要反馈 &amp;body=请在下面填写您要反馈的内容：（来自http%3a%2f%2fwww.huawei.com%2fcn%2f）" data-email-title="我要反馈" data-email-body="请在下面填写您要反馈的内容：（来自http%3a%2f%2fwww.huawei.com%2fcn%2f）" data-email-addr="website@huawei.com">
+    发送邮件
+</a>
+<br/>
+
+<style>
+    .box{width:430px;}
+    .box_in{padding:20px; border:1px solid #ddd;}
+</style>
+<div class="box">
+    <div class="box_in">
+        <strong>温馨提示</strong><br />
+        团购成功后，消费凭证将发送到手机：<strong class="cr">132 0803 3621</strong>，凭短信去商家消费。
+    </div>
+</div>
+
+<style>
+    .box2{width:430px; padding:20px; border:1px solid #ddd;}
+</style>
+<div class="box2">
+    <strong>温馨提示</strong><br />
+    团购成功后，消费凭证将发送到手机：<strong class="cr">132 0803 3621</strong>，凭短信去商家消费。
+</div>
+<style>
+    .triangle-bottomright {
+        width: 0;
+        height: 0;
+        border-bottom: 100px solid red;
+        border-left: 100px solid red;
+        border-right: 100px solid transparent;
+        border-top: 100px solid transparent;
+    }
+</style>
+<div class="triangle-bottomright">
+
+</div>
+<style>
+    #box3 {
+        float: left;
+        width: 100px;
+        height: 50px;
+        background-color: #eee;
+        border: 5px solid maroon;
+        padding: 15px;
+    }
+</style>
+<div id="box3"></div>
+</body>
+</html>

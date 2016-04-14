@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>web socket</title>
+    <script>
+        window.addEventListener("message", function (ev) {
+            console.debug("从" + ev.origin + "那里传过来的信息:\n" + ev.data + "")
+        }, false);
+
+        function hello() {
+            var iframe = window.frames[0];
+            iframe.postMessage("你好好好好", "http://localhost:63342/operation/ywy/toolkit/practice/html5+css3/frame.html")
+        }
+    </script>
+</head>
+<body>
+<iframe src="http://localhost:63342/operation/ywy/toolkit/practice/html5+css3/frame.html" width="400" onload="hello()"
+        frameborder="0" style="background-color: #eee;"></iframe>
+</body>
+</html>

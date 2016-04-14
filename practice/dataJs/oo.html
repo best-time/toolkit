@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    function Gouzao() {
+        this.obj = {};
+        this.hs = {
+            add: {},
+            minus: {}
+        }
+    }
+    Gouzao.prototype.say = function () {
+        var b = this.obj;
+        b = {name: "ywy"};
+        console.log(this.obj)
+    }
+    var aa = new Gouzao();
+    //    aa.say();
+
+    //⭐️⭐️️⭐️️⭐️️⭐️ 注意一下两种方式的区别
+    function cc(b) {
+//        b = {name: "ywy"} //如果重新赋值, 就切断了b的原来引用, 这样b 和 c 就还是{age 25}. 一定要注意区别
+        b.age = 30
+        return b;
+    }
+    function ac() {
+        var c = {age: 25};
+//        var c= 22
+        var b = c;   //引用类型 b c 同时指向 {age: 25}这个对象
+        cc(b);
+//        console.log(c2)
+        console.log(b) // {age: 30}
+        console.log(c) // {age: 30}
+    }
+    ac();
+
+    function cc2(b) {
+        b = 30
+        return b;
+    }
+    function ac2() {
+//        var c= {age: 25}
+        var c = 25
+        var b = c;
+        cc2(b);
+        console.log(b) // 25
+        console.log(c) // 25
+    }
+    ac2();
+
+    var o1 = {name: "ywy"};
+    var o2 = o1;
+    o2.name = "yyy";
+    console.log(o2)
+    console.log(o1)
+
+    var t1 = ["red", "blue"];
+    var t2 = t1;
+    t2[2] = "orange";
+    console.log(t1)
+    console.log(t2)
+
+
+    console.log("=========================");
+
+    //推荐使用
+
+    function extend(child, Sup) {//child表示子类，Sup表示超类
+        // 首先定义一个空函数
+        var F = function () {
+        };
+
+        // 设置空函数的原型为超类的原型
+        F.prototype = Sup.prototype;
+
+        // 实例化空函数，并把超类原型引用传递给子类
+        child.prototype = new F();
+
+        // 重置子类原型的构造器为子类自身
+        child.prototype.constructor = child;
+
+        // 在子类中保存超类的原型,避免子类与超类耦合
+        child.sup = Sup.prototype;
+
+        if (Sup.prototype.constructor === Object.prototype.constructor) {
+            // 检测超类原型的构造器是否为原型自身
+            Sup.prototype.constructor = Sup;
+        }
+
+    }
+    //测试代码如下：
+    // 下面我们定义2个类A和类B，我们目的是实现B继承于A
+    function A(x) {
+        this.x = x;
+        this.getX = function () {
+            return this.x;
+        }
+    }
+    A.prototype.add = function () {
+        return this.x + this.x;
+    };
+    // 构造函数B
+    function B(x) {
+        A.call(this, x); // 继承构造函数A中的所有属性及方法
+    }
+    extend(B, A);  // B继承于A
+    var b = new B(11);
+    console.log(b);
+    console.log(A.prototype)
+    console.log(b.getX()); // 11
+    console.log(b.add());  // 22
+
+    console.log("----------------");
+
+    //new Function() 方式声明函数
+    var foo3 = new Function('var temp = 100; this.temp = 200; return temp + this.temp;');
+    console.log(foo3());
+
+    var raw = "name";
+    var Tmpl = new Function("context", "with(context){console.log("+ raw +");}");
+
+    Tmpl({name: "rainy"});   //=> rainy
+    Tmpl({name: "js"});         //js
+
+
+    (function(){
+        this.template = function (str, data){
+            var fn = new Function("obj", "var p=[];"+
+                    "with(obj){ p.push('" +
+                    str.replace(/[\r\t\n]/g, " ") //回车符 制表符 换行符
+                            .split("<%").join("\t")
+                            .replace(/\t=(.*?)%>/g, "',$1,'")
+                            .split("\t").join("');")
+                            .split("%>").join("p.push('")
+                    + "');} return p.join('');");
+        console.log(str.replace(/[\r\t\n]/g, " ") //回车符 制表符 换行符
+                    .split("<%").join("\t")
+                    .replace(/\t=(.*?)%>/g, "',$1,'")
+                    .split("\t").join("');")
+                    .split("%>").join("p.push('")
+           );
+            return data ? fn( data ) : fn;
+        };
+    })();
+
+    console.log(template("<li>Hello,<%=name%>!</li>", {name: "yinweiyi"}));
+
+function ww(obj) {
+    var p = [];
+    with(obj) {
+        p.push('<li>Hello,',name,'!</li>');
+    }
+    return p.join('');
+}
+    console.info(ww({name: "ywy"}))
+    window.localStorage.setItem("day", JSON.stringify([1,2,3]))
+    console.log(JSON.parse(window.localStorage.getItem("day")))
+</script>
+</body>
+</html>

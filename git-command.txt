@@ -27,3 +27,4 @@ git rm filename
 
 删除分支：git branch -d name
 
+2016年02月17日20:41:12

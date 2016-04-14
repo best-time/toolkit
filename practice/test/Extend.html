@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    /**
+     * 1 原型链继承(对象间的继承)
+     * 2 类式继承(构造函数间的继承)
+     */
+
+    //1. 类式继承
+    function Super() {
+        this.colors = ["red", "blue"];
+    }
+    function Sub() {
+        Super.call(this);
+    }
+    var rr = new Sub();
+    console.log(rr.colors)
+    console.log(rr.__proto__)
+
+    //2.原型链继承
+    function Parent() {
+        this.name = "mike";
+    }
+    Parent.prototype.say = function() {
+        return this.name
+    }
+    function Child() {
+        this.age = 12;
+    }
+    Child.prototype = new Parent();
+    var test2 = new Child();
+    console.log(test2)
+    console.log(test2.name, test2.age)
+
+    //3. 组合继承 (原型链和借用构造函数)
+    //缺点: 父类会被调用两次
+    /*
+        思路是: 使用原型链实现对原型属性和方法的继承, 借用构造函数实现对实例属性的继承
+     */
+    function Par(age) {
+        this.name = ["mike", "jack", "smith"];
+        this.age = age;
+    }
+    Par.prototype.run = function() {
+        return this.name + " are both" + this.age
+    };
+    function Chi(age) {
+        Par.call(this, age)
+    }
+    Chi.prototype = new Par();
+    var test3 = new Chi(26);
+    console.log(test3.run()) // mike,jack,smith are both26
+
+
+    //4 原型式继承
+    function obj(o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
+    }
+    var box = {
+        name: "ttkk",
+        arr: ["brother", "sister", "baba"]
+    }
+    var test4 = obj(box);
+    console.log(test4);
+    test4.name = "mike";
+    test4.arr.push("mother");
+
+    var test5 = obj(box);
+    console.log(test5.name); // ttkk
+    console.log(test5.arr)  // ["brother", "sister", "baba", "mother]
+    //问题是会影响引用类型 属性
+
+    var oo = {};
+    oo.say = {};
+    oo = oo.say;
+    console.log(oo);
+
+
+</script>
+</body>
+</html>

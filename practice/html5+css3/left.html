@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>2个div 一个宽度固定,一个宽度自适应</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            color: #fff
+        }
+        .left {
+            width: 200px;
+            height: 1000px;
+            background-color: #eee;
+            float: left;
+        }
+        .part {
+            /*margin-left: 200px;*/
+            width: 100%;
+            height: 1000px;
+            background-color: #c00058;
+        }
+    </style>
+</head>
+<body>
+<div class="left"></div>
+<div class="part">123321</div>
+<!-- 给100%宽度 -->
+<br/>
+<hr/>
+<br/>
+<style>
+    .left2 {
+        width: 200px;
+        height: 1000px;
+        background-color: #ccc;
+        float: left;
+    }
+    .part2 {
+        margin-left: 200px;
+        height: 1000px;
+        background-color: maroon;
+    }
+</style>
+<div class="left2"></div>
+<div class="part2">123321</div>
+<!-- 给margin-left值 -->
+
+<br/>
+<hr/>
+<br/>
+
+<div style="width:100%; height:500px; position:relative">
+    <div style=" background-color:#990; height:300px; padding-left:200px">22222222222222222222222222222</div>
+    <div style="width:200px;   height:480px; background-color:#FCF; position:absolute; left:0; top:0; z-index:99">1111111111111111</div>
+</div>
+</body>
+</html>

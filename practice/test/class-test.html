@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="Class.js"></script>
+</head>
+<body>
+<script>
+    /*    var animal = Class({
+     Init: function () {
+     console.log('animal');
+     },
+     Public: {
+     eat: function () {
+     console.log(this.name + ' eats');
+     this.name = 'animal';
+     },
+     name: 'animal',
+     walk: function () {
+     this.pwalk();
+     }
+     },
+     Private: {
+     pwalk: function () {
+     console.log(this.name + ' walks');
+     }
+     }
+     });
+
+     //Dog derived class from animal overriding eat
+     var dog = Class(animal, {
+     Init: function () {
+     console.log('dog');
+     },
+     Public: {
+     eat: function () {
+     console.log(this.name + ' eats');
+     this.walk();
+     },
+
+     name: 'dog'
+     }
+     });
+
+     //Hound inherited from dog provides a new method howl
+     var hound = Class(dog, {
+     Init: function () {
+     console.log('hound'); // log constructor
+     },
+     Public: {
+     howl: function () {
+     console.log(this.name + " howls"); // log name
+     this.eat();
+     }
+     }
+     });
+     var dh = new hound(); // logs animal, dog, hound
+     console.log(dh)
+     dh.howl(); // Logs dog howls, dog eats, animal walks*/
+
+    if (!Object.prototype.create) { //ie < 9 的create 方法实现
+        Object.prototype.create = function (obj) {  //Object.create 实现相当于下面这段代码
+            var F = function () {
+            };
+            F.prototype = obj;
+            return new F();
+        }
+    }
+
+    var test = {val: 1}; //属性value 在原型对象中 注意和new Object之间的区别
+    var testA = Object.create(test);
+
+    //    console.log(testA)
+    testA.val = 2;
+    console.log(testA.val);//打印   2
+    delete testA.val;
+    console.log(testA.val); //打印   1
+
+    /*
+     Object.prototype.create = function(a){  //Object.create 实现相当于下面这段代码
+     var F = Function (){};
+     F.prototype = a;
+     return new F();
+     }
+     */
+
+    function Test2() {
+        this.a = 1;
+    }
+    var testB = new Test2();  //属性a在实例中
+    //    console.log(testB)
+    //    console.log(testB.__proto__)
+    testB.a = 2;
+    console.log(testB.a);//2
+    delete testB.a;
+    console.log(testB.a);//undefined
+
+    function bb() {
+        console.log(arguments)
+        console.log([].slice.call(arguments));
+        console.log(Array.prototype.slice.call(arguments));
+    }
+    bb(1,2,3,4,5)
+</script>
+</body>
+</html>

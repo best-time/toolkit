@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    var slice = [].slice;
+    var obj = {};
+    var toString = obj.toString;
+    var hasOwn = obj.hasOwnProperty;
+    var euid = 0;
+
+    function isFun(fn) {
+        return toString.call(fn) === "[object Function]";
+    }
+
+    function isObj(obj) {
+        return toString.call(obj) === "[object Object]";
+    }
+
+    function isArr(arr) {
+        return isFun(Array.isArray) ? Array.isArray(arr) :
+        toString.call(arr) === '[object Array]';
+    }
+
+    function extendDeep() {
+        var target = arguments[0] || {},
+                arrs = slice.call(arguments, 1),
+                len = arrs.length,
+                copyIsArr,
+                clone
+                ;
+        for (var i = 0; i < len; i++) {
+            var arr = arrs[i];
+            for (var name in arr) {
+                var src = target[name];
+                var copy = arr[name];
+                //避免无限循环
+                if (target === copy) continue;
+                if (copy && (isObj(copy) || (copyIsArr = isArr(copy)))) {
+                    if (copyIsArr) {
+                        copyIsArr = false;
+                        clone = src && isArr(src) ? src : [];
+                    } else {
+                        clone = src && isObj(src) ? src : {};
+                    }
+                    target[name] = extendDeep(clone, copy); // [] ["red", "blue"]
+                } else if (typeof copy !== 'undefined') {
+                    target[name] = copy;
+                }
+            }
+        }
+        return target;
+    }
+    var res = extendDeep({name: "ywy"}, {age: 26, like: ["red", "blue"]})
+    console.log(res)
+</script>
+
+</body>
+</html>

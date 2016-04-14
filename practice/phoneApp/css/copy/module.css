@@ -1,0 +1,45 @@
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+.header {
+    max-width: 15rem;
+    margin: 0 auto;
+}
+.title {
+    text-align: center;
+}
+.nav {
+    margin: 0 auto;
+    max-width: 15rem;
+    background-color: #fff;
+}
+.nav ul {
+    padding: .4rem 0;
+}
+.nav ul li {
+    width: 20%;
+    text-align: center;
+    float: left;
+    margin-bottom: .2rem;
+}
+.nav ul li a {
+    display: inline-block;
+    color:#7b7f82
+}
+.nav ul li img {
+    width: 1.6rem;
+    height: 1.6rem;
+    background-size: 100%;
+    background-image: none
+}
+
+.content {
+    margin: 0 auto;
+    max-width: 15rem;
+}
+.content .con1 {
+    display: flex;
+}
+

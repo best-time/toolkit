@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    var rword = /[^, ]+/g;
+    var class2type = {};
+    "Boolean Number String Function Array Date RegExp Object Error"
+            .replace(rword, function (name) {
+        class2type["[object " + name + "]"] = name.toLowerCase()
+    })
+    console.log(class2type);
+
+    var a = new Function("var a = 3;return a")
+    alert(a())
+</script>
+
+<div style="width: 100px; height: 50px; background-color: #eee;" draggable="true"></div>
+</body>
+</html>

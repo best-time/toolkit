@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+//        "use strict"
+        //1
+        function bind(fn, ctx) {
+            return function (a) {
+                var l = arguments.length;
+                return l ?
+                        l > 1 ? fn.apply(ctx, arguments) : fn.call(ctx, a) :
+                        fn.call(ctx);
+            };
+        }
+        var b = {
+            name: "ywy"
+        }
+        function a(a, b) {
+            console.log(this.name);
+            console.log(a* b);
+        }
+//        var res = bind(a, b)
+//        console.log(res);
+//        res(5, 10); // "ywy"
+
+        //2
+
+        function toArray(list, start) {
+            start = start || 0;
+            var i = list.length - start;
+            var ret = new Array(i);
+            while (i--) {
+                ret[i] = list[i + start];
+            }
+            return ret;
+        }
+        function c(a,b,c) {
+            console.log(arguments)
+            console.log(toArray(arguments, 1));
+        }
+//        c(1,2,3)
+
+        //3
+        var d = {};
+        Object.defineProperty(d, "name", {
+            configurable: false,
+            value: "yinweiyi",
+            enumerable: true,
+            writable: false
+        });
+        d.name = "ywy";
+//        console.log(d); // "yinweiyi"
+
+        //4
+        function _debounce(func, wait) {
+            var timeout,
+                    args,
+                    context,
+                    timestamp,
+                    result;
+            var later = function later() {
+                var last = Date.now() - timestamp;
+                if (last < wait && last >= 0) {
+                    timeout = setTimeout(later, wait - last);
+                } else {
+                    timeout = null;
+                    result = func.apply(context, args);
+                    if (!timeout) context = args = null;
+                }
+            };
+            return function () {
+                context = this;
+                args = arguments;
+                timestamp = Date.now();
+                if (!timeout) {
+                    timeout = setTimeout(later, wait);
+                }
+                return result;
+            };
+        }
+        var res = _debounce(function() {console.log("_debounce")}, 1000);
+//        res()
+
+        //5
+        var a = Object.create({name:"ywy"});
+        console.log(a);
+
+
+
+
+
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>

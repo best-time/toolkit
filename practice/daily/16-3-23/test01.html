@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>javascript DOM高级程序设计 note</title>
+    <style>
+        #box {
+            background: #eee;
+        }
+    </style>
+
+</head>
+<body>
+<a href="#a" onclick="javascript:window.open('http://www.baidu.com');return false;">点击我</a>
+<div id="box" class="div-con">div块</div>
+<div id="a" class="aaa dd">div块</div>
+<div id="b" class="bbb dd">div块</div>
+<div id="c" class="ccc dd">div块</div>
+<button id="but">点击</button>
+<hr/>
+<a href="javascript:;" message="aaaa">
+    <img src="../images/bigLoader.gif" alt=""/>
+</a>
+<div id="test"></div>
+
+
+
+
+
+
+
+<script src="../js/ADS.js"></script>
+<script>
+    var domA = document.getElementsByTagName("a")[0];
+//    console.log(domA.nodeName, domA.nodeType); // A 1
+    var domDiv = document.getElementById("box");
+//    console.log(domDiv.nodeName, domDiv.nodeType, domDiv.nodeValue);
+//    console.log(ADS.$("box").className);
+
+    var res = ADS.$("a", "b", "c");
+    var len = res.length;
+    var i = len;
+    while(i--) {
+        console.log(res[len - i - 1].className)
+    }
+    ADS.addEvent(ADS.$("but"), "click", function() {
+        alert("button")
+    });
+    //拼接字符串的方式:
+    var str = '<div><h2>title<h2>\
+                <span>123</span>\
+                </div>';
+//    console.log(str)
+    ADS.addEvent(document, "click", function(e) {
+        var e = e || window.event;
+        var button = (typeof e.which != "undefined") ? e.which : e.button;
+//        console.log(button);
+    });
+    // dom 创建img 标签
+    var img = new Image();
+    img.src="../images/bigLoader.gif";
+    ADS.$("test").appendChild(img);
+
+    function F(name) {
+        //私有属性
+        this.name = name;
+        //私有方法
+        function abs() {}
+        //特权方法 (也是公共方法)
+        this.say = function() {
+            console.log(this.name)
+        };
+    }
+    //公有方法
+    F.prototype.lert = function() {
+        alert(this.name);
+    };
+    //静态属性
+    F.age = 30;
+    //静态方法
+    F.lertName = function() {};
+    console.log(new F("ywy"));
+    console.log(new F("ywy").__proto__);
+
+    //函数绑定
+    function bindFunction(obj, func) {
+        return function() {
+            func.apply(obj, arguments)
+        };
+    }
+
+    function doubleCheck() {
+        this.message = "Are you sure you want to leave";
+    }
+    doubleCheck.prototype.sayGoodbye = function() {
+        console.log(this)
+        alert(this.message);
+    };
+    function initPage() {
+        var clickedLink = new doubleCheck();
+        var links = document.getElementsByTagName("a");
+        var len = links.length;
+        var i = 0;
+        for(; i< len; i++) {
+            ADS.addEvent(links[i], "click", ADS.bindFunction(clickedLink, clickedLink.sayGoodbye))
+        }
+    }
+
+    ADS.addEvent(window, 'load', initPage);
+
+    //try catch
+    var sound = "Roar";
+    function myOrneryBeast() {
+        this.style.color = 'green';
+        alert(sound);
+    }
+
+    try{
+        myOrneryBeast();
+    } catch(exception) {
+        console.log(
+                exception.name + ": " +
+                        exception.message
+        )
+    }
+
+</script>
+</body>
+</html>

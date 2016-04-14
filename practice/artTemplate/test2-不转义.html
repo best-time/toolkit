@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/template.js"></script>
+    <script src="js/jquery.1.8.3.min.js"></script>
+</head>
+<body>
+
+<h1>不转义HTML</h1>
+
+<div id="content">
+
+</div>
+<script id="test" type="text/html">
+    <!-- 变量前面加上 '#' 号 变量就不转义了 -->
+    <p>不转义：{{#value}}</p>
+    <p>默认转义： {{value}}</p>
+</script>
+
+<script>
+    var data = {
+        value: '<span style="color:#F00">hello world!</span>'
+    };
+    var html = template('test', data);
+    document.getElementById('content').innerHTML = html;
+</script>
+
+
+</body>
+</html>

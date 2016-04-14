@@ -52,11 +52,8 @@
 (function (global) {
     "use strict";
 
-    var module = module || null,
-        idIncrementor = 999999,
-        exports = {},
-        // holds references to prototypes to make them cross-retrievable
-        protoRefs = {};
+    var
+        idIncrementor = 999999;
 
     /*
      * Step 1: Generate a new date in milliseconds
@@ -75,7 +72,7 @@
             i;
 
         // Start with a timestamp in milliseconds
-        //ªÒ»° ±º‰¥¡
+        //Ëé∑ÂèñÊó∂Èó¥Êà≥
         newStr += (new Date()).getTime();
 
         // Add 1 to the incrementor and add on the new number
@@ -127,12 +124,16 @@
      * Extends an object with mixin properties. If the parent has a custom prototype,
      * attaches the child to the same prototype unless otherwise specified.
      */
+
+    // holds references to prototypes to make them cross-retrievable
+    var protoRefs = {};
+
     function Class(parent, child, copyProto) {
         var Inherit = {},
             newId = idgen(),
             middleChild,
             middleBinding;
-
+    //Class.inherit.ClassChain
         /*
          * This actually does the construction.
          * Call it Inherit.ClassChain for instance naming consistency.
@@ -158,7 +159,7 @@
             && parent.getProto() !== Object.prototype
             && parent.isClassChain
             && !Object.prototype.hasOwnProperty.call(parent, 'isClassChain')
-            && copyProto !== false) {
+            && copyProto !== false) {alert(111)
 
             /*
              * In order to make prototypes retrievable, we have to override the protoRef
@@ -209,6 +210,7 @@
                 return new Class(this, mixins, copyPrototype);
             }
         };
+
         return new Inherit.ClassChain(parent, child);
     }
 
@@ -273,6 +275,7 @@
     }
 
 
+    var exports = {};
     // Export module code
     exports = {
 
@@ -302,6 +305,7 @@
         }
     };
 
+    var module = module || null;
     // AMD
     if (global.define && typeof global.define === fun && global.define.amd) {
         global.define('BlueShell', [], exports);

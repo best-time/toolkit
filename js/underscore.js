@@ -111,7 +111,7 @@
         return cb(value, context, Infinity);
     };
 
-    // Similar to ES6's rest param (http://ariya.ofilabs.com/2013/03/es6-and-rest-parameter.html)
+    // Similar to ES6's rest param (http://ariya.ofilabs.plugins/2013/03/es6-and-rest-parameter.html)
     // This accumulates the arguments passed into an array, after a given index.
     var restArgs = function (func, startIndex) {
         startIndex = startIndex == null ? func.length - 1 : +startIndex;

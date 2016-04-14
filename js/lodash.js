@@ -960,11 +960,11 @@
         }
         // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
         // that causes it, under certain circumstances, to provide the same value for
-        // `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247
+        // `object` and `other`. See https://github.plugins/jashkenas/underscore/pull/1247
         // for more details.
         //
         // This also ensures a stable sort in V8 and other engines.
-        // See https://code.google.com/p/v8/issues/detail?id=90 for more details.
+        // See https://code.google.plugins/p/v8/issues/detail?id=90 for more details.
         return object.index - other.index;
     }
 
@@ -4910,7 +4910,7 @@
          *
          * **Note:** If this function becomes hot, i.e. is invoked a lot in a short
          * period of time, it will trip its breaker and transition to an identity function
-         * to avoid garbage collection pauses in V8. See [V8 issue 2070](https://code.google.com/p/v8/issues/detail?id=2070)
+         * to avoid garbage collection pauses in V8. See [V8 issue 2070](https://code.google.plugins/p/v8/issues/detail?id=2070)
          * for more details.
          *
          * @private
@@ -7938,7 +7938,7 @@
          * on the trailing edge of the timeout only if the the debounced function is
          * invoked more than once during the `wait` timeout.
          *
-         * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+         * See [David Corbacho's article](http://drupalmotion.plugins/article/debounce-and-throttle-visual-explanation)
          * for details over the differences between `_.debounce` and `_.throttle`.
          *
          * @static
@@ -8638,7 +8638,7 @@
          * on the trailing edge of the timeout only if the the throttled function is
          * invoked more than once during the `wait` timeout.
          *
-         * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+         * See [David Corbacho's article](http://drupalmotion.plugins/article/debounce-and-throttle-visual-explanation)
          * for details over the differences between `_.throttle` and `_.debounce`.
          *
          * @static
@@ -9291,7 +9291,7 @@
          */
         function isObject(value) {
             // Avoid a V8 JIT bug in Chrome 19-20.
-            // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+            // See https://code.google.plugins/p/v8/issues/detail?id=2291 for more details.
             var type = typeof value;
             return !!value && (type == 'object' || type == 'function');
         }
@@ -11211,7 +11211,7 @@
          * [#133](https://html5sec.org/#133) of the [HTML5 Security Cheatsheet](https://html5sec.org/)
          * for more details.
          *
-         * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
+         * When working with HTML you should always [quote attribute values](http://wonko.plugins/post/html-escaping)
          * to reduce XSS vectors.
          *
          * @static
@@ -11240,8 +11240,8 @@
          * @returns {string} Returns the escaped string.
          * @example
          *
-         * _.escapeRegExp('[lodash](https://lodash.com/)');
-         * // => '\[lodash\]\(https://lodash\.com/\)'
+         * _.escapeRegExp('[lodash](https://lodash.plugins/)');
+         * // => '\[lodash\]\(https://lodash\.plugins/\)'
          */
         function escapeRegExp(string) {
             string = toString(string);
@@ -11446,7 +11446,7 @@
          */
         function parseInt(string, radix, guard) {
             // Chrome fails to trim leading <BOM> whitespace characters.
-            // See https://code.google.com/p/v8/issues/detail?id=3109 for more details.
+            // See https://code.google.plugins/p/v8/issues/detail?id=3109 for more details.
             if (guard || radix == null) {
                 radix = 0;
             } else if (radix) {
@@ -11578,14 +11578,14 @@
          * object is provided it takes precedence over `_.templateSettings` values.
          *
          * **Note:** In the development build `_.template` utilizes
-         * [sourceURLs](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl)
+         * [sourceURLs](http://www.html5rocks.plugins/en/tutorials/developertools/sourcemaps/#toc-sourceurl)
          * for easier debugging.
          *
          * For more information on precompiling templates see
-         * [lodash's custom builds documentation](https://lodash.com/custom-builds).
+         * [lodash's custom builds documentation](https://lodash.plugins/custom-builds).
          *
          * For more information on Chrome extension sandboxes see
-         * [Chrome's extensions documentation](https://developer.chrome.com/extensions/sandboxingEval).
+         * [Chrome's extensions documentation](https://developer.chrome.plugins/extensions/sandboxingEval).
          *
          * @static
          * @memberOf _
@@ -11668,7 +11668,7 @@
          */
         function template(string, options, otherOptions) {
             // Based on John Resig's `tmpl` implementation (http://ejohn.org/blog/javascript-micro-templating/)
-            // and Laura Doktorova's doT.js (https://github.com/olado/doT).
+            // and Laura Doktorova's doT.js (https://github.plugins/olado/doT).
             var settings = lodash.templateSettings;
 
             if (otherOptions && isIterateeCall(string, options, otherOptions)) {

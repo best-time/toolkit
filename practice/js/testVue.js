@@ -59,10 +59,10 @@ new Vue({
 //     data: {
 //         users: [{
 //             name: 'FOO BAR',
-//             email: 'foo@bar.com'
+//             email: 'foo@bar.plugins'
 //         }, {
 //             name: 'John Doh',
-//             email: 'John@Doh.com'
+//             email: 'John@Doh.plugins'
 //         }]
 //     }
 // })
