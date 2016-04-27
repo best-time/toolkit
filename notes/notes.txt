@@ -254,7 +254,14 @@ function add(a) {
 var ans = add(2)(3)(4);
 
 
-lazyLoad my-class extnd TinyDom delayed namespacer.js datediff  cookie.js
+lazyLoad
+my-class
+extnd
+TinyDom
+delayed
+namespacer.js
+datediff
+cookie.js
 https://github.com/jasonmoo/t.js
 https://github.com/james2doyle/saltjs/tree/master/js
 https://github.com/malko/l.js
@@ -296,3 +303,48 @@ console.log(f instanceof Function);  //true
 console.log(o instanceof Function);  // false
 console.log(f instanceof Object);    // true
 console.log(o instanceof Object);   // true
+
+
+2016年4月27日21:44:27 start
+meta 用法总结:
+http://web.jobbole.com/85860/
+
+前端工具集:
+https://github.com/codylindley/frontend-tools
+
+随机获取16进制颜色: (~~(Math.random()*(1<<24))).toString(16)
+
+curl.js
+
+
+CSS鼠标指针事件pointer-events属性非常的有趣，
+它的功效非常像JavaScript，当你把这个属性设置为none时，它能有效的阻止禁止这个元素，你也许会说“这又如何？”，
+但事实上，它是禁止了这个元素上的任何JavaScript事件或回调函数！
+.disabled { pointer-events: none; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
