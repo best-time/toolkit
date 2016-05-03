@@ -7,9 +7,9 @@
 <body>
 <script>
     var isEnd = true;
-    window.setTimeout(function () {
-        isEnd = false;//1s后，改变isEnd的值
-    }, 1000);
+//    window.setTimeout(function () {
+//        isEnd = false;//1s后，改变isEnd的值
+//    }, 1000);
     //    while (isEnd);
     //    alert('end');
 
@@ -125,7 +125,6 @@
     //    console.log(count3); // 29
 
 
-
     // 惰性实列化代码如下
     var myNamespace = function () {
 
@@ -170,12 +169,10 @@
     }();
     // 调用方式
     myNamespace.init();
-//    console.log(res);
-//    console.log(res.getName())
-//    var name = myNamespace.getName();
-//    console.log(name); // tugenhua
-
-
+    //    console.log(res);
+    //    console.log(res.getName())
+    //    var name = myNamespace.getName();
+    //    console.log(name); // tugenhua
 
 
     // 如下简单函数节流代码演示
@@ -187,15 +184,44 @@
         process: function () {
             clearTimeout(this.timeoutId);
             var self = this;
-            self.timeoutId = setTimeout(function () {
-                self.preformMethod();
-            }, 1000);
+//            self.timeoutId = setTimeout(function () {
+//                self.preformMethod();
+//            }, 1000);
         }
     };
     // 执行操作
     throttle.process();
 
-
+    var _delayer = {
+        time: 0,
+        used: false,
+        push: function (callback, time) {
+            var self = this;
+            this.used = true;
+            this._callback = function () {
+                if (callback) {
+                    callback();
+                }
+                self._timer = null;
+                self._callback = null;
+            };
+            this.time = time || 0;
+            this._timer = setTimeout(this._callback, this.time);
+        },
+        delay: function (time) {
+            if (this._timer) {
+                clearTimeout(this._timer);
+            }
+            if (this._callback) {
+                if (time !== undefined) {
+                    this._timer = time;
+                }
+                this._timer = setTimeout(this._callback, this.time);
+            }
+        }
+    };
+    _delayer.push(function() {console.log("ddddeeeelay")}, 2000);
+//    _delayer.delay(10000)
 </script>
 </body>
 </html>
