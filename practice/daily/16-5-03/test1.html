@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var isEnd = true;
+    window.setTimeout(function () {
+        isEnd = false;//1s后，改变isEnd的值
+    }, 1000);
+    //    while (isEnd);
+    //    alert('end');
+
+
+    //function 的几种用法:
+    //1.
+    var obj = new function () {
+        var a = 1;
+        var b = 2;
+        this.total = a + b;
+//        return a + b;
+    };
+    //    console.log(obj);
+    //    console.log(obj.total)
+
+    //2
+    var test1 = new function () {
+        var a = 1;
+        var b = 2;
+        return function (c) {
+            return a + b + c;
+        }
+    };
+    //    console.log(test1(3));
+
+    function log() {
+        if (window.console) {
+            // 第一个参数是apply要执行的函数，第二个参数为context，第三个参数为要执行函数的参数列表
+            Function.prototype.apply.call(console.log, console, arguments);
+            // Function.apply.call(console.log,console,arguments); // 也是可以的。
+
+        }
+    }
+    //    log(1, 2,2,3,4,5,6,7, ["a"])
+
+    function outer(a, b, c) {
+        console.log(outer.arguments); // [1,2,3,4]
+        console.log(outer.caller); // null
+        console.log(outer.length); // 3
+        console.log(outer.name); // outer
+        function inner() {
+            console.log(inner.arguments); // []
+            console.log(inner.caller); // 打印出整个函数体
+            console.log(inner.length); // 0
+            console.log(inner.name); // inner
+            // 内部函数访问外部函数的属性
+            console.log(arguments.callee.caller.arguments); // [1,2,3,4]
+            console.log(inner.caller.arguments); // [1,2,3,4]
+            console.log(arguments.callee.caller.caller); // null
+            console.log(inner.caller.caller); // null
+            console.log(arguments.callee.caller.length); // 3
+            console.log(inner.caller.length); // 3
+            console.log(arguments.callee.caller.name); // outer
+            console.log(inner.caller.name); // outer
+        }
+
+        inner();
+    }
+    //    outer(1, 2, 3, 4);
+
+    var count = 0;
+    var fibonacci = function (n) {
+        count++;
+        return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+    };
+    for (var i = 0; i <= 10; i += 1) {
+//        console.log(i + ":" + fibonacci(i));
+    }
+    //    console.log(count); // 453
+
+    ///----------------
+    // ☆☆☆☆☆
+    var count2 = 0;
+    var fibonacci2 = (function () {
+        var memo = [0, 1];
+        var fib = function (n) {
+            var result = memo[n];
+            count2++;
+            if (typeof result !== 'number') {
+                result = fib(n - 1) + fib(n - 2);
+                memo[n] = result;
+            }
+            return result;
+        };
+        return fib;
+    })();
+    for (var j = 0; j <= 10; j += 1) {
+//        console.log(j + ":" + fibonacci2(j));
+    }
+    //    console.log(count2); // 29
+
+    //抽象化
+    var count3 = 0;
+    var memoizer = function (memo, formula) {
+        var recur = function (n) {
+            var result = memo[n];
+            count3++; // 这句代码只是说明运行函数多少次，在代码中并无作用
+            if (typeof result !== 'number') {
+                result = formula(recur, n);
+                memo[n] = result;
+            }
+            return result;
+        };
+        return recur;
+    };
+    var fibonacci3 = memoizer([0, 1], function (recur, n) {
+        return recur(n - 1) + recur(n - 2);
+    });
+    // 调用方式如下
+    for (var k = 0; k <= 10; k += 1) {
+//        console.log(k + ":" + fibonacci3(k));
+    }
+    //    console.log(count3); // 29
+
+
+
+    // 惰性实列化代码如下
+    var myNamespace = function () {
+
+        var Configure = function () {
+            var privateName = "tugenhua";
+
+            var privateGetName = function () {
+                return privateName;
+            };
+            var privateSetName = function (name) {
+                privateName = name;
+            };
+            // 返回单列对象
+            return {
+                setName: function (name) {
+                    privateSetName(name);
+                },
+                getName: function () {
+                    return privateGetName();
+                }
+            };
+        };
+        // 存储Configure实列
+        var instance;
+        return {
+            init: function () {
+                // 如果不存在实列，就创建单列实列
+                if (!instance) {
+                    instance = Configure();
+                }
+                // 创建Configure单列
+                for (var key in instance) {
+                    if (instance.hasOwnProperty(key)) {
+                        this[key] = instance[key];
+                    }
+                }
+//                console.log(this);
+                this.init = null;
+                return this;
+            }
+        }
+    }();
+    // 调用方式
+    myNamespace.init();
+//    console.log(res);
+//    console.log(res.getName())
+//    var name = myNamespace.getName();
+//    console.log(name); // tugenhua
+
+
+
+
+    // 如下简单函数节流代码演示
+    var throttle = {
+        timeoutId: null, // 需要执行的方法
+        preformMethod: function () {
+            console.log("-----")
+        }, // 初始化需要调用的方法
+        process: function () {
+            clearTimeout(this.timeoutId);
+            var self = this;
+            self.timeoutId = setTimeout(function () {
+                self.preformMethod();
+            }, 1000);
+        }
+    };
+    // 执行操作
+    throttle.process();
+
+
+</script>
+</body>
+</html>

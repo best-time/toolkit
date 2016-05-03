@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    function curry(fn) {
+        var slice = [].slice,
+                args = slice.call(arguments, 1);
+        return function() {
+            var newArgs = slice.call(arguments);
+            return fn.apply(null, args.concat(newArgs));
+        }
+    }
+    function square(i) {
+        return i * i;
+    }
+    function map(handler, list) {
+        return list.map(handler);
+    }
+//    var res = map(square, [1, 2, 3, 5]);
+//    console.log(res)
+
+//    var mapS = curry(map, square);
+//    var res2 = mapS([1, 2, 3])
+//    console.log(res2);
+
+    var add = function() {
+        var args = arguments;
+        return function() {
+            if(!arguments.length) { //不传参的时候执行
+                var sum = 0;
+                for(var i = 0, c; c = args[i++];) {
+                    sum += c;
+                }
+                return sum;
+            } else {
+                [].push.apply(args, arguments);console.log(args)
+                return arguments.callee;
+            }
+        }
+    };
+//    var res5 = add(1)(2)(4)();
+//    console.debug(res5)
+    var curry2 = function(fn) {
+        var args = [];
+        return function cb() {
+            if(arguments.length == 0) {
+                return fn.apply(this, args);
+            }
+            [].push.apply(args, arguments);
+            return cb;
+        }
+    }
+</script>
+</body>
+</html>
