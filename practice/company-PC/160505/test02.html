@@ -1,0 +1,57 @@
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+    <html xmlns="http://www.w3.org/1999/xhtml">  
+    <head>  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+    <title>屏蔽 非数字字符的输入</title>  
+    <style>  
+    body{ font:10px; }  
+    span{ color:red; }  
+    </style>  
+    <script>  
+    function is_number(e){  
+        //IE 中 Event 对象使用 keyCode 获得键入字符的 Unicode 编码  
+        //DOM 中 Event 对象 使用 charCode 获得键入字符的 Unicode 编码  
+        var char_code = e.charCode ? e.charCode : e.keyCode;  
+        //Unicode 编码中， 0~9 的编码的十进制 是 48~57 之间 ， 0为 48， 9 为57  
+        if(char_code<48 || char_code >57){  
+            console.log("只允许输入数字");     
+            return false;  
+        }  
+        else{  
+            return true;      
+        }  
+    }  
+    </script>  
+    </head>  
+      
+    <body>  
+    <form name="user_info" method="post">  
+    <table width="400" height="1" border="0" cellpadding="0" cellspacing="0">  
+      <tr>  
+          <td align="right">用户名：</td>  
+          <td align="left"><input type="text" name="user_name" size="15" /><span>*</span></td>  
+      </tr>  
+      <tr>  
+          <td align="right">密码：</td>  
+          <td align="left"><input type="password"  name="user_pwd" size="15" /><span>*</span></td>  
+      </tr>  
+      <tr>  
+          <td align="right">银行帐号：</td>  
+          <td align="left"><input type="text" name="user_account_no" size="15" onkeypress="return is_number(event)" /><span>*</span></td>  
+      </tr>  
+      <tr>  
+          <td align="right">E-mail:</td>  
+          <td align="left"><input type="text" name="user_email" size="15" /><span>*</span></td>  
+      </tr>  
+      <tr>  
+          <td align="right">个人简介：</td>  
+          <td align="left"><textarea name="user_intro" cols="16" rows="5" ></textarea><span>*</span></td>  
+      </tr>  
+      <tr>  
+          <td align="right"></td>  
+          <td align="left"><input type="submit" value="提交" onclick="return check_form()" /></td>  
+      </tr>  
+     </table>  
+    </form>  
+    </body>  
+    </html>  

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>水平切换 demo</title>
+    <meta name="Keywords" content="">
+    <meta name="author" content="@my_programmer">
+    <style type="text/css">
+        /*重置{*/
+        body,div,span{ padding:0;margin:0;}
+        /*}重置*/
+        .all{width:602px;height:302px;margin:100px auto 0;border:2px red solid;overflow:hidden;}
+        .inner{width:4816px;height:302px;}
+        .inner>div{width:600px;height:300px;border:1px blue solid;float:left;font-size:80px;font-weight:bold;text-align:center;line-height:300px;}
+        .pointer{width:256px;margin:20px auto;overflow:hidden;}
+        .pointer>span{float:left;width:20px;height:20px;border-radius:50%; margin:0 5px;border:1px #000 solid;}
+        .color{background:#ff0;}
+    </style>
+</head>
+<body>
+<div class="all">
+    <div class="inner">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+    </div>
+</div>
+<div class="pointer" id="pointer">
+    <span class="color"></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+<div style="margin:0px auto;width:80px;" class="go">
+    <input type="button" value="go" style="width:50px;height:30px;"/>
+</div>
+<script src="jquery.js"></script>    <!-- 下面为了省事，例子4、6、7 使用了jquery-->
+<script src="flipsnap.js"></script>
+<script type="text/javascript">
+
+    /*1.简单水平拖动*/
+    Flipsnap('.inner');    //移动次数为子元素个数减一
+
+    /*2.设定每次移动的距离*/
+    //Flipsnap('.inner',{
+    //distance:602    //每次移动的距离，移动次数为子元素个数减一；注意：此处不能有分号,可以有逗号
+    //});
+
+    /*3.设定每次移动的距离,和，最多移动的次数*/
+    //Flipsnap('.inner',{
+    //distance:602,
+    //maxPoint:7        //最多移动的次数
+    //});
+
+    /*4.绑定事件*/
+    /*var $pointer=$('.pointer span');
+     var flipsnap=Flipsnap('.inner',{distance:602});
+     flipsnap.element.addEventListener('fsmoveend',function(){
+     $pointer.filter('.color').removeClass('color');            //filter 为jquery的筛选器，筛选出与指定表达式匹配的元素集合
+     $pointer.eq(flipsnap.currentPoint).addClass('color');
+     },false);*/
+
+    /*5.refresh 刷新*/
+    //var flipsnap=Flipsnap('.inner');
+    //flipsnap.refresh();        //刷新当前页面，当屏幕切换时，此代码就派上用场了
+    /*6.移动到指定位置,鼠标不可拖动 */
+    /*var flipsnap = Flipsnap('.inner', {
+     distance: 602,
+     disableTouch: true     //true 鼠标不可拖动;  false 鼠标可拖动
+     });
+     $('.go').click(function() {
+     //flipsnap.moveToPoint(3);    //移动到指定位置,第n+1个
+     flipsnap.toNext();    //移动到下一元素
+     //flipsnap.toPrev();    //移动到上一元素
+     });*/
+
+    /*7.next, prev*/
+    /*var flipsnap = Flipsnap('.inner', {
+     distance: 602,
+     disableTouch: true     //true 鼠标不可拖动;  false 鼠标可拖动
+     });
+     $('.go').click(function() {
+     flipsnap.toNext();    //移动到下一元素
+     //flipsnap.toPrev();    //移动到上一元素
+     });*/
+
+</script>
+</body>
+</html>
