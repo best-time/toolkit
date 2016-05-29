@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            height: 3000px;
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    var bdy = document.body;
+    var i = 0;
+    window.addEventListener('scroll', throttle2(realFunc, 500), false);
+
+    //    function debounce(func, wait, immediate) {
+    //        var timeout;
+    //        return function() {
+    //            clearTimeout(timeout);
+    //            timeout = setInterval(func, wait);
+    //        }
+    //    }
+    function realFunc() {
+        console.log("Success")
+    }
+    //    function debounce(func, wait, immediate) {
+    //        var timeout;
+    //        return function() {
+    //            var context = this,
+    //                    args = arguments;
+    //            function later() {
+    //                timeout = null;
+    //                if(!immediate) {
+    //                    func.apply(context, args);
+    //                }
+    //            }
+    //            var callNow = immediate & !timeout;console.log(callNow)
+    //            clearTimeout(timeout);
+    //            timeout = setTimeout(later, wait);
+    //            if(callNow) {
+    //                func.apply(context, args)
+    //            }
+    //        }
+    //    }
+    //防抖动: 多个顺序地调用合并成一次
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function () {
+            var context = this,
+                    args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                timeout = null;
+                if (!immediate) {
+                    console.log(args)
+                    func.apply(context, args);
+                }
+            }, wait);
+            if (immediate && !timeout) {
+                func.apply(context, args);
+            }
+        };
+    }
+
+
+    //防节流
+    // X 毫秒内至少执行一次我们希望触发的事件 handler
+    function throttle(func, wait, mustRun) {
+        var timeout,
+                startTime = +new Date();
+        return function () {
+            var context = this,
+                    args = arguments,
+                    curTime = +new Date();
+            clearTimeout(timeout);
+
+            if (curTime - startTime > mustRun) {
+                func.apply(context, args);
+                startTime = curTime;
+            } else {
+//                console.log("%c else", "color: red")
+                timeout = setTimeout(func, wait)
+            }
+        }
+    }
+
+    function throttle2(fn, wait) {
+        var timer,
+                firstTime = true;
+        return function () {
+            var args = arguments,
+                    _this = this;
+            if (firstTime) { //第一次调用，不需要延迟执行，这步做不做都行
+                fn.apply(_this, args);
+                firstTime = false;
+                return false;
+            }
+            if (timer) { //如果定时器还在，说明需要等一会
+                return false;
+            }
+            timer = setTimeout(function () {//延迟一段时间执行
+                clearTimeout(timer);
+                timer = null;
+                fn.apply(_this, args)
+            }, wait || 500)
+        }
+    }
+</script>
+</body>
+</html>

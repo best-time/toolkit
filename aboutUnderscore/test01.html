@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/underscore.js"></script>
+</head>
+<body>
+
+<script>
+
+    function checker() {
+        var validators = _.toArray(arguments);
+        return function(obj) {
+            return _.reduce(validators, function(errs, check) {
+                if(check(obj)) {
+                    return errs;
+                } else {
+                    return _.chain(errs).push(check.message).value();
+                }
+            }, []);
+        }
+    }
+    function validator(message, fun) {
+        function f() {
+            return fun.apply(fun, arguments);
+        };
+
+        f['message'] = message;
+        return f;
+    }
+
+    function aMap(obj) {
+        return _.isObject(obj);
+    }
+
+    var checkCommand = checker(validator("must be a map", aMap));
+//    console.log(checkCommand)
+
+
+    function dispatch() {
+        var funs = _.toArray(arguments);
+        var size = funs.length;
+
+        return function(target) {
+            var ret = undefined;
+            var args = _.rest(arguments);
+
+            for (var i = 0; i < size; i++) {
+                var fun = funs[i];
+                ret = fun.apply(fun, construct(target, args));
+
+                if (existy(ret)) return ret;
+            }
+
+            return ret;
+        };
+    }
+
+
+
+</script>
+</body>
+</html>

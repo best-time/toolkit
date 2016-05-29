@@ -341,6 +341,47 @@
         };
     }
 
+    //防抖动
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function () {
+            var context = this,
+                args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                timeout = null;
+                if (!immediate) {
+                    console.log(args)
+                    func.apply(context, args);
+                }
+            }, wait);
+            if (immediate && !timeout) {
+                func.apply(context, args);
+            }
+        };
+    }
+    //防节流
+    function throttle(fn, wait) {
+        var timer,
+            firstTime = true;
+        return function () {
+            var args = arguments,
+                _this = this;
+            if (firstTime) { //第一次调用，不需要延迟执行
+                fn.apply(_this, args);
+                firstTime = false;
+                return false;
+            }
+            if (timer) { //如果定时器还在，说明需要等一会
+                return false;
+            }
+            timer = setTimeout(function () {//延迟一段时间执行
+                clearTimeout(timer);
+                timer = null;
+                fn.apply(_this, args)
+            }, wait || 500)
+        }
+    }
 
     //把is对象上的方法, 复制到is.not  is.all  is.any 对象上
     function setInterfaces() {

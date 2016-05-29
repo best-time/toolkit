@@ -40,7 +40,6 @@
     };
 
     // Create a safe reference to the Underscore object for use below.
-    //构造函数 _
     var _ = function (obj) {
         if (obj instanceof _) return obj;
         if (!(this instanceof _)) return new _(obj);
