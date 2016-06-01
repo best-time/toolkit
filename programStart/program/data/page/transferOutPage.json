@@ -1,0 +1,25 @@
+{
+    "responseCode":true,
+    "responseMsg":"验证通过",
+    "arrivalMode": "1",
+    "defaultCard": {
+        "bankCode": "CCB",
+        "bankName": "中国工商银行",
+        "isBankCard": true,
+        "withdrawId": 200,
+        "cardNo": "1111111111111111111",
+        "cardNoLater": "3402",
+        "isWithdrawCard": false,
+        "cardCompletion": false,
+        "selectedId": 100,
+        "balance": "12111000.23"
+    },
+    "quickArrivalBalance": 99,
+    "quickLimit": "40000",
+    "normalLimit": "500000",
+    "quickArrivalCount": 10,
+    "totalBalance": "1534.45",
+    "realName": "*卫",
+    "quickTip":"30分钟到账，今日还可转出3次，每笔最多5万",
+    "normalTip":"4月2日 24:00前到账，此前收益照常发放，不限次，每笔最多50万"
+}

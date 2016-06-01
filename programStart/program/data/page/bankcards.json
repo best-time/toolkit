@@ -1,0 +1,62 @@
+{
+    "success": true,
+    "responseMsg": "验证通过",
+    "cardInfoList": [
+        {
+            "balance": 1000.23,
+            "bankName": "中国工商银行",
+            "withdrawId": 200,
+            "bankCode": "CCB",
+            "cardCompletion": false,
+            "cardNo": "1111",
+            "cardNoLater": "11111111",
+            "isBankCard": true,
+            "isWithdrawCard": false,
+            "selectedId": 100
+        },
+        {
+            "balance": 2000.10,
+            "bankName": "中国建设银行",
+            "withdrawId": 201,
+            "bankCode": "CCB",
+            "cardCompletion": false,
+            "cardNo": "22222222",
+            "cardNoLater": "2222",
+            "isBankCard": true,
+            "isWithdrawCard": false,
+            "selectedId": 101
+        },
+        {
+            "balance": 3000.10,
+            "bankName": "中国建设银行",
+            "withdrawId": 201,
+            "bankCode": "CCB",
+            "cardCompletion": false,
+            "cardNo": "33333333",
+            "cardNoLater": "3333",
+            "isBankCard": true,
+            "isWithdrawCard": false,
+            "selectedId": 102
+        },
+        {
+            "balance": "3999350.00",
+            "bankCode": "yifubao",
+            "bankName": "易付宝余额",
+            "isBankCard": false,
+            "selectedId": 3
+        },
+        {
+            "balance": "0.00",
+            "bankName": "中国建设银行",
+            "withdrawId": 201,
+            "bankCode": "CCB",
+            "cardCompletion": false,
+            "cardNo": "44444444",
+            "cardNoLater": "4444",
+            "isBankCard": true,
+            "isWithdrawCard": false,
+            "selectedId": 103,
+            "cantSelected": true
+        }
+    ]
+}

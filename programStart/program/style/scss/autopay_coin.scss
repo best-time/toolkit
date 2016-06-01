@@ -1,0 +1,45 @@
+@charset "UTF-8";
+@import "reset.scss";
+@import "function.scss";
+@import "module.scss";
+@import "app.scss";
+@import "header.scss";
+
+body{
+  min-width: 320px;
+  max-width: 750px;
+  margin: 0 auto;
+  background-color: #F2F2F2;
+  line-height: 1.5;
+  color: #333;
+  font: pxToRem(16px) arial, tahoma, SimHei;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+i {
+  font-style: normal;
+}
+img {
+  border: 0;
+  width: 100%;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.clearfix {
+  display: inline-block;
+}
+
+.clearfix {
+  zoom: 1;
+  display: block;
+}
+
+

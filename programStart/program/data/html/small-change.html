@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='dns-prefetch' href='http://resjrprd.suning.com'>
+    <meta charset="UTF-8">
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="Cache-Control" content="public"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="keywords" content="苏宁金融,苏宁加油卡,加油卡"/>
+    <meta name="description" content="苏宁金融综合互联网理财服务，苏宁金融理财，苏宁加油卡,加油卡"/>
+    <link rel="shortcut icon" href="http://www.suning.com/favicon.ico" type="image/x-icon"/>
+    <title>易付宝支付签约</title>
+    <link rel="stylesheet" href="../style/css/autopay_coin.css"/>
+    <script type="text/javascript">
+        (function () {
+            var dwidth = document.documentElement.offsetWidth, width, root = 'half-root';
+            width = 50 + (dwidth - 375) * 100 * .2 / 750;
+            width = Math.round(width > 65 ? 65 : width);
+            var radina = Math.floor(window.devicePixelRatio || 1);
+            var root = 'retina-root';
+            root += radina;
+            document.documentElement.setAttribute('class', root + (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) ? ' ios' : ''));
+            document.documentElement.style.fontSize = width + 'px';
+        })();
+    </script>
+
+</head>
+<body>
+
+<header class="header-common">
+    <section class="border-andle coin-bg">
+        <div class="goback"></div>
+        <div class="title">零钱宝<i></i></div>
+        <div class="gomenu single-memu"></div>
+    </section>
+    <div class="mask hide"></div>
+</header>
+
+<section class="wrap">
+
+    <div class="coin-banner">
+        <div class="img"><img src="../style/images/coin-banner.png" alt=""></div>
+        <div class="income-info">
+            <div class="box_flex">
+                <div class="box_inner">
+                    <p class="box_name">七日年化收益率（%）</p>
+                    <p class="box_money">3.1042</p>
+                </div>
+            </div>
+            <div class="box_line"></div>
+            <div class="box_flex">
+                <div class="box_inner">
+                    <p class="box_name">每万份收益（元）</p>
+                    <p class="box_money">0.7453</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="coin-oper">
+        <div class="coin-set">
+            <p class="coin-set-title">我要转入（元）</p>
+            <div class="coin-set-content">
+                <a class="minus"><img src="../style/images/subtract-icon.png" alt=""></a>
+                <input type="text" val="10000" class="coin-set-num">
+                <a class="add"><img src="../style/images/add-icon.png" alt=""></a>
+            </div>
+        </div>
+        <div class="coin-chart">
+            <img src="../style/temp/temp-chart.png" alt="">
+        </div>
+    </div>
+</section>
+
+<footer>
+    <section class="footer coin-footer">
+        <a class="transfer">转入</a>
+    </section>
+</footer>
+
+</body>
+
+</html>

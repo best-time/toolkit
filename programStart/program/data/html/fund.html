@@ -1,0 +1,150 @@
+<div class="fund-new-two">
+    {{if isNew}}
+    <!--新用户 -->
+    <div class="new-user" id="new-user-con">
+        <section class="wrap">
+
+            <div class="coin-banner">
+                <div class="newer-bg-img">
+
+                </div>
+                <div class="income-info">
+                    <div class="box_flex">
+                        <div class="box_inner">
+                            <p class="box_name">七日年化收益率(%)</p>
+
+                            <p class="box_money">{{sevenDayYield}}</p>
+                        </div>
+                    </div>
+                    <div class="box_line"></div>
+                    <div class="box_flex">
+                        <div class="box_inner">
+                            <p class="box_name">每万份收益(元)</p>
+
+                            <p class="box_money">{{thousandsIncome}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="coin-oper border-handle">
+                <div class="coin-set">
+                    <p class="coin-set-title">我要转入(元)</p>
+
+                    <div class="coin-set-content">
+                        <a class="minus coin-minus"></a>
+                        <input type="text" val="" class="coin-set-num" id="coin-set-num" maxlength="7">
+                        <a class="add coin-add"></a>
+                    </div>
+                </div>
+                <div class="calcu-money">
+                    <p class="desc">零钱宝一天的收益</p>
+                    <p class="profit-num">{{thousandsIncome}}</p>
+                </div>
+            </div>
+            <div class="fund-tips">
+                <p>注:货币基金不等于银行存款，过往业绩不预示其未来表现，市场有风险，投资需谨慎(以上数据参考昨日收益计算)</p>
+            </div>
+        </section>
+
+        <footer class="">
+            <section class="footer coin-footer" id="new-user-fund-foot">
+                <a href="javascript:;" class="transfer" id="transfer-in-but" data-clickactive>转入</a>
+            </section>
+        </footer>
+    </div>
+    {{else}}
+
+    <section class="switch-fund-cat" id="customer-con">
+
+        <section class="sec-cc-content">
+            <!-- switch content -->
+            <div class="cc-content" style="position: relative;">
+                <!-- tab content -->
+                {{each category as v i}}
+                <div class="wrap fund-wrap" data-cid="{{v.Id}}">
+
+                    <div class="fund-profit">
+                        <div class="fund-yes" id="about-pro-lists" data-clickactive="">
+                            <p class="title">昨日收益（元）</p>
+                            <p class="num"><span>{{v.yesIncome}}</span></p>
+                        </div>
+                        <div class="fund-personal-info">
+                            <div class="money_box">
+                                <div class="box_flex" id="pro-assets" data-clickactive="">
+                                    <div class="box_inner">
+                                        <p class="box_name">零钱宝资产(元)</p>
+
+                                        <p class="box_money"><span>{{v.userAssets}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="box_line"></div>
+                                <div class="box_flex" id="accu-income" data-clickactive="">
+                                    <div class="box_inner">
+                                        <p class="box_name">累计收益(元)</p>
+
+                                        <p class="box_money"><span>{{v.allIncome}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rate-profit-list">
+
+                        <section>
+                            <div class="tab_wbox tab_wbox_profit switch-rate-profit-{{i}}">
+                                <div class="tab_wbox_title border-handle on" data-clickActive>七日年化收益(%)<i>{{v.newRate}}</i></div>
+
+                                <div class="tab_wbox_title border-handle" data-clickActive>每万份收益(元)<i>{{v.newIncome}}</i></div>
+                            </div>
+                            <div class="content-box content-trend-{{i}} pic-bg-color">
+                                <div class="tab-content chart-area" id="fund-trend-line-{{i}}">
+
+                                </div>
+                                <div class="tab-content res-list ">
+                                    {{each v.incomeList as k t}}
+                                    {{if t < 4}}
+                                    <p class="border-handle"><span>{{k.time}}</span><span>{{k.value}}</span></p>
+                                    {{/if}}
+                                    {{/each}}
+
+                                    <p class="load-more" data-cid="{{v.Id}}" data-clickActive><span>查看更多</span></p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                </div>
+                {{/each}}
+
+            </div>
+        </section>
+    </section>
+
+    <section class="all-info-desc fund-set-balance" id="set-fund-balance" data-clickActive>
+        <p><span>设置</span><i class="iconfont icon-arrow-r" ></i></p>
+    </section>
+
+    <section class="all-info-desc" id="see-more-fund" data-clickActive>
+        <p><span>更多货币基金</span><i class="iconfont icon-arrow-r"></i></p>
+    </section>
+
+    <section class="fund-tip">
+        <div class="fund-info-tips">
+            <p><a href="javascript:;" id="fund-treaty">《零钱宝关联基金》</a></p>
+
+            <p>货币基金不等同于银行存款，市场有风险，投资需谨慎</p>
+        </div>
+    </section>
+
+    <div class="fund-common-div fund-foot border-handle">
+        <div class="fund-set-button">
+            <div class="set-button-in" id="transfer-in-but" data-clickactive><span id="bott">转入</span></div>
+            <div class="set-button-out border-handle" id="transfer-out-but" data-clickactive><span>转出</span></div>
+        </div>
+    </div>
+
+    {{/if}}
+</div>

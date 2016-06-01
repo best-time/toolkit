@@ -1,0 +1,168 @@
+<section class="caption border-handle">
+   <ul>
+       <li class="{{if arrivalMode == 1}}on {{/if}}border-handle">快速到账</li>
+       <li class="{{if arrivalMode == 2}}on {{/if}}">普通到账</li>
+   </ul>
+   <div class="bg-on"></div>
+</section>
+<div class="content-box">
+    <section class="content-tab">
+        <section class="content">
+            <div class="fc-main">
+                <form class="form">
+                    <div class="note-title">{{quickTip}}</div>
+                    <div class="fc-item border-handle">
+                        <div class="top" data-clickActive>
+                            <div class="right-box">
+                                <i class="iconfont icon-arrow-r"></i>
+                            </div>
+                            <div class="img-box">
+                                <img class="img lazy-img" data-lasy="{{recordValide.bankIcon}}">
+                            </div>
+                            <div class="txt">
+                                <h6 class="txt-h6">{{recordValide.bankName}}
+                                {{if recordValide.isBankCard}}
+                                    <span>尾号{{recordValide.cardNoLater}}</span>
+                                {{/if}}
+                                </h6>
+                                <p class="txt-p">可转出{{if recordValide.isBankCard}}至该卡{{/if}}的额度：<span>{{recordValide.balance}}</span>元</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-box">
+                        <dl class="dl-phone border-handle">
+                            <dt>转出金额：</dt>
+                            <dd>
+                                <input type="number" id="amount" class="amount" valideId="amount" maxlength="50" placeholder="本次最多可转出{{recordValide.quickMax}}元" />
+                            </dd>
+                        </dl>
+                        <dl class="dl-phone border-handle">
+                            <dt>支付密码：</dt>
+                            <dd>
+                                <input type="password" id="payPassword" class="password" valideId="payPassword" readonly="readonly" maxlength="50" placeholder="易付宝支付密码" />
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="fc-btns">
+                        <div href="javascript:;" class="fc-btn fc-btn-blue btn-not border-handle" data-clickActive>确认转出</div>
+                    </div>
+                    <dl class="intor-box">
+                        <dt>零钱宝实现原卡进出，确保您的资金安全</dt>
+                        <dd>可转出至此卡额度=此卡历史转入金额-此卡历史转出金额</dd>
+                        <dd>如有疑问请联系苏宁金融客服4008365365-9</dd>
+                    </dl>
+                    <p class="more-protocol more-protocol-btns" data-stop-href="#detail-more">了解更多</p>
+                </form>
+            </div>
+        </section>
+    </section>
+    <section class="content-tab">
+        <section class="content">
+            <div class="fc-main">
+                <form class="form" autocomplete="off">
+                    <div class="note-title">{{normalTip}}</div>
+                    <div class="fc-item border-handle">
+                        <div class="top" data-clickActive>
+                            <div class="right-box">
+                                <i class="iconfont icon-arrow-r"></i>
+                            </div>
+                            <div class="img-box">
+                                <img class="img" src="{{recordValide.bankIcon}}">
+                            </div>
+                            <div class="txt">
+                                <h6 class="txt-h6">{{recordValide.bankName}}
+                                    {{if recordValide.isBankCard}}
+                                    <span>尾号{{recordValide.cardNoLater}}</span>
+                                    {{/if}}
+                                </h6>
+                                <p class="txt-p">可转出{{if recordValide.isBankCard}}至该卡{{/if}}的额度：<span>{{recordValide.balance}}</span>元</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-box">
+                        <dl class="dl-phone border-handle">
+                            <dt>转出金额：</dt>
+                            <dd>
+                                <input type="number" id="amount2" class="amount" valideId="amount2" maxlength="50" placeholder="本次最多可转出{{recordValide.normalMax}}元" />
+                            </dd>
+                        </dl>
+                        <dl class="dl-phone border-handle">
+                            <dt>支付密码：</dt>
+                            <dd>
+                                <input type="password" id="payPassword2" class="password" valideId="payPassword2" maxlength="50" placeholder="易付宝支付密码" autocomplete="off"  readonly="readonly"/>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="fc-btns">
+                        <div href="javascript:;" class="fc-btn fc-btn-blue btn-not border-handle" data-clickActive>确认转出</div>
+                    </div>
+                    <dl class="intor-box">
+                        <dt>零钱宝实现原卡进出，确保您的资金安全</dt>
+                        <dd>可转出至此卡额度=此卡历史转入金额-此卡历史转出金额</dd>
+                        <dd>如有疑问请联系苏宁金融客服4008365365-9</dd>
+                    </dl>
+                    <p class="more-protocol more-protocol-btns" data-stop-href="#detail-more">了解更多</p>
+                </form>
+            </div>
+        </section>
+    </section>
+</div>
+
+<script type="text/html" id="pwdErrorTempl">
+    <div class="cont">
+        <p class="title">
+            ${msg}
+        </p>
+    </div>
+    <div class="pop-button border-handle">
+        <a href="javascript:void(0);" data-clickActive class="confirm" data-href="${confirmUrl}">找回密码</a>
+        <a href="javascript:void(0);" data-clickActive class="close border-handle">我知道了</a>
+    </div>
+</script>
+<script type="text/html" id="realAuthTempl">
+    <div class="cont">
+        <p class="title">${msg}</p>
+    </div>
+    <div class="pop-button border-handle">
+        <a href="javascript:void(0);" data-clickActive class="close">关闭</a>
+        <a href="javascript:void(0);" data-clickActive class="confirm border-handle" data-href="${confirmUrl}">去高级实名</a>
+    </div>
+</script>
+<script type="text/html" id="riskTempl">
+    <div class="cont">
+        <p class="title">${msg}</p>
+    </div>
+    <div class="pop-button border-handle">
+        <a href="javascript:void(0);" data-clickActive class="close">关闭</a>
+        <a href="javascript:void(0);" data-clickActive class="confirm border-handle" data-href="##">返回零钱宝</a>
+    </div>
+</script>
+<script type="text/html" id="successTempl">
+    <div class="cont">
+        <p class="title">${title}</p>
+        ${if title2}
+        <p class="title-notice">${title2}</p>
+        ${/if}
+    </div>
+    <div class="pop-button border-handle">
+        <a href="javascript:void(0);" data-clickActive class="confirm border-handle">完成</a>
+    </div>
+</script>
+<script type="text/html" id="completeTempl">
+    <div class="cont">
+        <p class="title">${msg}</p>
+    </div>
+    <div class="pop-button border-handle">
+        <a href="javascript:void(0);" data-clickActive class="close">取消</a>
+        <a href="javascript:void(0);" data-clickActive class="confirm border-handle">去补充</a>
+    </div>
+</script>
+<script type="text/html" id="unbindTempl">
+    <div class="cont">
+        <p class="title">此卡已解绑，请补充必要信息以继续转出</p>
+    </div>
+    <div class="pop-button border-handle">
+        <a href="javascript:void(0);" data-clickActive class="close">取消</a>
+        <a href="javascript:void(0);" data-clickActive class="confirm border-handle">去补充</a>
+    </div>
+</script>

@@ -1,0 +1,26 @@
+<div class="fc-notes">
+    <div class="income-month-avg">
+        <p class="income-desc">近一月每万份收益平均值</p>
+        {{if avg != null}}
+        <p class="month-average">{{avg}}</p>
+        {{/if}}
+    </div>
+    <div class="income-list-details">
+        <ul>
+            {{if incomeList != null}}
+            {{each incomeList as item i}}
+            {{if i == 0}}
+            <li class="border-handle"><span class="left latest">{{item.time}}<i>今天</i></span><span
+                    class="right income-num">{{item.value}}</span></li>
+            {{else}}
+            <li class="border-handle"><span class="left">{{item.time}}<i></i></span><span
+                    class="right">{{item.value}}</span>
+            </li>
+            {{/if}}
+
+            {{/each}}
+            {{/if}}
+        </ul>
+    </div>
+
+</div>

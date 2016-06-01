@@ -1,0 +1,70 @@
+<div class="fc-main">
+    <div id="inputForm" method="post">
+        <div class="group-box group-box2">
+            <dl class="dl-phone border-handle">
+                <dt>姓名：</dt>
+                <dd class="input-box border-handle">{{realName}}</dd>
+            </dl>
+            <dl class="dl-phone border-handle">
+                <dt>银行：</dt>
+                <dd class="input-box border-handle">{{bankName}}</dd>
+            </dl>
+            {{if cardNo}}
+            <dl class="dl-phone border-handle">
+                <dt>银行卡号：</dt>
+                <dd class="input-box border-handle">****{{cardNoLater}}</dd>
+            </dl>
+            {{/if}}
+        </div>
+        {{if type != 1 && type != 2}}
+        <div class="group-box group-box2">
+            <dl class="dl-phone border-handle">
+                <dt>开户省市：</dt>
+                <dd>
+                    <input type="text" class="input address" valideId="address" placeholder="开户银行省份/城市" />
+                </dd>
+            </dl>
+        </div>
+        {{/if}}
+        {{if !cardNo}}
+            <div class="group-box group-box2">
+                <dl class="dl-phone border-handle">
+                    <dt>银行卡号：</dt>
+                    <dd>
+                        <input type="text" id="cardNo" name="cardNo" class="input" valideId="cardNo" placeholder="请输入银行卡号" />
+                    </dd>
+                </dl>
+            </div>
+        {{/if}}
+        {{if type!=1 && type!=2}}
+        <div class="group-box group-box2">
+            <dl class="dl-phone border-handle">
+                <dt>开户银行：</dt>
+                <dd>
+                    <input type="text" id="bankName" name="bankName" class="input" valideId="bankName" placeholder="请输入开户银行支行全称" />
+                </dd>
+            </dl>
+        </div>
+        <dl class="intor-box">
+            <dd>建议拨打银行服务热线查询，需填写完整的银行名称， 例如:“建设银行江苏省南京徐庄支行” </dd>
+        </dl>
+        {{/if}}
+        {{if type!=1 && type!=2}}
+        <div class="group-box group-box2">
+            <dl class="dl-phone border-handle">
+                <dt>联行号：</dt>
+                <dd>
+                    <input type="tel" id="bankUnit" name="bankUnit" class="input" valideId="bankUnit" placeholder="请填写开户银行支行联行号" />
+                </dd>
+            </dl>
+        </div>
+        <dl class="intor-box">
+            <dd>建议拨打银行服务热线查询，联行号是银行网点的统一编号 </dd>
+        </dl>
+        {{/if}}
+        <div class="buttons" style="padding-top: 30px;">
+            <div class="cancel border-handle" data-clickActive><span id="bott">取消</span></div>
+            <div class="confirm fc-btn-blue" data-clickActive><span>继续转出</span></div>
+        </div>
+    </div>
+</div>

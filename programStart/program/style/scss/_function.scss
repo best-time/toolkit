@@ -1,0 +1,238 @@
+@charset "utf-8";
+$baseFontSize: 100px !default;
+@function pxToRem($px: 16) {
+    @return $px / $baseFontSize/2 * 1rem;
+}
+@function strip-units($number){
+    @return $number / ($number * 0 + 1);
+}
+@mixin remlace($property, $values...) {
+    $max: length($values);
+    $remValues: '';
+    @for $i from 1 through $max {
+        $value: strip-units(nth($values, $i));
+        $defaultFontSize: strip-units($baseFontSize);
+        $remValues: #{$remValues + $value / $defaultFontSize / 2 * 1rem};
+        @if $i < $max {
+            $remValues: #{$remValues + " "};
+        }
+    }
+    #{$property}: $remValues;
+}
+@mixin box-shadow($shadow...) {
+    -webkit-box-shadow:$shadow;
+    box-shadow:$shadow;
+}
+
+@mixin animation($content...) {
+    -webkit-animation: $content;
+    animation: $content;
+}
+
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
+/*
+*transition
+*/
+@mixin transition($content...) {
+    -webkit-transition: $content;
+    transition: $content;
+}
+@mixin transition-simple($property, $duration:1s, $timing-function:linear, $delay:0s) {
+    -webkit-transition:$property $duration $timing-function $delay;
+    transition:$property $duration $timing-function $delay;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+@mixin t-transform( $duration:1s, $timing-function:linear, $delay:0s){
+    -webkit-transition: -webkit-transform $duration $timing-function $delay;
+    transition: transform $duration $timing-function $delay;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+/*
+*transform
+*/
+@mixin transform($content...) {
+    -webkit-transform:$content;
+    transform:$content;
+}
+/*
+*translate
+*/
+@mixin translate($x:0px, $y:0px, $z:0px) {
+    -webkit-transform:translate($x,$y,$z);
+    transform:translate($x,$y,$z);
+}
+@mixin translateX($num:0px) {
+    -webkit-transform:translateX($num);
+    transform:translateX($num);
+}
+@mixin translateY($num:0px) {
+    -webkit-transform:translateY($num);
+    transform:translateY($num);
+}
+@mixin translateZ($num:0px) {
+    -webkit-transform:translateZ($num);
+    transform:translateZ($num);
+}
+/*
+*translate
+*/
+@mixin scale($x:1, $y:1, $z:1) {
+    -webkit-transform:scale($x,$y,$z);
+    transform:scale($x,$y,$z);
+}
+@mixin scaleX($num:1) {
+    -webkit-transform:scaleX($num);
+    transform:scaleX($num);
+}
+@mixin scaleY($num:1) {
+    -webkit-transform:scaleY($num);
+    transform:scaleY($num);
+}
+@mixin scaleZ($num:1) {
+    -webkit-transform:scaleZ($num);
+    transform:scaleZ($num);
+}
+/*
+*rotate
+*/
+@mixin rotateX($num:0deg) {
+    -webkit-transform:rotateX($num);
+    transform:rotateX($num);
+}
+@mixin rotateY($num:0deg) {
+    -webkit-transform:rotateY($num);
+    transform:rotateY($num);
+}
+@mixin rotateZ($num:0deg) {
+    -webkit-transform:rotateZ($num);
+    transform:rotateZ($num);
+}
+
+@mixin flex($num:1.0) {
+    flex: $num;
+    -webkit-flex:$num;
+    -webkit-box-flex: $num;
+}
+@mixin flexbox() {
+    display: -webkit-box;
+    display: flex;
+}
+@mixin background($url, $repeat:no-repeat, $x:0, $y:0, $size:auto){
+    background: $url $repeat $x $y;
+    background-size: $size;
+}
+// triangle
+@mixin triangle($direction, $size, $borderColor ) {
+    content:"";
+    height: 0;
+    width: 0;
+
+    @if $direction == top {
+        border-bottom:$size solid $borderColor;
+        border-left:$size dashed transparent;
+        border-right:$size dashed transparent;
+    }
+    @else if $direction == right {
+        border-left:$size solid $borderColor;
+        border-top:$size dashed transparent;
+        border-bottom:$size dashed transparent;
+    }
+    @else if $direction == bottom {
+        border-top:$size solid $borderColor;
+        border-left:$size dashed transparent;
+        border-right:$size dashed transparent;
+    }
+    @else if $direction == left {
+        border-right:$size solid $borderColor;
+        border-top:$size dashed transparent;
+        border-bottom:$size dashed transparent;
+    }
+}
+$prefix-for-webkit: true !default;
+$prefix-for-spec: true !default;
+
+@mixin prefixer ($property, $value, $prefixes:webkit spec) {
+    @each $prefix in  $prefixes{
+        @if $prefix == webkit and $prefix-for-webkit == true {
+            -webkit-#{$property}: $value;
+        }
+        @else if $prefix == moz and $prefix-for-mozilla == true {
+            -moz-#{$property}: $value;
+        }
+        @else if $prefix == ms and $prefix-for-microsoft == true {
+            -ms-#{$property}: $value;
+        }
+        @else if $prefix == spec and $prefix-for-spec == true {
+            #{$property}: $value;
+        }
+        @else {
+            @warn "Unrecognized prefix: #{$prefix}";
+        }
+    }
+}
+/*
+* @param {number} $borderWidthes    set border width, four numbers express top right bottom left
+* @param {number} $borderColor    set border color, but if value equal 0, express set width equal 0
+* @param {number} $radius set   border radius
+*/
+@mixin borderHandle($borderWidthes:1111, $borderColor:0, $radius:0){
+    $innerWidth: 1;
+    $hasRight:false;
+    @if $borderColor == 0 {
+        $innerWidth: 0;
+    }
+    @if ($radius > 0){
+        border-radius: $radius;
+    }
+    &:before {
+        @if $borderWidthes%10 == 1 {
+            border-left-width: #{$innerWidth}px;
+        }
+        @if $borderWidthes%100 >= 10{
+            border-bottom-width: #{$innerWidth}px;
+        }
+        @if $borderWidthes%1000 >= 100 {
+            border-right-width: #{$innerWidth}px;
+            $hasRight: true;
+        }
+        @if $borderWidthes >= 1000{
+            border-Top-width: #{$innerWidth}px;
+            $hasRight: true;
+        }
+        @if ($borderColor != 0){
+            border-color: $borderColor;
+        }
+        border-style: solid;
+        @if ($radius > 0){
+            border-radius: $radius;
+        }
+    }
+    @if $radius > 0{
+        @media (-webkit-min-device-pixel-ratio: 2){
+            &:before {
+                border-radius: $radius*2;
+            }
+        }
+        @media (-webkit-min-device-pixel-ratio: 3){
+            &:before {
+                border-radius: $radius*3;
+            }
+        }
+    }
+}
+@function borderOuterSize($value) {
+    @return pxToRem($value+2px);
+}
+@mixin height-line($px: pxToRem(0)) {
+    height: $px;
+    line-height: $px;
+}

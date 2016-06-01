@@ -1,0 +1,29 @@
+<div class="fc-notes">
+    {{each cardInfoList as item i}}
+        <div class="fc-item border-handle">
+            {{if item.cantSelected}}
+            <div class="top{{if item.checked}} bank-selected{{/if}}{{if item.cantSelected}} bank-cant-selected{{/if}}" data-index="{{i}}">
+            {{else}}
+            <div class="top{{if item.checked}} bank-selected{{/if}}{{if item.cantSelected}} bank-cant-selected{{/if}}" data-index="{{i}}" data-clickActive>
+            {{/if}}
+                <div class="right-box">
+                    <div class="checked">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="img-box">
+                    <img class="img lazy-img" data-lasy="{{item.bankIcon}}">
+                </div>
+                <div class="txt">
+                    <h6 class="txt-h6">{{item.bankName}}
+                        {{if item.isBankCard}}
+                        <span>尾号{{item.cardNoLater}}</span>
+                        {{/if}}
+                    </h6>
+                    <p class="txt-p">可转出{{if item.isBankCard}}至该卡{{/if}}的额度：<span>{{item.balance}}</span>元</p>
+                </div>
+            </div>
+            {{if item.cantSelected}}<div class="stop-selected-mask"></div>{{/if}}
+        </div>
+    {{/each}}
+</div>

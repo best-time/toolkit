@@ -1,0 +1,82 @@
+{
+  "success": true,
+  "responseMsg":"数据获取成功",
+
+  "isNew": true,
+  "sevenDayYield": "0.064106",
+  "thousandsIncome": "0.8304",
+
+  "bankInterestRate": "0.0036",
+
+  "category": [{
+    "Id": "0",
+    "categoryName": "广发天天红",
+    "yesIncome": "1.111",
+    "allIncome": "111.02",
+    "userAssets": "99999.00",
+    "flag": "1",
+    "interestRate": [
+      {
+        "time": "2016-04-20",
+        "value": "3.3502"
+      },
+      {
+        "time": "2016-04-19",
+        "value": "3.4061"
+      },
+      {
+        "time": "2016-04-18",
+        "value": "3.3871"
+      },
+      {
+        "time": "2016-04-17",
+        "value": "3.3101"
+      },
+      {
+        "time": "2016-04-16",
+        "value": "3.1907"
+      },
+      {
+        "time": "2016-04-15",
+        "value": "3.2723"
+      },
+      {
+        "time": "2016-04-14",
+        "value": "3.1701"
+      }
+    ],
+    "incomeList": [
+      {
+        "time": "2016-03-25",
+        "value": "0.12111222"
+      },
+      {
+        "time": "2016-03-24",
+        "value": "0.7586"
+      },
+      {
+        "time": "2016-03-23",
+        "value": "0.7501"
+      },
+      {
+        "time": "2016-03-22",
+        "value": "0.7501"
+      },
+      {
+        "time": "2016-03-24",
+        "value": "0.4561"
+      },
+      {
+        "time": "2016-03-23",
+        "value": "0.3213"
+      },
+      {
+        "time": "2016-03-22",
+        "value": "0.1234"
+      }
+    ],
+    "isAutoTransfer": true,
+    "numSetting": "0"
+  }
+  ]
+}

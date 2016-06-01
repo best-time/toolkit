@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="Cache-Control" content="public"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>易付宝支付签约</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="http://www.suning.com/favicon.ico" type="image/x-icon"/>
+    <style type="text/css">
+        body{padding:0;margin:0 auto;}
+        body >.page-loading-box{position: fixed;}
+        .page-loading-box{width: 100%;height:100%;top: 0;z-index: 100002;position: fixed;left: 0;}
+        .page-loading-box *{box-sizing: content-box;}
+        .page-loading{width: 80px;height: 80px;left: 50%;top: 50%;background: rgba(0,0,0,0.6);position: absolute;border-radius: 10px;margin: -40px -40px;}
+        .page-loading-box .page-circle,.page-loading-box svg{width: 40px;height: 40px;top:20px; left:20px;position:absolute;}
+        .page-app{display: none;}
+    </style>
+</head>
+<body>
+<div class="page-loading-box">
+    <div class="page-loading">
+        <div class="page-circle"></div>
+    </div>
+</div>
+<script>
+    var BASE_PATH = '',
+            basePath = '',
+            LC_PATH = "",
+            BOF_PATH = "";
+    var appConfig = {
+        //用户失效跳转登录页面
+        loginUrl: '',
+        //模板数据地址
+        templatePath: '',
+        //零钱宝
+        fund: 'data/page/fund.json'
+    };
+</script>
+<script type="text/javascript">
+    (function () {
+        var loading = document.getElementsByClassName('page-loading')[0];
+        var svgHtml = '<svg class="svg-circle" width="' + 80 + '" height="' + 80 + '" viewBox="-1 -1 ' + 36 + " " + 36 + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>',
+                logoHtml = '<path fill="#fff" d="M22.941,17.764h-1.133H13.73l0.336-0.734h6.703c2.875,0,3.609-1.805,3.609-3.029v-1.89 c0-1.041-0.643-1.408-1.529-1.408h-1.133h-8.262h-0.765h-2.05v6.334h0.857l-2.081,4.498h2.632l0.979-2.111h0.857l-2.02,4.591h2.509 l1.989-4.56h1.163l-1.989,4.56h2.478l1.991-4.56h1.836v1.988c0,0.674-0.611,1.102-1.377,1.102h-0.888l-0.643,1.5h2.113 c2.691,0,3.609-1.621,3.609-2.846v-1.775C24.625,18.285,23.828,17.764,22.941,17.764z M21.596,12.165v2.295 c0,0.673-0.521,1.163-1.316,1.163h-6.794v-0.948h7.039v-1.53h-7.039v-0.979H21.596z"></path>',
+                orbitHtml = '<path opacity=".25" d="M17 0 A17 17 0 0 0 17 34 A17 17 0 0 0 34 17 A17 17 0 0 0 17 0" stroke="#fff" fill="rgba(0,0,0,0)" stroke-width="1px"/>',
+                circleHtml = '<path class="svg-circle" d="M17 0 A17 17 0 0 0 17 34 A17 17 0 0 0 34 17" stroke-dasharray="78" stroke="#fff" fill="rgba(0,0,0,0)" stroke-width="1px"></path>',
+                ani1Html = '<animateTransform attributeName="transform" type="rotate" values="0 17 17;50 17 17; 360 17 17" dur="1.5s" repeatCount="indefinite" calcMode="spline" keySplines=".5 0 .5 1;.5 0 .5 1"></animateTransform>',
+                ani2Html = '<animateTransform attributeName="transform" type="rotate" values="0 17 17;360 17 17" dur="2.15s" repeatCount="indefinite" additive="sum"></animateTransform>',
+                ani3Html = '<animate attributeName="stroke-dashoffset" dur="1.5s" values="0; 76; 0" repeatCount="indefinite" calcMode="spline" keySplines=".5 0 .5 1;.5 0 .5 1"></animate>';
+        var svg = createElement(svgHtml, true), logo = createElement(logoHtml, true), orbit = createElement(orbitHtml, true), circle = createElement(circleHtml, true), ani1 = createElement(ani1Html, true), ani2 = createElement(ani2Html, true), ani3 = createElement(ani3Html, true);
+        svg.appendChild(logo);svg.appendChild(orbit);svg.appendChild(circle);loading.appendChild(svg);circle.appendChild(ani1);circle.appendChild(ani2);circle.appendChild(ani3);
+        function createElement(html, isSVG) {
+            var matches = html.match(/(\w+)|(\s*[\w\-\:]*\s*=\s*"[^"]*")/g), el, tag = matches.shift(), attrs = {};
+            matches.pop();
+            el = isSVG ? document.createElementNS("http://www.w3.org/2000/svg", tag) : document.createElement(tag);
+            matches.forEach(function (item) {
+                var ret = item.trim().match(/([\w\-\:]*)\s*=\s*"([^"]*)"/);
+                attrs[ret[1]] = ret[2];
+            });
+            for (var name in attrs) {
+                el.setAttribute(name, attrs[name]);
+            }
+            return el;
+        }
+    })();
+</script>
+<script type="text/javascript" data-main="scripts/app.js" data-contextpath='' data-param="v=789" data-src="scripts/lib/zepto.temple.compo.js"></script>
+<script>
+    (function () {
+        var el = document.querySelector('[data-main]'), localStorage = window.localStorage, exectued, dataSrc = el.getAttribute('data-src');
+        try{
+            if(!localStorage){load();return;}
+            var storageKey="storage-param-",libraryKey='base-library',base_library,lastKey = localStorage.getItem(storageKey),currentKey=el.getAttribute('data-param');
+            lastKey == currentKey?base_library = localStorage.getItem(libraryKey):localStorage.removeItem(libraryKey),
+            userAgent = window.navigator.userAgent.toLowerCase(),noStorage = !(userAgent.match(/snyifubao|ebuy-snyifubao/) && userAgent.match(/android/));
+            if(noStorage && base_library && base_library !== 'undefined' && !el.hasAttribute('src')){
+                base_library = base_library.replace(/^function\s*[\w\d_]*\(\s*\)\s*\{|\}$/g, '');
+                new Function(base_library)();exectued = true;
+            }else{load();}
+        }catch(e){load();}
+        function load(){if(!exectued && dataSrc)el.setAttribute('src', dataSrc);el.removeAttribute('src');}
+    })()
+</script>
+<!-- 判断安卓易付宝客户端加载 SNEPAInterface.js -->
+<script type="text/javascript" src="http://respay.suning.com/eppClientApp/html/js/SNEPAInterface.js"></script>
+<!-- 判断安卓易购客户端加载 sneapp.js -->
+<!--
+<script type="text/javascript" src="http://sslres.suning.com/project/mvs/RES/common/script/android/sneapp.js"></script>
+-->
+
+</body>
+
+</html>
