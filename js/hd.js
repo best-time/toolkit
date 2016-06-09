@@ -351,7 +351,6 @@
             timeout = setTimeout(function () {
                 timeout = null;
                 if (!immediate) {
-                    console.log(args)
                     func.apply(context, args);
                 }
             }, wait);

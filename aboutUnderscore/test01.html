@@ -24,7 +24,7 @@
     function validator(message, fun) {
         function f() {
             return fun.apply(fun, arguments);
-        };
+        }
 
         f['message'] = message;
         return f;
@@ -58,6 +58,24 @@
     }
 
 
+    //数组去重
+//    var test1 = [2,5,8,11,6];
+//console.log(_.uniq([2,5,8,11,6], 11));
+//
+//    console.log(_.findIndex(test1, 5))
+//    var users = [{'id': 1, 'name': 'Bob', 'last': 'Brown'},
+//        {'id': 2, 'name': 'Ted', 'last': 'White'},
+//        {'id': 3, 'name': 'Frank', 'last': 'James'},
+//        {'id': 4, 'name': 'Ted', 'last': 'Jones'}];
+//    var rr = _.findIndex(users, {
+//        name: 'Ted'
+//    });
+//    console.log(rr)
+
+
+    function say(name, age) {
+        alert('my name is: ' + name +', age is: ' + age);
+    }
 
 </script>
 </body>
