@@ -19,7 +19,7 @@
     var obj = {
         name: "yinweiyi"
     };
-//    bind(sayName, obj)();
+    //    bind(sayName, obj)();
 
     //给对象定义一个属性
     function def(obj, key, val, enumerable) {
@@ -30,7 +30,7 @@
             configurable: true
         });
     }
-//    def(obj, "age", function() {alert(1)})
+    //    def(obj, "age", function() {alert(1)})
 
 
     function _debounce(func, wait) {
@@ -74,9 +74,120 @@
     function lert() {
         alert(121323123)
     }
-//    var res = cancellable(lert);
-//    res.cancel()
-//    res()
+    //    var res = cancellable(lert);
+    //    res.cancel()
+    //    res()
+
+    function Cache(limit) {
+        this.size = 0;
+        this.limit = limit;
+        this.head = undefined;
+        this.tail = undefined;
+        this._keymap = Object.create(null);
+    }
+
+    var p = Cache.prototype;
+
+    /**
+     * Put <value> into the cache associated with <key>.
+     * Returns the entry which was removed to make room for
+     * the new entry. Otherwise undefined is returned.
+     * (i.e. if there was enough room already).
+     *
+     * @param {String} key
+     * @param {*} value
+     * @return {Entry|undefined}
+     */
+
+    p.put = function (key, value) {
+        var removed;
+        if (this.size === this.limit) {   //判断存储个数
+            removed = this.shift();
+        }
+
+        var entry = this.get(key, true);
+        if (!entry) {
+            entry = {
+                key: key
+            };
+            this._keymap[key] = entry; //entry 指向 当前对象
+            if (this.tail) {  //this.tail 指向 上一个对象
+                this.tail.newer = entry; //上一个对象newer 指向 当前对象
+                entry.older = this.tail; //当前对象older 指向 上一个对象  
+            } else {
+                this.head = entry;
+            }
+            this.tail = entry;
+            this.size++;
+        }
+        entry.value = value;        //如果存在key, 则重新赋值value
+
+        return removed;
+    };
+
+    /**
+     * Purge the least recently used (oldest) entry from the
+     * cache. Returns the removed entry or undefined if the
+     * cache was empty.
+     */
+
+    p.shift = function () {
+        var entry = this.head;
+        if (entry) {
+            this.head = this.head.newer;
+            this.head.older = undefined;
+            entry.newer = entry.older = undefined;
+            this._keymap[entry.key] = undefined;
+            this.size--;
+        }
+        return entry;
+    };
+
+    /**
+     * Get and register recent use of <key>. Returns the value
+     * associated with <key> or undefined if not in cache.
+     *
+     * @param {String} key
+     * @param {Boolean} returnEntry
+     * @return {Entry|*}
+     */
+
+    p.get = function (key, returnEntry) {
+        var entry = this._keymap[key];
+        if (entry === undefined) return;
+        if (entry === this.tail) {
+            return returnEntry ? entry : entry.value;
+        }
+        // HEAD--------------TAIL
+        //   <.older   .newer>
+        //  <--- add direction --
+        //   A  B  C  <D>  E
+        if (entry.newer) {
+            if (entry === this.head) {
+                this.head = entry.newer;
+            }
+            entry.newer.older = entry.older; // C <-- E.
+        }
+        if (entry.older) {
+            entry.older.newer = entry.newer; // C. --> E
+        }
+        entry.newer = undefined; // D --x
+        entry.older = this.tail; // D. --> E
+        if (this.tail) {
+            this.tail.newer = entry; // E. <-- D
+        }
+        this.tail = entry;
+        return returnEntry ? entry : entry.value;
+    };
+    var abs = new Cache(1000);
+    abs.put("name", "yinweiyi");
+    abs.put("age", "35");
+//        abs.put("height", "200");
+//        abs.put("grade", "6");
+//        abs.put("grade1", "6");
+//        abs.put("grade2", "6");
+//        abs.put("grade3", "6");
+    console.log(abs._keymap)
 </script>
 </body>
 </html>
