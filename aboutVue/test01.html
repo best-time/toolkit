@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="vue-learn.js"></script>
+</head>
+<body>
+<script>
+    function bind(fn, ctx) {
+        return function (a) {
+            var l = arguments.length;
+            return l ? l > 1 ? fn.apply(ctx, arguments) : fn.call(ctx, a) : fn.call(ctx);
+        };
+    }
+    function sayName() {
+        console.log(this.name);
+    }
+    var obj = {
+        name: "yinweiyi"
+    };
+//    bind(sayName, obj)();
+
+    //给对象定义一个属性
+    function def(obj, key, val, enumerable) {
+        Object.defineProperty(obj, key, {
+            value: val,
+            enumerable: !!enumerable,
+            writable: true,
+            configurable: true
+        });
+    }
+//    def(obj, "age", function() {alert(1)})
+
+
+    function _debounce(func, wait) {
+        var timeout, args, context,
+                timestamp, result;
+        var later = function later() {
+            var last = Date.now() - timestamp;
+            if (last < wait && last >= 0) {
+                timeout = setTimeout(later, wait - last);
+            } else {
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) {
+                    context = args = null;
+                }
+            }
+        };
+        return function () {
+            context = this;
+            args = arguments;
+            timestamp = Date.now();
+            if (!timeout) {
+                timeout = setTimeout(later, wait);
+            }
+            return result;
+        };
+    }
+
+    function cancellable(fn) {
+        var cb = function cb() {
+            if (!cb.cancelled) {
+                return fn.apply(this, arguments);
+            }
+        };
+        cb.cancel = function () {
+            cb.cancelled = true;
+        };
+        return cb;
+    }
+
+    function lert() {
+        alert(121323123)
+    }
+//    var res = cancellable(lert);
+//    res.cancel()
+//    res()
+</script>
+</body>
+</html>
