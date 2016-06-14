@@ -527,10 +527,10 @@
     p.shift = function () {
         var entry = this.head;
         if (entry) {
-            this.head = this.head.newer;
-            this.head.older = undefined;
-            entry.newer = entry.older = undefined;
-            this._keymap[entry.key] = undefined;
+            this.head = this.head.newer; //把当前对象的 newer 属性指向的对象 赋给 this.head
+            this.head.older = undefined; //把当前对象的 newer 属性指向的对象的older 属性 修改为undefined
+            entry.newer = entry.older = undefined; //把当前对象的 newer older 属性都修改为 undefined
+            this._keymap[entry.key] = undefined;    //_keymap 同名属性修改为undefined
             this.size--;
         }
         return entry;
@@ -9952,7 +9952,7 @@
             if (devtools) {
                 devtools.emit('init', Vue);
             } else if ('development' !== 'production' && inBrowser && /Chrome\/\d+/.test(window.navigator.userAgent)) {
-                console.log('Download the Vue Devtools for a better development experience:\n' + 'https://github.com/vuejs/vue-devtools');
+                //console.log('Download the Vue Devtools for a better development experience:\n' + 'https://github.com/vuejs/vue-devtools');
             }
         }
     }, 0);

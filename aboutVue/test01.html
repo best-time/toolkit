@@ -112,8 +112,8 @@
             };
             this._keymap[key] = entry; //entry 指向 当前对象
             if (this.tail) {  //this.tail 指向 上一个对象
-                this.tail.newer = entry; //上一个对象newer 指向 当前对象
-                entry.older = this.tail; //当前对象older 指向 上一个对象  
+                this.tail.newer = entry; //上一个对象的newer属性 指向 当前对象
+                entry.older = this.tail; //当前对象older 指向 上一个对象
             } else {
                 this.head = entry;
             }
@@ -182,12 +182,17 @@
     var abs = new Cache(1000);
     abs.put("name", "yinweiyi");
     abs.put("age", "35");
-//        abs.put("height", "200");
-//        abs.put("grade", "6");
+        abs.put("height", "200");
+        abs.put("grade", "6");
 //        abs.put("grade1", "6");
 //        abs.put("grade2", "6");
 //        abs.put("grade3", "6");
-    console.log(abs._keymap)
+    console.log(abs._keymap);
+    console.log(abs.shift());
+    console.log(abs.shift());
+//    console.log(abs.shift());
+//    console.log(abs.shift());
+//    console.log(abs._keymap);
 </script>
 </body>
 </html>
