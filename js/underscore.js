@@ -163,8 +163,8 @@
     var restArgs = function (func, startIndex) {
         startIndex = startIndex == null ? func.length - 1 : +startIndex;
         return function () {
-            var length = Math.max(arguments.length - startIndex, 0);
-            var rest = Array(length);
+            var length = Math.max(arguments.length - startIndex, 0),
+                rest = Array(length);
             for (var index = 0; index < length; index++) {
                 rest[index] = arguments[index + startIndex];
             }
@@ -187,14 +187,19 @@
 
     // An internal function for creating a new object that inherits from another.
     var baseCreate = function (prototype) {
-        if (!_.isObject(prototype)) return {};
-        if (nativeCreate) return nativeCreate(prototype);
+        if (!_.isObject(prototype)) {
+            return {};
+        }
+        if (nativeCreate) {
+            return nativeCreate(prototype);
+        }
         Ctor.prototype = prototype;
         var result = new Ctor;
         Ctor.prototype = null;
         return result;
     };
 
+    // => 返回数组或对象某个索引的值
     var property = function (key) {
         return function (obj) {
             return obj == null ? void 0 : obj[key];
@@ -205,9 +210,10 @@
     // should be iterated as an array or as an object.
     // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
     // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
+    // => 数组最大索引值
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
     var getLength = property('length');
-    var isArrayLike = function (collection) {  //类数组
+    var isArrayLike = function (collection) {  //=> 判断类数组, 依据 length 属性值 > 0
         var length = getLength(collection);
         return typeof length == 'number' &&   //有length属性
             length >= 0 &&              // 0 <= length <= MAX_ARRAY_INDEX
@@ -303,6 +309,7 @@
 
     // Return all the elements that pass a truth test.
     // Aliased as `select`.
+    // example:  _.filter([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
     _.filter = _.select = function (obj, predicate, context) {
         var results = [];
         predicate = cb(predicate, context);
@@ -315,12 +322,14 @@
     };
 
     // Return all the elements for which a truth test fails.
+    // => 和filter方法相反, 返回一个数组 包含 没通过predicate检测的
     _.reject = function (obj, predicate, context) {
         return _.filter(obj, _.negate(cb(predicate)), context);
     };
 
     // Determine whether all of the elements match a truth test.
     // Aliased as `all`.
+    // => obj的每一项 predicate都返回true, 结果才为true
     _.every = _.all = function (obj, predicate, context) {
         predicate = cb(predicate, context);
         var keys = !isArrayLike(obj) && _.keys(obj),
@@ -336,6 +345,7 @@
 
     // Determine if at least one element in the object matches a truth test.
     // Aliased as `any`.
+    // => obj的每一项 predicate有一项返回true, 结果就为true
     _.some = _.any = function (obj, predicate, context) {
         predicate = cb(predicate, context);
         var keys = !isArrayLike(obj) && _.keys(obj),
@@ -351,17 +361,21 @@
 
     // Determine if the array or object contains a given item (using `===`).
     // Aliased as `includes` and `include`.
-    _.contains = _.includes = _.include = function (obj, item, fromIndex, guard) {
-        if (!isArrayLike(obj)) {
-            obj = _.values(obj);
-        }
-        if (typeof fromIndex != 'number' || guard) {
-            fromIndex = 0;
-        }
-        return _.indexOf(obj, item, fromIndex) >= 0;
-    };
+    // => 判断collection 是否包含某一项
+    // 对象: 判断键值是否包含某个值
+    _.contains = _.includes = _.include =
+        function (obj, item, fromIndex, guard) {
+            if (!isArrayLike(obj)) {
+                obj = _.values(obj);
+            }
+            if (typeof fromIndex != 'number' || guard) { //默认从第一项开始检查
+                fromIndex = 0;
+            }
+            return _.indexOf(obj, item, fromIndex) >= 0;
+        };
 
     // Invoke a method (with arguments) on every item in a collection.
+    // _.invoke([[5, 1, 7], [3, 2, 1]], 'sort'); 相当于 obj:[[5, 1, 7], [3, 2, 1]] method: 'sort' args: []
     _.invoke = restArgs(function (obj, method, args) {
         var isFunc = _.isFunction(method);
         return _.map(obj, function (value) {
@@ -371,6 +385,11 @@
     });
 
     // Convenience version of a common use case of `map`: fetching a property.
+    // example:
+    //var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+    //_.pluck(stooges, 'name');
+    //=> ["moe", "larry", "curly"]
+    // => 返回数组, 包含key值指向的值
     _.pluck = function (obj, key) {
         return _.map(obj, _.property(key));
     };
@@ -388,12 +407,18 @@
     };
 
     // Return the maximum element (or element-based computation).
+    // => 获取数组对象 某个字段的最大值
     _.max = function (obj, iteratee, context) {
-        var result = -Infinity, lastComputed = -Infinity,
-            value, computed;
-        if (iteratee == null || (typeof iteratee == 'number' && typeof obj[0] != 'object') && obj != null) {
+        var result = -Infinity,
+            lastComputed = -Infinity,
+            value,
+            computed;
+        if (iteratee == null ||
+            (typeof iteratee == 'number' && typeof obj[0] != 'object') && obj != null
+        ) {
             obj = isArrayLike(obj) ? obj : _.values(obj);
-            for (var i = 0, length = obj.length; i < length; i++) {
+            var length = obj.length;
+            for (var i = 0; i < length; i++) {
                 value = obj[i];
                 if (value != null && value > result) {
                     result = value;
@@ -403,7 +428,9 @@
             iteratee = cb(iteratee, context);
             _.each(obj, function (v, index, list) {
                 computed = iteratee(v, index, list);
-                if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+                if (computed > lastComputed ||
+                    computed === -Infinity && result === -Infinity
+                ) {
                     result = v;
                     lastComputed = computed;
                 }
@@ -413,10 +440,14 @@
     };
 
     // Return the minimum element (or element-based computation).
+    // => 获取数组对象 某个字段的最小值
     _.min = function (obj, iteratee, context) {
-        var result = Infinity, lastComputed = Infinity,
-            value, computed;
-        if (iteratee == null || (typeof iteratee == 'number' && typeof obj[0] != 'object') && obj != null) {
+        var result = Infinity,
+            lastComputed = Infinity,
+            value,
+            computed;
+        if (iteratee == null ||
+            (typeof iteratee == 'number' && typeof obj[0] != 'object') && obj != null) {
             obj = isArrayLike(obj) ? obj : _.values(obj);
             for (var i = 0, length = obj.length; i < length; i++) {
                 value = obj[i];
@@ -438,6 +469,7 @@
     };
 
     // Shuffle a collection.
+    // 返回一个随机排序数组
     _.shuffle = function (obj) {
         return _.sample(obj, Infinity);
     };
@@ -460,8 +492,10 @@
         for (var index = 0; index < n; index++) {
             var rand = _.random(index, last);
             var temp = sample[index];
-            sample[index] = sample[rand];
-            sample[rand] = temp;
+            if (rand - index !== 0) {           //自己添加的判断分支
+                sample[index] = sample[rand]; //随机的索引值和 顺序索引值 换位
+                sample[rand] = temp;
+            }
         }
         return sample.slice(0, n);
     };
@@ -534,31 +568,39 @@
         }
     });
 
-    var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
+    var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g; //匹配字符 包括中文和字母
     // Safely create a real, live array from anything iterable.
     _.toArray = function (obj) {
-        if (!obj) return [];
-        if (_.isArray(obj)) {
+        if (!obj) {     // true undeinfed null -> []
+            return [];
+        }
+        if (_.isArray(obj)) {       //[1].slice() -> [1]
             return slice.call(obj);
         }
         if (_.isString(obj)) {
             // Keep surrogate pair characters together
             return obj ? obj.match(reStrSymbol) : [];
         }
-        if (isArrayLike(obj)) {
+        if (isArrayLike(obj)) {       // 类数组 返回一个包含每一项的 数组
             return _.map(obj, _.identity);
         }
-        return _.values(obj);
+        return _.values(obj);       //对象返回一个包含 属性值的数组
     };
 
     // Return the number of elements in an object.
+    // =>返回list 长度
     _.size = function (obj) {
-        if (obj == null) return 0;
+        if (obj == null) {
+            return 0;
+        }
         return isArrayLike(obj) ? obj.length : _.keys(obj).length;
     };
 
     // Split a collection into two arrays: one whose elements all satisfy the given
     // predicate, and one whose elements all do not satisfy the predicate.
+    // =>拆分一个数组（array）为两个数组：
+    // 第一个数组其元素都满足predicate迭代函数，
+    // 第二个的所有元素均不能满足predicate迭代函数。
     _.partition = group(function (result, value, pass) {
         result[pass ? 0 : 1].push(value);
     }, true);
@@ -569,24 +611,35 @@
     // Get the first element of an array. Passing **n** will return the first N
     // values in the array. Aliased as `head` and `take`. The **guard** check
     // allows it to work with `_.map`.
-    _.first = _.head = _.take = function (array, n, guard) {
-        if (array == null) return void 0;
-        if (n == null || guard) return array[0];
-        return _.initial(array, array.length - n);
-    };
+    _.first = _.head = _.take =
+        function (array, n, guard) {
+            if (array == null) {
+                return void 0;
+            }
+            if (n == null || guard) {
+                return array[0];
+            }
+            return _.initial(array, array.length - n);
+        };
 
     // Returns everything but the last entry of the array. Especially useful on
     // the arguments object. Passing **n** will return all the values in
     // the array, excluding the last N.
     _.initial = function (array, n, guard) {
-        return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
+        return slice.call(array, 0, Math.max(0,
+            array.length - (n == null || guard ? 1 : n)
+        ));
     };
 
     // Get the last element of an array. Passing **n** will return the last N
     // values in the array.
     _.last = function (array, n, guard) {
-        if (array == null) return void 0;
-        if (n == null || guard) return array[array.length - 1];
+        if (array == null) {
+            return void 0;
+        }
+        if (n == null || guard) {
+            return array[array.length - 1];
+        }
         return _.rest(array, Math.max(0, array.length - n));
     };
 
@@ -598,10 +651,11 @@
     };
 
     // Trim out all falsy values from an array.
+    // =>返回一个除去所有false值的 array副本
     _.compact = function (array) {
         return _.filter(array, _.identity);
     };
-
+//------> 2016年06月11日22:58:49
     // Internal implementation of a recursive `flatten` function.
     var flatten = function (input, shallow, strict, output) {
         output = output || [];
@@ -612,7 +666,9 @@
                 // Flatten current level of array or arguments object
                 if (shallow) {
                     var j = 0, len = value.length;
-                    while (j < len) output[idx++] = value[j++];
+                    while (j < len) {
+                        output[idx++] = value[j++];
+                    }
                 } else {
                     flatten(value, shallow, strict, output);
                     idx = output.length;
@@ -755,7 +811,7 @@
      _.findLastIndex(users, {
      name: 'Ted'
      });
-    */
+     */
 
     // Returns the first index on an array-like that passes a predicate test
     _.findIndex = createPredicateIndexFinder(1); //=> 正序循环
@@ -763,6 +819,7 @@
 
     // Use a comparator function to figure out the smallest index at which
     // an object should be inserted so as to maintain order. Uses binary search.
+    // => 对排序的数组 使用 二分查找
     _.sortedIndex = function (array, obj, iteratee, context) {
         iteratee = cb(iteratee, context, 1);
         var value = iteratee(obj);
@@ -770,7 +827,11 @@
             high = getLength(array);
         while (low < high) {
             var mid = Math.floor((low + high) / 2);
-            if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
+            if (iteratee(array[mid]) < value) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
         }
         return low;
     };
@@ -778,12 +839,13 @@
     // Generator function to create the indexOf and lastIndexOf functions
     var createIndexFinder = function (dir, predicateFind, sortedIndex) {
         return function (array, item, idx) {
-            var i = 0, length = getLength(array);
+            var i = 0,
+                length = getLength(array);
             if (typeof idx == 'number') {
                 if (dir > 0) {
                     i = idx >= 0 ? idx : Math.max(idx + length, i);
                 } else {
-                    length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+                    length = idx >= 0 ? Math.min(idx + 1, length) : (idx + length + 1);
                 }
             } else if (sortedIndex && idx && length) {
                 idx = sortedIndex(array, item);
@@ -793,7 +855,8 @@
                 idx = predicateFind(slice.call(array, i, length), _.isNaN);
                 return idx >= 0 ? idx + i : -1;
             }
-            for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
+            idx = dir > 0 ? i : length - 1; //判断 倒序 还是 正序
+            for (; idx >= 0 && idx < length; idx += dir) {
                 if (array[idx] === item) {
                     return idx;
                 }
@@ -1025,7 +1088,7 @@
     // Returns a negated version of the passed-in predicate.
     _.negate = function (predicate) {
         return function () {
-            return !predicate.apply(this, arguments);
+            return !(predicate.apply(this, arguments));
         };
     };
 
@@ -1086,7 +1149,9 @@
 
         // Constructor is a special case.
         var prop = 'constructor';
-        if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
+        if (_.has(obj, prop) && !_.contains(keys, prop)) {
+            keys.push(prop);
+        }
 
         while (nonEnumIdx--) {
             prop = nonEnumerableProps[nonEnumIdx];
@@ -1121,19 +1186,26 @@
 
     // Retrieve all the property names of an object.
     _.allKeys = function (obj) {
-        if (!_.isObject(obj)) return [];
+        if (!_.isObject(obj)) {
+            return [];
+        }
         var keys = [];
-        for (var key in obj) keys.push(key);
+        for (var key in obj) {
+            keys.push(key);
+        }
         // Ahem, IE < 9.
-        if (hasEnumBug) collectNonEnumProps(obj, keys);
+        if (hasEnumBug) {
+            collectNonEnumProps(obj, keys);
+        }
         return keys;
     };
 
     // Retrieve the values of an object's properties.
+    // => 返回一个包含对象所有的 键值 的数组
     _.values = function (obj) {
-        var keys = _.keys(obj);
-        var length = keys.length;
-        var values = Array(length);
+        var keys = _.keys(obj),
+            length = keys.length,
+            values = Array(length);
         for (var i = 0; i < length; i++) {
             values[i] = obj[keys[i]];
         }
@@ -1183,15 +1255,21 @@
     var createAssigner = function (keysFunc, defaults) {
         return function (obj) {
             var length = arguments.length;
-            if (defaults) obj = Object(obj);
-            if (length < 2 || obj == null) return obj;
+            if (defaults) {
+                obj = Object(obj);
+            }
+            if (length < 2 || obj == null) {
+                return obj;
+            }
             for (var index = 1; index < length; index++) {
                 var source = arguments[index],
                     keys = keysFunc(source),
                     l = keys.length;
                 for (var i = 0; i < l; i++) {
                     var key = keys[i];
-                    if (!defaults || obj[key] === void 0) obj[key] = source[key];
+                    if (!defaults || obj[key] === void 0) {
+                        obj[key] = source[key];
+                    }
                 }
             }
             return obj;
@@ -1269,7 +1347,9 @@
 
     // Create a (shallow-cloned) duplicate of an object.
     _.clone = function (obj) {
-        if (!_.isObject(obj)) return obj;
+        if (!_.isObject(obj)) {
+            return obj;
+        }
         return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
     };
 
@@ -1282,7 +1362,8 @@
     };
 
     // Returns whether an object has a given set of `key:value` pairs.
-    //example: object:{'id': 2, 'name': 'Ted', 'last': 'White'}
+    //example:
+    // object:{'id': 2, 'name': 'Ted', 'last': 'White'}
     //          attrs: {'name': 'Ted'}
     _.isMatch = function (object, attrs) {
         var keys = _.keys(attrs),
@@ -1415,7 +1496,7 @@
         if (obj == null) return true;
         if (isArrayLike(obj) &&
             (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))
-            ) {
+        ) {
             return obj.length === 0;
         }
         return _.keys(obj).length === 0;
@@ -1429,8 +1510,8 @@
     // Is a given value an array?
     // Delegates to ECMA5's native Array.isArray
     _.isArray = nativeIsArray || function (obj) {
-        return toString.call(obj) === '[object Array]';
-    };
+            return toString.call(obj) === '[object Array]';
+        };
 
     // Is a given variable an object?
     _.isObject = function (obj) {
@@ -1564,8 +1645,8 @@
     // A (possibly faster) way to get the current timestamp as an integer.
     //=>返回当前时间戳
     _.now = Date.now || function () {
-        return new Date().getTime();
-    };
+            return new Date().getTime();
+        };
 
     // List of HTML entities for escaping.
     var escapeMap = {
@@ -1665,10 +1746,10 @@
 
         // Combine delimiters into one regular expression via alternation.
         var matcher = RegExp([
-            (settings.escape || noMatch).source,
-            (settings.interpolate || noMatch).source,
-            (settings.evaluate || noMatch).source
-        ].join('|') + '|$', 'g');
+                (settings.escape || noMatch).source,
+                (settings.interpolate || noMatch).source,
+                (settings.evaluate || noMatch).source
+            ].join('|') + '|$', 'g');
 
         // Compile the template source, escaping string literals appropriately.
         var index = 0;
