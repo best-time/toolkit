@@ -342,6 +342,15 @@
     }
 
     //防抖动
+    /*
+     debounce是空闲时间必须大于或等于 一定值的时候，才会执行调用方法。
+     debounce是空闲时间的间隔控制。比如我们做autocomplete，这时需要我们很好的控制输入文字时调用方法时间间隔。
+     一般时第一个输入的字符马上开始调用，根据一定的时间间隔重复调用执行的方法。
+     对于变态的输入，比如按住某一个建不放的时候特别有用。
+     debounce主要应用的场景比如：
+     文本输入keydown 事件，keyup 事件，例如做autocomplete
+
+    */
     function debounce(func, wait, immediate) {
         var timeout;
         return function () {
@@ -359,7 +368,35 @@
             }
         };
     }
+    function _debounce(func, wait) {
+        var timeout, args, context,
+            timestamp, result;
+        var later = function later() {
+            var last = Date.now() - timestamp;
+            if (last < wait && last >= 0) {
+                timeout = setTimeout(later, wait - last);
+            } else {
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) {
+                    context = args = null;
+                }
+            }
+        };
+        return function () {
+            context = this;
+            args = arguments;
+            timestamp = Date.now();
+            if (!timeout) {
+                timeout = setTimeout(later, wait);
+            }
+            return result;
+        };
+    }
     //防节流
+    //通俗一点就是函数调用的频度控制器，是连续执行时间间隔控制。主要应用的场景比如：
+//    1.鼠标移动，mousemove 事件
+//    2.DOM 元素动态定位，window对象的resize和scroll 事件
     function throttle(fn, wait) {
         var timer,
             firstTime = true;
@@ -836,4 +873,39 @@
 
         return v > 4 ? v : undef;
     }());
+
+
+
+    /**
+     * Simple bind, faster than native
+     *
+     * @param {Function} fn
+     * @param {Object} ctx
+     * @return {Function}
+     */
+
+    function bind(fn, ctx) {
+        return function (a) {
+            var l = arguments.length;
+            return l ? l > 1 ? fn.apply(ctx, arguments) : fn.call(ctx, a) : fn.call(ctx);
+        };
+    }
+
+    /**
+     * Manual indexOf because it's slightly faster than
+     * native.
+     *
+     * @param {Array} arr
+     * @param {*} obj
+     */
+
+    function indexOf(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) return i;
+        }
+        return -1;
+    }
+    // Browser environment sniffing
+    var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 }();

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="Cache-Control" content="public"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>聚惠宝</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="stylesheet" href="style/console.css"/>
+    <title></title>
+    <style>
+        body {
+            min-width: 320px;
+            max-width: 750px;
+            margin: 0 auto;
+            background-color: #ccc;
+            line-height: 1.5;
+            color: #333;
+            font: 0.16rem arial, tahoma, SimHei;
+            box-sizing: border-box;
+        }
+        .page {
+            top: 0;
+            position: absolute;
+            max-width: 750px;
+            width: 100%;
+            min-height: 100%;
+            background: #eee;
+            overflow: hidden;
+        }
+        #box {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+<div style=" width: 100%;height: 3000px;"></div>
+
+        <div id="__vconsole" class="">
+            <div class="vc-switch">vConsole</div>
+            <div class="vc-mask">
+            </div>
+            <div class="vc-panel">
+                <div class="vc-tabbar">
+                    <a class="vc-tab vc-actived" data-tab="default" id="__vc_tab_default">Log</a>
+                    <a class="vc-tab" data-tab="system" id="__vc_tab_system">System</a>
+                    <a class="vc-tab" data-tab="network" id="__vc_tab_network">Network</a>
+                </div>
+                <div class="vc-content">
+                    <div class="vc-logbox vc-actived" id="__vc_log_default">
+                        <div class="vc-log">
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                            <p>1</p>
+                        </div>
+                    </div>
+                    <div class="vc-logbox" id="__vc_log_system">
+                        <div class="vc-log">
+
+                        </div>
+                    </div>
+                    <div class="vc-logbox" id="__vc_log_network">
+                        <div class="vc-log">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="vc-toolbar">
+                    <a class="vc-tool vc-clear">Clear</a>
+                    <a class="vc-tool vc-tool-last vc-hide">Hide</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var but = document.getElementsByClassName("vc-switch")[0];
+        but.addEventListener("click", function() {
+            document.getElementById("__vconsole").setAttribute('class', 'vc-toggle');
+        }, false);
+
+        function hide() {
+            document.getElementById("__vconsole").removeAttribute('class');
+        }
+        var mask = document.getElementsByClassName("vc-mask")[0];
+        var vcHide = document.getElementsByClassName("vc-hide")[0];
+        mask.addEventListener("click", function() {
+            hide();
+        }, false);
+        vcHide.addEventListener("click", function() {
+            hide();
+        }, false);
+    </script>
+</body>
+</html>
