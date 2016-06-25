@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../lodjs.js"></script>
+</head>
+<body>
+    <div class="wp" id="wp"></div>
+
+    <script>
+        (function() {
+            //自定义console
+//            var console = window.console || {log: function () {}};
+//            var log = console.log;
+//            window.console = console;
+//            console.log = function () {
+//                var div = document.createElement('div');
+//                div.innerHTML = [].join.call(arguments);
+//                document.getElementById('wp').appendChild(div);
+//                Function.prototype.apply.call(log, console, arguments);
+//            };
+//            lodjs.config({
+//                baseUrl: 'js/',
+//                cache: true,
+//                path: {
+//                    lib: '../lib'
+//                }
+//            });
+            //有名字的模块
+//            define('famous', ['DOCURL/simple'], function(simple) {
+//                console.log('famous: famous exec');
+//                console.log('famous: ' + simple);
+//                return 'famous';
+//            });
+
+//            lodjs.use(['famous', 'deps', 'commonjs1'], function(famous, deps, commonjs1) {
+//                console.log('lodjs.use: ', famous);
+//                console.log('lodjs.use: ', deps);
+//                console.log('lodjs.use: ', commonjs1);
+//            });
+
+
+//            // 没依赖  回调直接执行
+//            lodjs.use([], function() {
+//                console.log(1)
+//            })
+
+
+            lodjs.use(['./demo/simple'], function(simple) {
+                simple.a();
+                console.log('lodjs.use: simple.js');
+            });
+
+        }());
+
+        /*
+        * use -> loadMod -> loadjs[
+        * success-> use-[callback(execMod)],
+        * error->[callback, execComplete]
+        * ]
+        *
+        * */
+    </script>
+
+</body>
+</html>

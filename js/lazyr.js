@@ -64,7 +64,7 @@
     Layzr.prototype._inViewport = function(node) {
         // get viewport top and bottom offset
         var viewportTop = this._lastScroll; // 上一次滚动条离顶部距离
-        var viewportBottom = viewportTop + window.innerHeight; //视口高度
+        var viewportBottom = viewportTop + window.innerHeight; //视口高度 + 滚动条距离顶部高度 = 视口的底部离页面顶部的高度
 
         // get node top and bottom offset
         var elementTop = this._getOffset(node);
@@ -101,9 +101,9 @@ console.debug("viewportTop: " + viewportTop +
         var source = node.getAttribute(this._srcAttr) || node.getAttribute(this._optionsAttr);
 
         // set node src or bg image
-        if(node.hasAttribute(this._optionsAttrBg)) {
+        if(node.hasAttribute(this._optionsAttrBg)) {  //设置背景图片
             node.style.backgroundImage = 'url(' + source + ')';
-        } else {
+        } else {  //img 标签
             node.setAttribute('src', source);
         }
 
