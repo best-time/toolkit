@@ -1,36 +1,65 @@
-;
-(function (win) {
+;(function (root) {
     'use strict';
-
-    var modMap = [];  // =>存在加载的js key 为js的路径, value 为{status: 'loading',oncomplete: []}
+    var modMap = [];
     var moduleMap = [];
 
-    var toString = ({}).toString;
+    var toString = {}.toString;
     var slice = [].slice;
 
     var doc = document;
     var head = doc.head || doc.getElementsByTagName("head")[0] || doc.documentElement;
     var docCharset = doc.charset;
-
     var docUrl = location.href.split('?')[0];//去除问号之后部分
     var baseUrl = getCurSrc() || docUrl;
 
     var gid = 0;
     var commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
     var cjsRequireRegExp = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g;
-
     var interactiveScript = null;
     var currentlyAddingScript = null;
     var curExecModName = null;
-    var ts = +new Date; //(new Date).getTime();
+    var t = (new Date).getTime();
 
     var o = {};
 
-    function extendDeep(target, curObj) {
-        var target = target || {};
+    function getGid() {
+        return gid++;
+    }
+    function getType(x) {
+        if(x === null){
+            return 'null';
+        }
+
+        var t= typeof x;
+
+        if(t !== 'object'){
+            return t;
+        }
+
+        var c = toString.call(x).slice(8, -1).toLowerCase();
+        if(c !== 'object'){
+            return c;
+        }
+
+        if(x.constructor==Object){
+            return c;
+        }
+
+        return 'unkonw';
+    }
+    function isArr(arr) {
+        return Array.isArray ? Array.isArray(arr) : getType(arr) === 'array';
+    }
+    function isObj(obj) {
+        return getType(obj) === 'object';
+    }
+    function isFn(fn) {
+        return getType(fn) === 'function';
+    }
+    function extendDeep() {
+        var target = arguments[0] || {};
         var arrs = slice.call(arguments, 1);
         var len = arrs.length;
-
         var copyIsArr;
         var clone;
 
@@ -45,19 +74,16 @@
                     continue;
                 }
 
-                if (
-                    copy &&
-                    (isObj(copy) || (copyIsArr = isArr(copy)))
-                    ) {
+                if (copy && (isObj(copy) || (copyIsArr = isArr(copy)))) {
                     if (copyIsArr) {
                         copyIsArr = false;
                         clone = src && isArr(src) ? src : [];
+
                     } else {
                         clone = src && isObj(src) ? src : {};
                     }
                     target[ name ] = extendDeep(clone, copy);
-
-                } else if (typeof copy !== 'undefined') {
+                } else if (typeof copy !== 'undefined'){
                     target[name] = copy;
                 }
             }
@@ -66,7 +92,6 @@
 
         return target;
     }
-
     function loadjs(src, success, error, option) {
         var d = extendDeep({
             charset: docCharset,
@@ -74,33 +99,31 @@
         }, option);
 
         if (d.cache) {
-            src += '?t=' + ts;
+            src += '?t=' + t;
         }
         var node = doc.createElement('script');
         node.src = src;
-        node.id = 'lodjs-js-' + count();
+        node.id = 'lodjs-js-' + getGid();
         node.charset = d.charset;
-
         if ('onload' in node) {
             node.onload = success;
             node.onerror = error;
         } else {
-            node.onreadystatechange = function () {
-                if (/loaded|complete/.test(node.readyState)) {
-                    success();
-                }
+          node.onreadystatechange = function() {
+            if (/loaded|complete/.test(node.readyState)) {
+                success();
             }
+          }
         }
         currentlyAddingScript = node;
         head.appendChild(node);
         currentlyAddingScript = null;
     }
-
     function getCurSrc() {
-        if (doc.currentScript) {  // =>当前存在执行的script 则返回当前js的路径
+        if(doc.currentScript){
             return doc.currentScript.src;
         }
-        if (currentlyAddingScript) {  // =>当前正在添加的 script
+        if (currentlyAddingScript) {
             return currentlyAddingScript.src;
         }
         // For IE6-9 browsers, the script onload event may not fire right
@@ -108,16 +131,12 @@
         // could query the script nodes and the one that is in "interactive"
         // mode indicates the current script
         // ref: http://goo.gl/JHfFW
-        if (
-            interactiveScript &&
-            interactiveScript.readyState === "interactive"
-            ) {
+        if (interactiveScript && interactiveScript.readyState === "interactive") {
             return interactiveScript.src;
         }
 
         var scripts = head.getElementsByTagName("script");
-        var i = scripts.length - 1;
-        for (; i >= 0; i--) {
+        for (var i = scripts.length - 1; i >= 0; i--) {
             var script = scripts[i];
             if (script.readyState === "interactive") {
                 interactiveScript = script;
@@ -126,7 +145,12 @@
         }
         return null;
     }
-
+    function isUrl(url) {
+        return url.search(/^(http:\/\/|https:\/\/|\/\/)/) !== -1;
+    }
+    function fixUrl(url) {
+        return url.replace(/([^:])\/+/g, '$1/');
+    }
     function getUrl(path, url) {
         //绝对网址
         if (isUrl(path)) {
@@ -151,7 +175,7 @@
 
         // ../开头
         if (path.search(/^\.\.\//) !== -1) {
-            while (path.search(/^\.\.\//) !== -1) {
+            while(path.search(/^\.\.\//) !== -1) {
                 if (url.lastIndexOf('/', url.length - 2) !== -1) {
                     path = path.slice(3);
                     url = url.slice(0, url.lastIndexOf('/', url.length - 2) + 1);
@@ -167,12 +191,10 @@
 
         return fixUrl(url + path);
     }
-
     function fixSuffix(url, suffix) {
         var reg = new RegExp('\\.' + suffix + '$', 'i');
         return url.search(reg) !== -1 ? url : url + '.' + suffix;
     }
-
     function replacePath(id) {
         var ids = id.split('/');
         // id中不包含路径 或 查找路径失败
@@ -182,7 +204,6 @@
         ids[0] = o.path[ids[0]];
         return ids.join('/');
     }
-
     function getDepUrl(id, url) {
         var pathId = replacePath(id);
         //找到path 基于baseUrl
@@ -191,8 +212,7 @@
         }
         return fixSuffix(getUrl(pathId, url || o.baseUrl), 'js');
     }
-
-    function getIdUrl(id) {
+    function getIdUrl(id){
         //没有id的情况
         if (!id) {
             return getCurSrc();
@@ -203,17 +223,19 @@
         }
         return fixSuffix(getUrl(id, o.baseUrl), 'js');
     }
-
-    //========================================================================================\\
-
-
     function require(id, url) {
         var url = getDepUrl(id, url || curExecModName);
         return moduleMap[url] && moduleMap[url].exports;
     }
-
+    function fixPath(path) {
+        //path是网址
+        if (isUrl(path)) {
+            return getUrl('./', path).slice(0, -1);
+        }
+        return path;
+    }
     function config(option) {
-        if (!isObj(option)) {  // 不是对象, 返回 {} o 集合
+        if (!isObj(option)) {
             return extendDeep({}, o);
         }
 
@@ -224,19 +246,17 @@
 
         //处理path
         if (isObj(option.path)) {
-            for (var key in option.path) {
+            for(var key in option.path) {
                 option.path[key] = fixPath(option.path[key]);
             }
         }
-        o = extendDeep(o, option);  //对象复制 赋值给 变量 a
+        o = extendDeep(o, option);
 
         //fix keywords
         o.path.BASEURL = fixPath(option.baseUrl || o.baseUrl);
         o.path.DOCURL = fixPath(docUrl);
-
         return extendDeep({}, o);
     }
-
     function execMod(modName, callback, params) {
         //判断定义的是函数还是非函数
         if (!params) {
@@ -244,11 +264,11 @@
         } else {
             curExecModName = modName;
             //commonjs
-            var exp = modMap[modName].callback.apply(null, params); //define方法 回调的返回值
+            var exp = modMap[modName].callback.apply(null, params);
             curExecModName = null;
             //amd和返回值的commonjs
             if (exp) {
-                moduleMap[modName].exports = exp; //define方法 回调的返回值
+                moduleMap[modName].exports = exp;
             }
         }
         //执行回调函数
@@ -256,23 +276,18 @@
 
         //执行complete队列
         execComplete(modName);
-
     }
-
     function execComplete(modName) {
         //模块定义完毕 执行load函数,当加载失败时，会不存在module
         for (var i = 0; i < modMap[modName].oncomplete.length; i++) {
-            modMap[modName].oncomplete[i](
-                    moduleMap[modName] && moduleMap[modName].exports
-            );
+            modMap[modName].oncomplete[i](moduleMap[modName] && moduleMap[modName].exports);
         }
         //释放内存
         modMap[modName].oncomplete = [];
     }
-
     function loadMod(id, callback, option) {
         //commonjs
-        if (id === 'require') {
+        if(id === 'require') {
             callback(require);
             return -1;
         }
@@ -292,35 +307,23 @@
                 status: 'loading',
                 oncomplete: []
             };
-            loadjs(
-                modName,
-                function () {  // => onload 回调
-                    //如果define的不是函数
-                    if (!isFn(modMap[modName].callback)) {
-                        execMod(modName, callback);
-                        return 0;
-                    }
-
-                    //define的是函数
-                    use(
-                        modMap[modName].deps,
-                        function () {
-                            execMod(modName, callback, slice.call(arguments, 0));
-                        },
-                        {baseUrl: modName}
-                    );
-
-                    return 1;
-                },
-                function () {  // => onerror 回调
-
-                    modMap[modName].status === 'error';
-                    callback();
-                    execComplete(modName);//加载失败执行队列
-
+            loadjs(modName, function () {
+                //如果define的不是函数
+                if (!isFn(modMap[modName].callback)) {
+                    execMod(modName, callback);
+                    return 0;
                 }
-            );
 
+                //define的是函数
+                use(modMap[modName].deps, function () {
+                    execMod(modName, callback, slice.call(arguments, 0));
+                }, {baseUrl: modName});
+                return 1;
+            }, function () {
+                modMap[modName].status === 'error';
+                callback();
+                execComplete(modName);//加载失败执行队列
+            });
             return 0;
         }
 
@@ -355,72 +358,64 @@
         callback(moduleMap[modName].exports);
         return 4;
     }
-
     function use(deps, callback, option) {
-
-        if (arguments.length < 2) { // =>参数个数< 2
+        if (arguments.length < 2) {
             throw new Error('lodjs.use arguments miss');
             return 0;
         }
 
-        if (typeof deps === 'string') { // =>参数1是字符串 放到数组中
+        if (typeof deps === 'string') {
             deps = [deps];
         }
 
-        if (!isArr(deps) || !isFn(callback)) {// => 参数1不是数组或参数2不是函数  抛错
+        if (!isArr(deps) || !isFn(callback)) {
             throw new Error('lodjs.use arguments type error');
             return 1;
         }
         //默认为当前脚本的路径或baseurl
-        if (!isObj(option)) {   // => 参数3 不是对象, 则赋值 {}
+        if (!isObj(option)) {
             option = {};
         }
         option.baseUrl = option.baseUrl || o.baseUrl;
 
-        if (deps.length === 0) {  // => 依赖为空,回调直接执行
+        if (deps.length === 0) {
             callback();
             return 2;
         }
         var depsCount = deps.length;
         var params = [];
-        for (var i = 0; i < deps.length; i++) {
-
+        for(var i = 0; i < deps.length; i++) {
             (function (j) {
-                loadMod(
-                    deps[j],
-                    function (param) {
-                        depsCount--;
-                        params[j] = param;
-                        if (depsCount === 0) {
-                            callback.apply(null, params);  // callback 指 调用use方法的回调
-                        }
-                    },
-                    option
-                );
+                loadMod(deps[j], function (param) {
+                    depsCount--;
+                    params[j] = param;
+                    if (depsCount === 0) {
+                        callback.apply(null, params);
+                    }
+                }, option);
             }(i));
-
         }
 
         return 3;
     }
-
     function define(name, deps, callback) {
         //省略模块名
-        if (typeof name !== 'string') { //参数1不是字符串
-            callback = deps;  //参数2赋值给参数3
-            deps = name;        //参数1赋值给参数2
-            name = null;        //参数1赋值为null
+        if (typeof name !== 'string') {
+            callback = deps;
+            deps = name;
+            name = null;
         }
 
         //无依赖
-        if (!isArr(deps)) { //参数2 不是数组
-            callback = deps;    //参数2赋值给参数3
-            deps = [];      //参数2赋值为 []
+        if (!isArr(deps)) {
+            callback = deps;
+            deps = [];
         }
 
         //支持commonjs
         if (deps.length === 0 && isFn(callback) && callback.length) {
-            callback.toString()
+            callback
+                .toString()
                 .replace(commentRegExp, '')
                 .replace(cjsRequireRegExp, function (match, dep) {
                     deps.push(dep);
@@ -447,74 +442,10 @@
         return 0;
     }
 
-    define.amd = {
-        from: 'lodjs'
-    };
-//========================================================================================\\
-
-    //-------------------------------------------------------------------------------------------------------------
-
-    function count() {  // => 计数器
-        return gid++;
-    }
-
-    function isUrl(url) {
-        return url.search(/^(http:\/\/|https:\/\/|\/\/)/) !== -1;
-    }
-
-    function fixUrl(url) { // => 去除多余 '/'
-        return url.replace(/([^:])\/+/g, '$1/');  // 'a///' => 'a/'
-    }
-
-    function isArr(arr) {
-        return Array.isArray ? Array.isArray(arr) : getType(arr) === 'array';
-    }
-
-    function isObj(obj) {
-        return getType(obj) === 'object';
-    }
-
-    function isFn(fn) {
-        return getType(fn) === 'function';
-    }
-
-    function getType(x) {
-        if (x === null) {
-            return 'null';
-        }
-
-        var t = typeof x;
-
-        if (t !== 'object') {
-            return t;
-        }
-
-        var c = toString.call(x).slice(8, -1).toLowerCase();
-        if (c !== 'object') {
-            return c;
-        }
-
-        if (x.constructor == Object) {
-            return c;
-        }
-
-        return 'unknow';
-    }
-
-    function fixPath(path) {    //path是网址
-        if (isUrl(path)) {
-            return getUrl('./', path).slice(0, -1);
-        }
-        return path;
-    }
-
+    define.amd = {from: 'lodjs'};
     function debug() {
         console.log(modMap, moduleMap);
     }
-
-    //--------------------------------------------------------------------------------------------------------------
-
-
     var lodjs = {
         version: '0.1.0',
         use: use,
@@ -525,14 +456,11 @@
         debug: debug
     };
 
-    //配置项
     lodjs.config({
         baseUrl: baseUrl,
         path: {},
         cache: false
     });
-
-    win.define = define;
-    win.lodjs = lodjs;
-
+    root.define = define;
+    root.lodjs = lodjs;
 }(window));
