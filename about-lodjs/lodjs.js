@@ -67,12 +67,8 @@
         return target;
     }
 
-    function loadjs(src, success, error, option) {
-        var d = extendDeep({
-            charset: docCharset,
-            cache: o.cache
-        }, option);
 
+<<<<<<< HEAD
         if (d.cache) {
             src += '?t=' + ts;
         }
@@ -95,6 +91,8 @@
         head.appendChild(node);
         currentlyAddingScript = null;
     }
+=======
+>>>>>>> e5d3baf24c65f22eb0c95269b1b7d27cb180e132
 
     function getCurSrc() {
         if (doc.currentScript) {  // =>当前存在执行的script 则返回当前js的路径
@@ -235,6 +233,35 @@
         o.path.DOCURL = fixPath(docUrl);
 
         return extendDeep({}, o);
+    }
+
+    function loadjs(src, success, error, option) {
+        var d = extendDeep({
+            charset: docCharset,
+            cache: o.cache
+        }, option);
+
+        if (d.cache) {
+            src += '?t=' + t;
+        }
+        var node = doc.createElement('script');
+        node.src = src;
+        node.id = 'lodjs-js-' + count();
+        node.charset = d.charset;
+
+        if ('onload' in node) {
+            node.onload = success;
+            node.onerror = error;
+        } else {
+            node.onreadystatechange = function () {
+                if (/loaded|complete/.test(node.readyState)) {
+                    success();
+                }
+            }
+        }
+        currentlyAddingScript = node;
+        head.appendChild(node);
+        currentlyAddingScript = null;
     }
 
     function execMod(modName, callback, params) {
@@ -452,6 +479,10 @@
     };
 //========================================================================================\\
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e5d3baf24c65f22eb0c95269b1b7d27cb180e132
     //-------------------------------------------------------------------------------------------------------------
 
     function count() {  // => 计数器
@@ -516,7 +547,6 @@
 
 
     var lodjs = {
-        version: '0.1.0',
         use: use,
         loadjs: loadjs,
         config: config,

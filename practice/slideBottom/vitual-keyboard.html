@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="Cache-Control" content="public"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>模拟键盘输入</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="stylesheet" href="style/console-keyboard.css"/>
+    <script src="zepto.temple.compo.js"></script>
+
+    <style>
+        body {
+            min-width: 320px;
+            max-width: 750px;
+            margin: 0 auto;
+            background-color: #ccc;
+            line-height: 1.5;
+            color: #333;
+            font: 0.16rem arial, tahoma, SimHei;
+            box-sizing: border-box;
+        }
+
+        .page {
+            top: 0;
+            position: absolute;
+            max-width: 750px;
+            width: 100%;
+            min-height: 100%;
+            background: #eee;
+            overflow: hidden;
+        }
+
+        #box {
+            font-size: 30px;
+        }
+
+        /*密码框*/
+        .keyboard-char {
+            margin: 10px 40px;
+            height: 36px;
+            line-height: 36px;
+            border: 1px solid #dcdcdc;
+            border-right: none;
+        }
+
+        .keyboard-char span {
+            display: inline-block;
+            width: 16.2%;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            border-right: 1px solid #dcdcdc;
+            background: #fff;
+        }
+
+        .keyboard-char span i {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+        }
+
+        .keyboard-char span i.on {
+            background: #333;
+        }
+
+        /*键盘表格*/
+        #table_keyboard {
+            text-align: center;
+            width: 100%;
+            height: 160px;
+            border-top: 1px solid #CECDCE;
+            background-color: #FFF;
+        }
+
+        #table_keyboard tr {
+            line-height: 45px;
+        }
+
+        #table_keyboard td {
+            width: 33%;
+            border: 1px solid #ddd;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        img {
+            animation: cubemove 1.2s infinite linear;
+        }
+
+        @keyframes cubemove {
+            0%   { transform: rotate(0deg); }
+            100%{ transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+<div class="page">
+    <p class="img"><img src="loading.png" width="20" alt=""></p>
+    <br>
+    <p>模拟键盘</p>
+
+    <div style=" width: 100%;height: 3000px;"></div>
+    <h1>1233211231111111111</h1>
+    <div id="__vconsole" class="">
+        <div class="vc-switch">提交</div>
+        <div class="vc-mask">
+        </div>
+        <div class="vc-panel">
+            <div class="vc-tabbar">
+                <a class="vc-tab close"><</a>
+                <a class="vc-tab">输入密码</a>
+                <a class="vc-tab">找回密码</a>
+            </div>
+            <p class="keyboard-char"><span class=""><i class=""></i></span><span><i class=""></i></span><span><i
+                    class=""></i></span><span><i class=""></i></span><span><i class=""></i></span><span><i class=""></i></span>
+            </p>
+        </div>
+        <div class="vc-content">
+            <div class="vc-logbox vc-actived" id="__vc_log_default">
+                <div class="vc-log">
+                    <table id="table_keyboard" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:#D3D9DF;"></td>
+                            <td>0</td>
+                            <td style="background-color:#D3D9DF;">删除</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="vitual-keyboard.js"></script>
+
+</body>
+</html>
