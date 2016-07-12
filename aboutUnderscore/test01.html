@@ -76,8 +76,54 @@
     function say(name, age) {
         alert('my name is: ' + name +', age is: ' + age);
     }
+    var arrr = [
+        {
+            "dayLimit": "50000",
+            "payChannelCode": "CBC",
+            "payChannelName": "工商",
+            "transactionLimit": "15000",
 
-
+            "ascii": 64
+        },
+        {
+            "dayLimit": "10000",
+            "payChannelCode": "ABC",
+            "payChannelName": "农业",
+            "transactionLimit": "1000",
+            "ascii": 65
+        },
+        {
+            "dayLimit": "20000",
+            "payChannelCode": "CMBC",
+            "payChannelName": "招商",
+            "transactionLimit": "5000",
+            "ascii": 65
+        },
+        {
+            "dayLimit": "50000",
+            "payChannelCode": "BJB",
+            "payChannelName": "工商1",
+            "transactionLimit": "15000",
+            "ascii": 65
+        },
+        {
+            "dayLimit": "50000",
+            "payChannelCode": "DLB",
+            "payChannelName": "工商2",
+            "transactionLimit": "15000",
+            "ascii": 66
+        },
+        {
+            "dayLimit": "50000",
+            "payChannelCode": "DLB",
+            "payChannelName": "工商2",
+            "transactionLimit": "15000",
+            "ascii": 66
+        }];
+var resss = _.groupBy(arrr, function(item) {
+    return item.ascii
+})
+console.log(resss)
 </script>
 </body>
 </html>

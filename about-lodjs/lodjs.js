@@ -22,6 +22,7 @@
     var interactiveScript = null;
     var currentlyAddingScript = null;
     var curExecModName = null;
+
     var ts = +new Date; //(new Date).getTime();
 
     var o = {};
@@ -68,7 +69,7 @@
     }
 
 
-<<<<<<< HEAD
+/*
         if (d.cache) {
             src += '?t=' + ts;
         }
@@ -91,8 +92,7 @@
         head.appendChild(node);
         currentlyAddingScript = null;
     }
-=======
->>>>>>> e5d3baf24c65f22eb0c95269b1b7d27cb180e132
+*/
 
     function getCurSrc() {
         if (doc.currentScript) {  // =>当前存在执行的script 则返回当前js的路径
@@ -479,10 +479,6 @@
     };
 //========================================================================================\\
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e5d3baf24c65f22eb0c95269b1b7d27cb180e132
     //-------------------------------------------------------------------------------------------------------------
 
     function count() {  // => 计数器
