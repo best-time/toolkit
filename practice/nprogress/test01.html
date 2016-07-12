@@ -10,11 +10,31 @@
 
 <script>
     NProgress.start();
-    setInterval(function() {
+    setTimeout(function() {
         NProgress.done();
-    }, 2000)
+    }, 200)
 </script>
 
-<p class="box"></p>
+<script>
+    var queue = (function () {
+        var pending = [];
+
+        function next() {
+            var fn = pending.shift();
+            if (fn) {
+                fn(next);
+            }
+        }
+
+        return function (fn) {
+            pending.push(fn);
+            if (pending.length == 1) {
+                next();
+            }
+        };
+    })();
+    queue(function() { console.log(1)})
+</script>
+
 </body>
 </html>

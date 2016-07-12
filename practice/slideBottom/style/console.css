@@ -2,6 +2,7 @@
     font-size: 13px
 }
 
+/* 触发 按钮*/
 #__vconsole .vc-switch {
     display: block;
     position: fixed;
@@ -9,14 +10,10 @@
     bottom: 10px;
     color: #fff;
     background-color: #04be02;
-    line-height: 1;
-    font-size: 14px;
     padding: 8px 16px;
     z-index: 10000;
-    border-radius: 4px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .4)
 }
-
+/*遮罩层*/
 #__vconsole .vc-mask {
     display: none;
     position: fixed;
@@ -242,6 +239,26 @@
 }
 
 #__vconsole.vc-toggle .vc-panel {
+    -webkit-transform: translate(0);
+    transform: translate(0)
+}
+
+#__vconsole .vc-panel2 {
+    position: fixed;
+    min-height: 80%;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 10002;
+    background-color: #efeff4;
+    -webkit-transition: -webkit-transform .3s;
+    transition: -webkit-transform .3s;
+    transition: transform .3s;
+    transition: transform .3s, -webkit-transform .3s;
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%)
+}
+#__vconsole.vc-toggle .vc-panel2 {
     -webkit-transform: translate(0);
     transform: translate(0)
 }
