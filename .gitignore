@@ -1,3 +1,4 @@
 .idea/
 components/
+program/node_modules
 *.xml

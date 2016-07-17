@@ -9,7 +9,9 @@
     var slice = [].slice;
 
     var doc = document;
-    var head = doc.head || doc.getElementsByTagName("head")[0] || doc.documentElement;
+    var head = doc.head ||
+        doc.getElementsByTagName("head")[0] ||
+        doc.documentElement;
     var docCharset = doc.charset;
 
     var docUrl = location.href.split('?')[0];//去除问号之后部分
@@ -474,12 +476,23 @@
         return 0;
     }
 
-    define.amd = {
-        from: 'lodjs'
-    };
+    // define.amd = {
+    //     from: 'lodjs'
+    // };
 //========================================================================================\\
 
     //-------------------------------------------------------------------------------------------------------------
+
+    function fixUrl(url) { // => 去除多余 '/'
+        return url.replace(/([^:])\/+/g, '$1/');  // 'a///' => 'a/'  非 : 后面的//
+    }
+
+    function fixPath(path) {    //path是网址
+        if (isUrl(path)) {
+            return getUrl('./', path).slice(0, -1);
+        }
+        return path;
+    }
 
     function count() {  // => 计数器
         return gid++;
@@ -487,10 +500,6 @@
 
     function isUrl(url) {
         return url.search(/^(http:\/\/|https:\/\/|\/\/)/) !== -1;
-    }
-
-    function fixUrl(url) { // => 去除多余 '/'
-        return url.replace(/([^:])\/+/g, '$1/');  // 'a///' => 'a/'
     }
 
     function isArr(arr) {
@@ -526,13 +535,6 @@
         }
 
         return 'unknow';
-    }
-
-    function fixPath(path) {    //path是网址
-        if (isUrl(path)) {
-            return getUrl('./', path).slice(0, -1);
-        }
-        return path;
     }
 
     function debug() {
