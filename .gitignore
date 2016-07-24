@@ -1,4 +1,5 @@
 .idea/
 components/
+mulProgram/
 program/node_modules
 *.xml

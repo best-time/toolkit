@@ -1065,6 +1065,14 @@
         })();
     }
 
+    if (!Object.create) {
+        Object.create = function (o) {
+            function F() {}
+            F.prototype = o;
+            return new F();
+        };
+    }
+
 
     // Browser environment sniffing
     var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';

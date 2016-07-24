@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html {
+            font-size: 625%;
+        }
+        body {
+            font-size: 16px;
+        }
+        p {
+            font-size: .5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <p class='desc' id="desc">第一行内容</p>
+</div>
+<script>
+    var res = Object.create({name: 'yijnweiyi', say: function() {}},
+            {
+                foo: { writable: false, configurable:true, value: "hello" },
+            });
+    console.log(res);
+    res.foo = "asdfadfs";
+    console.log(res);
+
+    var res2 = Object.create(null);
+    console.log(res2)
+</script>
+</body>
+</html>
