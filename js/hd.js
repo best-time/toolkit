@@ -580,14 +580,14 @@
     _.setCookie = function (name, value, hours) { //写cookie
         var exp = new Date();
         exp.setTime(exp.getTime() + hours * 60 * 60 * 1000);
-        if (navigator.cookieEnabled) {
+        if (window.navigator.cookieEnabled) {
             document.cookie = name + "=" + encodeURI(value) + ";expires=" + exp.toGMTString();
         }
     };
 
     //读取cookie
     _.getCookie = function (name) { //取cookie
-        if (navigator.cookieEnabled) {
+        if (window.navigator.cookieEnabled) {
             var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
             if (arr != null) return decodeURI(arr[2]);
         }
@@ -658,6 +658,20 @@
         }
 
         if (StrNo.length == 18) {
+
+            function isValidDate(iY, iM, iD) {
+                if (iY > 2200 || iY < 1900 || !isNumber(iY)) {
+                    return false;
+                }
+                if (iM > 12 || iM <= 0 || !isNumber(iM)) {
+                    return false;
+                }
+                if (iD > 31 || iD <= 0 || !isNumber(iD)) {
+                    return false;
+                }
+                return true;
+            }
+
             var a, b, c;
             if (!isNumber(StrNo.substr(0, 17))) {
                 //alert("身份证号码错误,前17位不能含有英文字母！");
@@ -739,18 +753,6 @@
         return true;
     };
 
-    function isValidDate(iY, iM, iD) {
-        if (iY > 2200 || iY < 1900 || !isNumber(iY)) {
-            return false;
-        }
-        if (iM > 12 || iM <= 0 || !isNumber(iM)) {
-            return false;
-        }
-        if (iD > 31 || iD <= 0 || !isNumber(iD)) {
-            return false;
-        }
-        return true;
-    }
 
     //测试代码效率的函数, 函数参数放在一个数组中
     _.getEfficiency = function (times, func, parm) {
@@ -855,8 +857,8 @@
         }
     }
 
-    //汉字 字母 数字 reg
-    var reg1 = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+
+    var reg1 = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/; //汉字 字母 数字 reg
     var reg2 = /^[-]{0,1}(\d+)[\.]+(\d+)$/; //小数
 
 
@@ -1076,5 +1078,5 @@
 
     // Browser environment sniffing
     var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
-}
-();
+    
+}();

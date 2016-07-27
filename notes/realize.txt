@@ -1,0 +1,18 @@
+dom 操作
+    nodeType
+
+
+    魅族手机自带浏览器 不支持localStorage setItem 值塞不进去, 也取不到值
+    (function () {
+                var storage = window.localStorage;
+                try{
+                    if(storage){
+                        storage.setItem('t','t');
+                        storage.removeItem('t');
+                        return true;
+                    }
+                }catch(e){
+                }
+                return false;
+            })()
+    这样判断也返回true
