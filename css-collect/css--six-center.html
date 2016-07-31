@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style type="text/css">
+    .wrp {
+        background-color: #b9b9b9;
+        width: 300px;
+        height: 200px;
+    }
+    .box {
+        color: white;
+        background-color: #3e8e41;
+        width: 200px;
+        height: 120px;
+        overflow: auto;
+    }
+    .wrp1 { position: relative; }
+    .box1 {
+        margin: auto;
+        position: absolute;
+        left: 0; right: 0; top: 0; bottom: 0;
+    }
+</style>
+<h2>绝对定位+ margin: auto</h2>
+<div class="wrp wrp1">
+    <div class="box box1">
+        <h3>完全居中层1：</h3>
+        <h3>开发工具 【 WeX5 】： 高性能轻架构、开源免费、跨端、可视化</h3>
+    </div>
+</div>
+
+<h2>
+    绝对定位+margin反向偏移
+</h2>
+<style type="text/css">
+
+    .wrp2 { position: relative; }
+    .box2 {
+        position: absolute;
+        top: 50%; left: 50%;
+        margin-left: -100px; /* (width + padding)/2 */
+        margin-top: -60px; /* (height + padding)/2 */
+    }
+</style>
+<div class="wrp wrp2">
+
+    <div class="box box2">
+        <h3>完全居中方案二：</h3>
+        <h3>开发工具 【 WeX5 】： 高性能轻架构、开源免费、跨端、可视化</h3>
+    </div>
+</div>
+<h2>绝对定位+transform反向偏移</h2>
+<style type="text/css">
+
+    .wrp3 { position: relative; }
+    .box3 {
+        margin: auto;
+        position: absolute;
+        top: 50%; left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+</style>
+<div class="wrp wrp3">
+
+    <div class="box box3">
+        <h3>完全居中方案三：</h3>
+        <h3>开发工具 【 WeX5 】： 高性能轻架构、开源免费、跨端、可视化</h3>
+    </div>
+    </div>
+
+<h2>display: table</h2>
+<style type="text/css">
+
+    .wrp4 { display: table; }
+    .subwrp4 {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .box4 {
+        margin: auto;
+        overflow-wrap: break-word;
+        height: auto;
+        max-height: 80%;
+        max-width: 80%;
+    }
+</style>
+<div class="wrp wrp4">
+
+    <div class="subwrp4">
+        <div class="box box4">
+            <h3>完全居中方案四：</h3>
+        </div>
+    </div>
+</div>
+
+<h2>display: inline-block</h2>
+<style type="text/css">
+
+    .wrp5 {
+        text-align: center;
+        overflow: auto;
+    }
+    .box5 {
+        display: inline-block;
+        vertical-align: middle;
+        width: auto;
+        height: auto;
+        max-width: 90%;
+        max-height: 90%;
+    }
+    .wrp5:after {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+        margin-left: -0.25em;
+        /* To offset spacing. May vary by font */
+    }
+</style>
+<div class="wrp wrp5">
+
+    <div class="box box5">
+        <h3>完全居中方案五：</h3>
+        <h3>开发工具 【 WeX5 】： 高性能轻架构、开源免费、跨端、可视化</h3>
+    </div>
+</div>
+
+<h2>display: flex-box</h2>
+<style type="text/css">
+
+    .wrp6 {
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-box;
+        display: flex;
+
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+
+        -webkit-box-pack: center;
+        -moz-box-pack: center;
+        -ms-flex-pack: center;
+
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+
+    .box6 {
+        width: auto;
+        height: auto;
+        max-width: 90%;
+        max-height: 90%;
+    }
+</style>
+<div class="wrp wrp6">
+
+    <div class="box box6">
+        <h3>完全居中方案六：</h3>
+        <h3>开发工具 【 WeX5 】： 高性能轻架构、开源免费、跨端、可视化</h3>
+    </div>
+
+</div>
+</body>
+</html>
