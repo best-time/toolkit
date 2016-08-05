@@ -189,7 +189,9 @@ var Zepto = (function () {
             document.body.appendChild(element);
             display = getComputedStyle(element, '').getPropertyValue("display");
             element.parentNode.removeChild(element);
-            display == "none" && (display = "block");
+            if(display == "none") {
+                display = "block"
+            }
             elementDisplay[nodeName] = display
         }
         return elementDisplay[nodeName]
@@ -390,7 +392,7 @@ var Zepto = (function () {
                 );
     };
 
-    function filtered(nodes, selector) {
+    function filtered(nodes, selector) { // 返回 $ 对象
         return selector == null ? $(nodes) : $(nodes).filter(selector)
     }
 
@@ -546,11 +548,10 @@ var Zepto = (function () {
         // `map` and `slice` in the jQuery API work differently
         // from their array counterparts
         map: function (fn) {
-            return $(
-                $.map(this, function (el, i) {
-                    return fn.call(el, i, el)
-                })
-            )
+            var temp = $.map(this, function (el, i) { // this[i], i
+                return fn.call(el, i, el)
+            });
+            return $(temp)
         },
         slice: function () {
             return $(slice.apply(this, arguments))
@@ -598,9 +599,11 @@ var Zepto = (function () {
             if (isFunction(selector)) {
                 return this.not(this.not(selector))
             }
-            return $(filter.call(this, function (element) {
+            return $(
+                filter.call(this, function (element) {
                 return zepto.matches(element, selector)
-            }))
+            })
+            )
         },
         add: function (selector, context) {
             return $(uniq(this.concat($(selector, context))))
@@ -686,7 +689,9 @@ var Zepto = (function () {
             var ancestors = [], nodes = this;
             while (nodes.length > 0){
                 nodes = $.map(nodes, function (node) {
-                    if ((node = node.parentNode) && !isDocument(node) && ancestors.indexOf(node) < 0) {
+                    if ((node = node.parentNode) &&
+                        !isDocument(node) &&
+                        ancestors.indexOf(node) < 0) {
                         ancestors.push(node);
                         return node
                     }
@@ -708,11 +713,12 @@ var Zepto = (function () {
             })
         },
         siblings: function (selector) {
-            return filtered(this.map(function (i, el) {
+            var temp = this.map(function (i, el) {
                 return filter.call(children(el.parentNode), function (child) {
                     return child !== el
                 })
-            }), selector)
+            });
+            return filtered(temp, selector)
         },
         empty: function () {
             return this.each(function () {
@@ -727,10 +733,18 @@ var Zepto = (function () {
         },
         show: function () {
             return this.each(function () {
-                this.style.display == "none" && (this.style.display = '')
-                if (getComputedStyle(this, '').getPropertyValue("display") == "none")
+                if(this.style.display == "none") { //行内样式
+                    this.style.display = ''
+                }
+                if (
+                    getComputedStyle(this, '').getPropertyValue("display") == "none"
+                ) {
                     this.style.display = defaultDisplay(this.nodeName)
+                }
             })
+        },
+        hide: function () {
+            return this.css("display", "none")
         },
         replaceWith: function (newContent) {
             return this.before(newContent).remove()
@@ -779,9 +793,6 @@ var Zepto = (function () {
             return this.map(function () {
                 return this.cloneNode(true)
             })
-        },
-        hide: function () {
-            return this.css("display", "none")
         },
         toggle: function (setting) {
             return this.each(function () {
@@ -887,12 +898,15 @@ var Zepto = (function () {
             }
         },
         css: function (property, value) {
+            
             if (arguments.length < 2) {
-                var computedStyle, element = this[0]
+                var computedStyle, 
+                    element = this[0]
                 if (!element) return;
                 computedStyle = getComputedStyle(element, '');
-                if (typeof property == 'string')
+                if (typeof property == 'string') {
                     return element.style[camelize(property)] || computedStyle.getPropertyValue(property)
+                }
                 else if (isArray(property)) {
                     var props = {};
                     $.each(property, function (_, prop) {
@@ -1073,35 +1087,52 @@ var Zepto = (function () {
 
         $.fn[operator] = function () {
             // arguments can be nodes, arrays of nodes, Zepto objects and HTML strings
-            var argType, nodes = $.map(arguments, function (arg) {
-                    argType = type(arg)
+            var argType,
+                nodes = $.map(arguments, function (arg) {
+                    argType = type(arg);
                     return argType == "object" || argType == "array" || arg == null ?
                         arg : zepto.fragment(arg)
                 }),
-                parent, copyByClone = this.length > 1;
+                parent,
+                copyByClone = this.length > 1;
+
             if (nodes.length < 1) return this;
 
             return this.each(function (_, target) {
                 parent = inside ? target : target.parentNode;
 
                 // convert all methods to a "before" operation
-                target = operatorIndex == 0 ? target.nextSibling :
-                    operatorIndex == 1 ? target.firstChild :
-                        operatorIndex == 2 ? target :
-                            null;
+                target = operatorIndex == 0 ?
+                    target.nextSibling :
+                    (
+                        operatorIndex == 1 ?
+                        target.firstChild :
+                            (operatorIndex == 2 ? target : null)
+                    );
 
                 var parentInDocument = $.contains(document.documentElement, parent);
 
                 nodes.forEach(function (node) {
-                    if (copyByClone) node = node.cloneNode(true);
-                    else if (!parent) return $(node).remove();
+                    if (copyByClone) {
+                        node = node.cloneNode(true);
+                    }
+                    else if (!parent) {
+                        return $(node).remove();
+                    }
 
                     parent.insertBefore(node, target);
-                    if (parentInDocument) traverseNode(node, function (el) {
-                        if (el.nodeName != null && el.nodeName.toUpperCase() === 'SCRIPT' &&
-                            (!el.type || el.type === 'text/javascript') && !el.src)
-                            window['eval'].call(window, el.innerHTML)
-                    })
+
+                    if (parentInDocument) {
+                        traverseNode(node, function (el) {
+                            if (el.nodeName != null &&
+                                el.nodeName.toUpperCase() === 'SCRIPT' &&
+                                (!el.type || el.type === 'text/javascript') &&
+                                !el.src   //判断是否是js代码,并且 src 为 空
+                            ){
+                                window['eval'].call(window, el.innerHTML);  //eval执行
+                            }
+                        })
+                    }
                 })
             })
         };
