@@ -988,19 +988,23 @@
     function getPageScrollLeft() {
         var doc = document;
         return doc.documentElement.scrollLeft || doc.body.scrollLeft;
-        return doc.documentElement.scrollTop || doc.body.scrollTop;
+        // return doc.documentElement.scrollTop || doc.body.scrollTop;
     }
 
     //获取可视宽度
     function getPageViewWidth() {
-        var d = document, a = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+        var d = document, 
+            a = d.compatMode == "BackCompat" ? d.body : d.documentElement;
         return a.clientWidth;
         // return a.clientHeight;
     }
 
     //获取页面宽度
     function getPageWidth() {
-        var g = document, a = g.body, f = g.documentElement, d = g.compatMode == "BackCompat" ? a : g.documentElement;
+        var g = document, 
+            a = g.body, 
+            f = g.documentElement, 
+            d = g.compatMode == "BackCompat" ? a : g.documentElement;
         return Math.max(f.scrollWidth, a.scrollWidth, d.clientWidth);
     }
 

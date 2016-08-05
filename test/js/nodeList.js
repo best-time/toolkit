@@ -194,15 +194,14 @@
             return ArrayProto.slice.call(this);
         }
     };
-console.log(NL);
-    debugger
+
+
     Object.getOwnPropertyNames(ArrayProto).forEach(function (key) {
         if (key !== 'join' &&
             key !== 'copyWithin' &&
             key !== 'fill' &&
             NL[key] === undefined)
         {
-
             NL[key] = ArrayProto[key];
         }
     });
@@ -234,7 +233,9 @@ console.log(NL);
                 }
                 return returnThis ? this : flatten(arr, this);
             }
+
         } else {
+
             Object.defineProperty(NL, prop, {
                 get: function () {
                     var arr = [], i = 0,
@@ -257,6 +258,7 @@ console.log(NL);
                     }
                 }
             });
+
         }
     }
 
