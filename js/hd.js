@@ -402,7 +402,7 @@
      debounce主要应用的场景比如：
      文本输入keydown 事件，keyup 事件，例如做autocomplete
 
-    */
+     */
     function debounce(func, wait, immediate) {
         var timeout;
         return function () {
@@ -420,6 +420,7 @@
             }
         };
     }
+
     function _debounce(func, wait) {
         var timeout, args, context,
             timestamp, result;
@@ -445,6 +446,7 @@
             return result;
         };
     }
+
     //防节流
     //通俗一点就是函数调用的频度控制器，是连续执行时间间隔控制。主要应用的场景比如：
 //    1.鼠标移动，mousemove 事件
@@ -630,14 +632,14 @@
     _.setCookie = function (name, value, hours) { //写cookie
         var exp = new Date();
         exp.setTime(exp.getTime() + hours * 60 * 60 * 1000);
-        if (navigator.cookieEnabled) {
+        if (window.navigator.cookieEnabled) {
             document.cookie = name + "=" + encodeURI(value) + ";expires=" + exp.toGMTString();
         }
     };
 
     //读取cookie
     _.getCookie = function (name) { //取cookie
-        if (navigator.cookieEnabled) {
+        if (window.navigator.cookieEnabled) {
             var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
             if (arr != null) return decodeURI(arr[2]);
         }
@@ -708,6 +710,20 @@
         }
 
         if (StrNo.length == 18) {
+
+            function isValidDate(iY, iM, iD) {
+                if (iY > 2200 || iY < 1900 || !isNumber(iY)) {
+                    return false;
+                }
+                if (iM > 12 || iM <= 0 || !isNumber(iM)) {
+                    return false;
+                }
+                if (iD > 31 || iD <= 0 || !isNumber(iD)) {
+                    return false;
+                }
+                return true;
+            }
+
             var a, b, c;
             if (!isNumber(StrNo.substr(0, 17))) {
                 //alert("身份证号码错误,前17位不能含有英文字母！");
@@ -789,18 +805,6 @@
         return true;
     };
 
-    function isValidDate(iY, iM, iD) {
-        if (iY > 2200 || iY < 1900 || !isNumber(iY)) {
-            return false;
-        }
-        if (iM > 12 || iM <= 0 || !isNumber(iM)) {
-            return false;
-        }
-        if (iD > 31 || iD <= 0 || !isNumber(iD)) {
-            return false;
-        }
-        return true;
-    }
 
     //测试代码效率的函数, 函数参数放在一个数组中
     _.getEfficiency = function (times, func, parm) {
@@ -905,10 +909,9 @@
         }
     }
 
-    //汉字 字母 数字 reg
-    var reg1 = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
-    var reg2 = /^[-]{0,1}(\d+)[\.]+(\d+)$/; //小数
 
+    var reg1 = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/; //汉字 字母 数字 reg
+    var reg2 = /^[-]{0,1}(\d+)[\.]+(\d+)$/; //小数
 
 
     //返回ie版本号 6/7/8/9
@@ -925,7 +928,6 @@
 
         return v > 4 ? v : undef;
     }());
-
 
 
     /**
@@ -958,6 +960,175 @@
         }
         return -1;
     }
+
+    //加载样式
+    function LoadStyle(url) {
+        var doc = document;
+        try {
+            doc.createStyleSheet(url)
+        } catch (e) {
+            var cssLink = document.createElement('link');
+            cssLink.rel = 'stylesheet';
+            cssLink.type = 'text/css';
+            cssLink.href = url;
+            var head = doc.getElementsByTagName('head')[0];
+            head.appendChild(cssLink)
+        }
+    }
+
+    //加载js
+    function appendscript(src, text, reload, charset) {
+        var id = hash(src + text);
+        if (!reload && in_array(id, evalscripts)) return;
+        if (reload && $(id)) {
+            $(id).parentNode.removeChild($(id));
+        }
+        evalscripts.push(id);
+        var scriptNode = document.createElement("script");
+        scriptNode.type = "text/javascript";
+        scriptNode.id = id;
+        scriptNode.charset = charset ? charset : (BROWSER.firefox ? document.characterSet : document.charset);
+        try {
+            if (src) {
+                scriptNode.src = src;
+                scriptNode.onloadDone = false;
+                scriptNode.onload = function () {
+                    scriptNode.onloadDone = true;
+                    JSLOADED[src] = 1;
+                };
+                scriptNode.onreadystatechange = function () {
+                    if ((scriptNode.readyState == 'loaded' || scriptNode.readyState == 'complete') && !scriptNode.onloadDone) {
+                        scriptNode.onloadDone = true;
+                        JSLOADED[src] = 1;
+                    }
+                };
+            } else if (text) {
+                scriptNode.text = text;
+            }
+            document.getElementsByTagName('head')[0].appendChild(scriptNode);
+        } catch (e) {
+        }
+    }
+
+    //getElementByClassName
+    function getElementsByClassName(name) {
+        var tags = document.getElementsByTagName('*') || document.all;
+        var els = [];
+        for (var i = 0; i < tags.length; i++) {
+            if (tags.className) {
+                var cs = tags.className.split(' ');
+                for (var j = 0; j < cs.length; j++) {
+                    if (name == cs[j]) {
+                        els.push(tags);
+                        break
+                    }
+                }
+            }
+        }
+        return els
+    }
+
+    //获取页面高度
+    function getPageHeight() {
+        var g = document, a = g.body,
+            f = g.documentElement,
+            d = g.compatMode == "BackCompat" ? a : g.documentElement;
+        return Math.max(f.scrollHeight, a.scrollHeight, d.clientHeight);
+    }
+
+    //获取scrollLeft
+    function getPageScrollLeft() {
+        var doc = document;
+        return doc.documentElement.scrollLeft || doc.body.scrollLeft;
+        return doc.documentElement.scrollTop || doc.body.scrollTop;
+    }
+
+    //获取可视宽度
+    function getPageViewWidth() {
+        var d = document, a = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+        return a.clientWidth;
+        // return a.clientHeight;
+    }
+
+    //获取页面宽度
+    function getPageWidth() {
+        var g = document, a = g.body, f = g.documentElement, d = g.compatMode == "BackCompat" ? a : g.documentElement;
+        return Math.max(f.scrollWidth, a.scrollWidth, d.clientWidth);
+    }
+
+    //返回顶部
+    function backTop(btnId) {
+        var btn = document.getElementById(btnId);
+        var d = document.documentElement;
+        var b = document.body;
+        window.onscroll = set;
+        btn.style.display = "none";
+        btn.onclick = function () {
+            btn.style.display = "none";
+            window.onscroll = null;
+            this.timer = setInterval(function () {
+                d.scrollTop -= Math.ceil((d.scrollTop + b.scrollTop) * 0.1);
+                b.scrollTop -= Math.ceil((d.scrollTop + b.scrollTop) * 0.1);
+                if ((d.scrollTop + b.scrollTop) == 0) clearInterval(btn.timer, window.onscroll = set);
+            }, 10);
+        };
+        function set() {
+            btn.style.display = (d.scrollTop + b.scrollTop > 100) ? 'block' : "none"
+        }
+    }
+
+    //阻止冒泡
+    function stopPropagation(e) {
+        e = e || window.event;
+        if (e.stopPropagation) {//W3C阻止冒泡方法
+            e.stopPropagation();
+        } else {
+            e.cancelBubble = true; //IE阻止冒泡方法
+        }
+    }
+
+    //鼠标滚轮事件
+    $('#showPic').on("mousewheel DOMMouseScroll", function (e) {
+        var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || // chrome & ie
+            (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1)); // firefox
+        if (delta > 0) { // 向上滚
+        } else if (delta < 0) {
+            // 向下滚
+        }
+    });
+
+    $('#imgadsftest').click(function (e) {
+        //获取鼠标在图片上的坐标
+        alert('X：' + e.offsetX + '\n Y:' + e.offsetY);
+        //获取元素相对于页面的坐标
+        alert('X：' + $(this).offset().left + '\n Y:' + $(this).offset().top)
+    });
+
+    //倒计时
+    function getCode(obj, n) {
+        var t = obj.value;
+        (function () {
+            if (n > 0) {
+                obj.disabled = true
+                obj.value = '倒计时' + (n--) + '秒';
+                setTimeout(arguments.callee, 1000);
+            } else {
+                obj.disabled = false;
+                obj.value = t;
+            }
+        })();
+    }
+
+    if (!Object.create) {
+        Object.create = function (o) {
+            function F() {}
+            F.prototype = o;
+            return new F();
+        };
+    }
+
+
     // Browser environment sniffing
     var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
+    
 }();

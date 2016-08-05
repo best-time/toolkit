@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lazeLoadExample</title>
+    <style>
+        .lazy-load {
+            /*-webkit-transition: all .8s;*/
+            /*-moz-transition: all .8s ;*/
+            /*-ms-transition: all .8s ;*/
+            /*-o-transition: all .8s ;*/
+            /*transition: all .8s ;*/
+            -webkit-animation:show .5s;
+            -o-animation:show .5s;
+            animation:show .5s;
+        }
+        @keyframes show {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods001.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods003.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods004.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods005.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods006.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods007.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods008.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods009.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+<img src="img/load.jpg" alt="img" lazy-src="img/goods002.jpg" height="640px">
+
+<script src="../js/lazy-load.js"></script>
+<script>
+    new eazyLoad().init()
+</script>
+</body>
+</html>

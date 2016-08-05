@@ -1,0 +1,52 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link rel="shortcut icon" href="http://www.suning.com/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="reset.css"/>
+    <link rel="stylesheet" type="text/css" href="css.css"/>
+    <title>常用css</title>
+</head>
+<body>
+<!--iphone 开关-->
+<div id="div1" class="open1">
+    <div id="div2" class="open2"></div>
+</div>
+<br>
+<!--叉号-->
+<span class="x-mark"></span>
+<br>
+<br>
+<br>
+<h2>flex居中</h2>
+<div class="flex-center demo-center">
+    <div class="children">子元素水平垂直居中</div>
+</div>
+
+<h2>translate居中</h2>
+<div class="translate-center demo-center">
+    <div class="children">子元素水平垂直居中</div>
+</div>
+
+<h2>两端对齐</h2>
+<div class="justify"><h2>左边对齐</h2><span>右边对齐</span></div>
+<script>
+    window.onload=function(){
+        var div2=document.getElementById("div2");
+        var div1=document.getElementById("div1");
+        div2.onclick=function(){
+            div1.className=(div1.className=="close1")?"open1":"close1";
+            div2.className=(div2.className=="close2")?"open2":"close2";
+        }
+    }
+</script>
+</body>
+</html>
