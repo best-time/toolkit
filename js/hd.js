@@ -34,6 +34,58 @@
      */
 
     // "use strict";
+
+
+    (function(window) {
+        if (!window.requestAnimationFrame) {
+            var lastTime = 0;
+            window.requestAnimationFrame = window.webkitRequestAnimationFrame || function(callback, element) {
+                    var currTime = +new Date();
+                    var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+                    var id = window.setTimeout(function() {
+                        callback(currTime + timeToCall);
+                    }, timeToCall);
+                    lastTime = currTime + timeToCall;
+                    return id;
+                };
+            window.cancelAnimationFrame = window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || function(id) {
+                    clearTimeout(id);
+                };
+        };
+    }(window));
+
+    (function(window, undefined) {
+        var offset = function(element) {
+            var box = {
+                top : 0,
+                left : 0
+            };
+            if ( typeof element.getBoundingClientRect !== undefined) {
+                box = element.getBoundingClientRect();
+            }
+            return {
+                top : box.top + window.pageYOffset - element.clientTop,
+                left : box.left + window.pageXOffset - element.clientLeft
+            };
+        };
+        var scrollTo = function(scrollTop, duration, callback) {
+            duration = duration || 1000;
+            var scroll = function(duration) {
+                if (duration <= 0) {
+                    window.scrollTo(0, scrollTop);
+                    callback && callback();
+                    return;
+                }
+                var distaince = scrollTop - window.scrollY;
+                setTimeout(function() {
+                    window.scrollTo(0, window.scrollY + distaince / duration * 10);
+                    scroll(duration - 10);
+                }, 16.7);
+            };
+            scroll(duration);
+        };
+    })(window);
+
     var root = this;
     var previousHD = root._;
 

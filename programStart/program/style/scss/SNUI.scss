@@ -1,0 +1,218 @@
+@charset "UTF-8";
+@import "function.scss";
+@import "module.scss";
+
+/* 1px hack */
+.snui-border-t {
+  border-top: 1px solid #dcdcdc; }
+
+.snui-border-b {
+  border-bottom: 1px solid #dcdcdc; }
+
+.snui-border-tb {
+  border-top: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+  background-image: none; }
+
+.snui-border-l {
+  border-left: 1px solid #dcdcdc; }
+
+.snui-border-r {
+  border-right: 1px solid #dcdcdc; }
+
+.snui-border {
+  border: 1px solid #dcdcdc; }
+
+.snui-border-radius {
+  border: 1px solid #dcdcdc;
+  border-radius: 4px; }
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+  .snui-border-radius {
+    position: relative;
+    border: 0;
+  }
+  .snui-border-radius:before {
+    content: "";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #dcdcdc;
+    -webkit-transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    padding: 1px;
+    -webkit-box-sizing: border-box;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .snui-border {
+    position: relative;
+    border: 0;
+  }
+
+  .snui-border-t,
+  .snui-border-b,
+  .snui-border-l,
+  .snui-border-r,
+  .snui-border-tb {
+    border: 0;
+  }
+
+  .snui-border-t {
+    background-position: left top;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc));
+  }
+
+  .snui-border-b {
+    background-position: left bottom;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc));
+  }
+
+  .snui-border-t,
+  .snui-border-b,
+  .snui-border-tb {
+    background-repeat: repeat-x;
+    -webkit-background-size: 100% 1px;
+  }
+
+  .snui-border-tb {
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc)), -webkit-gradient(linear, left top, left bottom, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc));
+    background-position: top, bottom;
+  }
+
+  .snui-border-l {
+    background-position: left top;
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc));
+  }
+
+  .snui-border-r {
+    background-position: right top;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc));
+  }
+
+  .snui-border-l,
+  .snui-border-r {
+    background-repeat: repeat-y;
+    -webkit-background-size: 1px 100%;
+  }
+
+  .snui-border:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc)), -webkit-gradient(linear, left top, right top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc)), -webkit-gradient(linear, left top, left bottom, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc)), -webkit-gradient(linear, right top, left top, color-stop(0.5, transparent), color-stop(0.5, #dcdcdc));
+    -webkit-background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+    background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+    -webkit-background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+    background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+    background-repeat: no-repeat;
+    background-position: top, right, bottom, left;
+    padding: 1px;
+    -webkit-box-sizing: border-box;
+    z-index: 10;
+    pointer-events: none;
+  }
+}
+
+/*text style*/
+.snui-nowrap {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.snui-nowrap-flex {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  -webkit-box-flex: 1;
+}
+.ui-nowrap-multi {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; //default 2 line
+}
+
+.snui-justify,
+.snui-txt-justify {
+  text-align: justify; }
+
+.snui-txt-justify-one {
+  text-align: justify;
+  overflow: hidden;
+  height: 24px; }
+.snui-txt-justify-one:after {
+  display: inline-block;
+  content: '';
+  overflow: hidden;
+  width: 100%;
+  height: 0; }
+
+/*tile 平铺*/
+.snui-tiled {
+  display: -webkit-box;
+  width: 100%;
+  -webkit-box-sizing: border-box; }
+
+.snui-tiled li {
+  -webkit-box-flex: 1;
+  width: 100%;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center; }
+
+.snui-center {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  text-align: center;
+  height: 150px;
+}
+
+/*placehold */
+.snui-placehold-wrap {
+  padding-top: 31.25%;
+  position: relative; }
+
+.snui-placehold {
+  color: #bbb;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  -webkit-box-sizing: border-box;
+  text-align: center;
+  height: 100%; }
+
+.snui-placehold-img {
+  padding-top: 31.25%;
+  position: relative; }
+.snui-placehold-img > span {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover; }
+.snui-placehold-img img {
+  width: 100%;
+  height: 100%; }

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+    function isArray(arr) {
+        return ({}).toString.call(arr) === '[object Array]';
+    }
+    var extend = function () { //from jquery2
+        var options, name, src, copy, copyIsArray, clone,
+                target = arguments[0] || {},
+                i = 1,
+                length = arguments.length,
+                deep = false;
+
+        if (typeof target === "boolean") {
+            deep = target;
+
+            target = arguments[i] || {};
+            i++;
+        }
+
+        if (typeof target !== "object" && !$.isFunction(target)) {
+            target = {};
+        }
+
+        if (i === length) {
+            target = this;
+            i--;
+        }
+
+        for (; i < length; i++) {
+            if ((options = arguments[i]) != null) {
+                for (name in options) {
+                    src = target[name];
+                    copy = options[name];
+
+                    if (target === copy) {
+                        continue;
+                    }
+
+                    if (deep && copy || (copyIsArray = isArray(copy))) {
+                        if (copyIsArray) {
+                            copyIsArray = false;
+                            clone = src && isArray(src) ? src : [];
+
+                        } else {
+                            clone = src ? src : {};
+                        }
+
+                        target[name] = extend(deep, clone, copy);
+
+                    } else if (copy !== undefined) {
+                        target[name] = copy;
+                    }
+                }
+            }
+        }
+
+        return target;
+    };
+    /* var a = {name: 'ywy'}
+     var b = {grade: [1,2,3]}
+     var res = extend(true, a,b)
+     console.log(res)*/
+
+    //    var res = [].every.call([1,2,3], function(el, idx) {
+    //        console.log(el)
+    //        if(el > 0) return true;
+    ////        return true
+    //    });
+    //    console.log(res)
+
+
+    var initializing = false,
+            fnTest = /xyz/.test(function () {
+                xyz;
+            }) ? /\b_super\b/ : /.*/;
+
+    var Class = function () {
+    };
+    Class.extend = function (prop) {
+        var _super = this.prototype;  //class prototype
+        initializing = true;
+        var prototype = new this();  //class 实例
+        initializing = false;
+        for (var name in prop) {
+
+            if (
+                    typeof prop[name] == "function" &&
+                    typeof _super[name] == "function" &&
+                    fnTest.test(prop[name])
+            ) {
+                prototype[name] = (function (name, fn) {
+                    return function () {
+                        var tmp = this._super;
+
+                        this._super = _super[name];
+
+                        var ret = fn.apply(this, arguments);
+                        this._super = tmp;
+
+                        return ret;
+                    };
+                })(name, prop[name])
+            } else {
+                prototype[name] = prop[name];
+            }
+
+        }
+        function Class2() {
+            if (!initializing && this.init){
+                this.init.apply(this, arguments);
+            }
+        }
+
+        Class2.prototype = prototype;
+        Class2.prototype.constructor = Class2;
+        Class2.extend = arguments.callee;
+        return Class2;
+    };
+
+    var res = Class.extend({
+        init: function() {
+            console.log(arguments)
+        },
+        say: function () {
+            console.log('say方法')
+        }, name: "yinweiyi",
+        age: 27
+    });
+    //    console.log(res)
+    console.log(new res(1,2))
+</script>
+</body>
+</html>

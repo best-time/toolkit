@@ -1235,7 +1235,7 @@ a {
     -webkit-transform-origin: 0 0;
     padding: 1px;
     -webkit-box-sizing: border-box;
-    border-radius: 6px;
+    border-radius: 8px;
     pointer-events: none; }
 
   .snui-border {
