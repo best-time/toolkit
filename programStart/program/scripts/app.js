@@ -24,7 +24,13 @@ compose.require('scripts/app.js',
         'transfer-out': ['scripts/page/transfer-out'],//转出
         'bankcards': ['scripts/page/bankcards'],
         'bank-detail': ['scripts/page/bank-detail'],
-        'detail-more': ['scripts/page/detail-more']
+        'detail-more': ['scripts/page/detail-more'],
+
+		'style1': ['scripts/page/ui/style1'],
+		'style2': ['scripts/page/ui/style2'],
+		'style3': ['scripts/page/ui/style3'],
+		'style4': ['scripts/page/ui/style4'],
+		'style5': ['scripts/page/ui/style5'],
 	});
 	var app = new eBase.PageView({
 		tagName:'section',

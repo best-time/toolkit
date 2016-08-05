@@ -184,7 +184,7 @@ $prefix-for-spec: true !default;
 * @param {number} $borderColor    set border color, but if value equal 0, express set width equal 0
 * @param {number} $radius set   border radius
 */
-@mixin borderHandle($borderWidthes:1111, $borderColor:0, $radius:0){
+@mixin borderHandle($borderWidthes:1111, $borderColor:0, $radius:0, $style:solid){
     $innerWidth: 1;
     $hasRight:false;
     @if $borderColor == 0 {
@@ -211,7 +211,7 @@ $prefix-for-spec: true !default;
         @if ($borderColor != 0){
             border-color: $borderColor;
         }
-        border-style: solid;
+        border-style: $style;
         @if ($radius > 0){
             border-radius: $radius;
         }

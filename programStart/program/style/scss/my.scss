@@ -1,0 +1,28 @@
+@charset "UTF-8";
+@import "function.scss";
+@import "SNUI.scss";
+
+body {
+  min-width: 320px;
+  max-width: 750px;
+  margin: 0 auto;
+}
+.sn-container {
+  background: #fff;
+  height: pxToRem(200px);
+  p {
+    font-size: pxToRem(40px);
+    &.border-handle {
+      @include borderHandle(0010, #dcdcdc);
+    }
+  }
+}
+
+.ex2 {
+  li {
+    width: 100px;
+    margin: 10px auto;
+    -webkit-box-pack: center;
+    text-align: center;
+  }
+}

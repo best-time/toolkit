@@ -1,6 +1,6 @@
 @charset "UTF-8";
-@import "reset.scss";
 @import "function.scss";
+@import "reset.scss";
 @import "module.scss";
 @import "app.scss";
 @import "header.scss";
@@ -18,12 +18,20 @@ body{
 a {
   text-decoration: none;
 }
+.line-30 {
+  height: pxToRem(30px);
+  background-color: #F2F2F2;
+}
 i {
   font-style: normal;
 }
 img {
   border: 0;
   width: 100%;
+}
+.rela-6 {
+  position: relative;
+  top: pxToRem(6px);
 }
 .clearfix:after {
   content: ".";
@@ -40,6 +48,579 @@ img {
 .clearfix {
   zoom: 1;
   display: block;
+}
+
+@import "transfer-out.scss";
+/*income-list*/
+.income-list-page {
+  //overflow: scroll;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+  font-size:0;
+}
+
+.header-common section.income-bg {
+  background: #1F86ED;
+  color: #fff;
+}
+.income-month-avg {
+  background: #fff;
+  height: pxToRem(200px);
+  margin-bottom: pxToRem(15px);
+  p {
+    text-align: center;
+
+  }
+  .income-desc {
+    font-size: pxToRem(14px);
+    padding-top: pxToRem(50px);
+    color: #909090;
+  }
+  .month-average {
+    font-size: 30px;
+    color: #FF5A00;
+    margin-top: pxToRem(20px);
+  }
+}
+
+.income-list-details {
+  line-height: pxToRem(80px);
+  background: #fff;
+  ul {
+    li {
+      overflow: hidden;
+      font-size: pxToRem(25px);
+      padding: 0 pxToRem(50px);
+      span.latest {
+        color: #4CA6FF;
+        i {
+          background: #4CA6FF;
+          color: #fff;
+          font-size: pxToRem(14px);
+          font-style:normal;
+          margin-left: pxToRem(20px);
+          border-radius: pxToRem(5px);
+          padding: pxToRem(3px) pxToRem(7px);
+        }
+      }
+      span.income-num {
+        color: #FF5A00;
+      }
+    }
+    .border-handle {
+      @include borderHandle(0010, #dcdcdc)
+    }
+  }
+  .left {
+    float: left;
+    color: #909090;
+  }
+  .right {
+    float: right;
+    color: #353D44;
+  }
+
+}
+/*small-change page start*/
+.header-common section.coin-bg {
+  background-color: #1F86ED;
+  color: #fff;
+}
+
+.wrap {
+  max-width: 750px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  .coin-banner {
+    position: relative;
+    .newer-bg-img {
+      width: 100%;
+      height: pxToRem(396px);
+      background-image: url("../images/coin-banner.png");
+      background-repeat: no-repeat;
+      background-position: top center;
+      background-size: cover;
+    }
+    .income-info {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: -webkit-box;
+      padding: pxToRem(25px) 0;
+      background-color: rgba(100, 100, 100, .1);
+      color: #fff;
+      .box_flex {
+        -webkit-box-flex: 1.0;
+        width: 49.5%;
+        text-align: center;
+        box-sizing: border-box;
+        .box_name {
+          color: rgba(255, 255, 255, .6);
+        }
+        .box_money {
+          font-size: pxToRem(35px);
+          margin-top: pxToRem(10px);
+        }
+
+        .box_name {
+          font-size: pxToRem(14px);
+        }
+      }
+      .box_line {
+        border: 1px solid #ddd;
+        border-width: 0 0 0 1px;
+      }
+    }
+  }
+
+  .coin-oper {
+    padding-bottom: pxToRem(50px);
+    background-color: #fff;
+    margin-top: pxToRem(30px);
+    &.border-handle {
+      @include borderHandle(0010, #dcdcdc)
+    }
+    .coin-set {
+      padding-top: pxToRem(30px);
+      text-align: center;
+      .coin-set-title {
+        font-size: pxToRem(30px);
+        color: #9E9E9E;
+      }
+      .coin-set-content {
+        height: pxToRem(100px);
+        margin-top: pxToRem(30px);
+        img {
+          width: pxToRem(50px);
+          height: pxToRem(50px);
+        }
+        a.minus {
+          display: inline-block;
+          width: pxToRem(60px);
+          height: pxToRem(61px);
+          background: url("../images/icon-all.png") no-repeat 0 0;
+          background-size: cover;
+          //margin-right: pxToRem(5px);
+        }
+        .coin-set-num {
+          position: relative;
+          top: pxToRem(-26px);
+          width: pxToRem(450px);
+          height: pxToRem(65px);
+          margin: 0 pxToRem(5px);
+          border: 0;
+          border-bottom: 1px solid #DEDEDE;
+          text-align: center;
+          outline: none;
+          font-size: pxToRem(60px);
+        }
+        a.add {display: inline-block;
+          width: pxToRem(62px);
+          height: pxToRem(61px);
+          background: url("../images/icon-all.png") no-repeat pxToRem(-61px) 0;
+          background-size: cover;
+          //margin-left: pxToRem(5px);
+        }
+
+      }
+    }
+
+    .calcu-money {
+      text-align: center;
+      p {
+        line-height: 1.6;
+      }
+      .desc {
+        color: #959595;
+        font-size: pxToRem(28px);
+      }
+      .profit-num {
+        font-size: pxToRem(45px);
+        color: #FF7700;
+      }
+    }
+
+  }
+  .fund-tips {
+    margin: pxToRem(60px) pxToRem(60px) 0 pxToRem(60px);
+    p {
+      font-size: pxToRem(24px);
+    }
+  }
+}
+
+/* coin footer*/
+section.coin-footer {
+  //bottom: 0;
+  //position: fixed;
+  //z-index: 100000;
+  width: 100%;
+  max-width: 750px;
+
+  a.transfer {
+    display: block;
+    margin: pxToRem(30px) pxToRem(28px);
+    height: pxToRem(80px);
+    line-height: pxToRem(80px);
+    font-size: pxToRem(36px);
+    text-align: center;
+    color: #fff;
+    background: #3599ff;
+    border-radius: pxToRem(10px);
+  }
+
+}
+.sec-cc-content {
+  width: 100%;
+  overflow: hidden;
+  .cc-content {
+    overflow: hidden;
+  }
+}
+
+/*fund page*/
+.switch-fund-cat {
+  position: relative;
+  max-width: 750px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fund-wrap {
+  width: 100%;
+  float: left;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-bottom: 0;
+
+  .fund-profit {
+    margin-bottom: pxToRem(20px);
+    background-color: #279cdb;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#1f86ed),color-stop(.5,#279cdb),color-stop(1,#4fb7e0));
+  }
+  .fund-yes {
+    padding: pxToRem(40px) 0 0;
+    @include borderHandle(0010, #dcdcdc);
+    text-align: center;
+    .title {
+      font-size: pxToRem(25px);
+      color:rgba(255,255,255,.7);
+    }
+    .num {
+      margin-top: pxToRem(20px);
+      font-size: pxToRem(80px);
+      color: #ffca00;
+      span {
+        position: relative;
+        right: pxToRem(10px);
+      }
+    }
+  }
+
+  .fund-personal-info {
+    .money_box {
+      display: -webkit-box;
+      .box_flex {
+        -webkit-box-flex: 1.0;
+        width: 49.5%;
+        text-align: center;
+        box-sizing: border-box;
+        .box_name {
+          color: rgba(255,255,255,.7);
+          font-size: pxToRem(20px);
+        }
+        .box_money {
+          margin-top: pxToRem(10px);
+          font-size: pxToRem(40px);
+          color: #fff;
+          span {
+            position: relative;
+            right: pxToRem(7px);
+          }
+        }
+        .box-freeze {
+          margin-top: pxToRem(5px);
+          font-size: pxToRem(18px);
+        }
+      }
+      .border-handle {
+        @include borderHandle(0300, #dcdcdc)
+      }
+      .box_line {
+        height: pxToRem(100px);
+        margin-top: pxToRem(40px) ;
+        border: 1px solid #68aff7;
+        border-width: 0 1px 0 0;
+      }
+      .box_flex {
+        padding: pxToRem(40px) 0;
+      }
+    }
+  }
+  .rate-profit-list {
+    .tab_wbox {
+      display: flex;
+      width: 100%;
+      height: pxToRem(80px);
+      line-height: pxToRem(80px);
+      background-color: #fff;
+      border-top: 1px solid #eee;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+
+      .tab_wbox_title {
+        -webkit-box-flex: 1;
+        width: 50%;
+        float: left;
+        text-align: center;
+        color: #969694;
+        font-size: pxToRem(26px);
+        background-color: #FBFBFB;
+        @include borderHandle(0010, #dcdcdc);
+        i {
+          margin-left: pxToRem(15px);
+          color: #333;
+        }
+      }
+      .tab_wbox_title.on {
+        color: #459BF0;
+        border-bottom-width: 0;
+        background-color: #fff;
+        @include borderHandle(1011);
+        i {
+          color: #459BF0;
+        }
+      }
+      .border-handle {
+        @include borderHandle(0100, #dcdcdc)
+      }
+    }
+    .res-list {
+      background-color: #fff;
+      p {
+        padding: 0 pxToRem(28px);
+        line-height: pxToRem(88px);
+        overflow: hidden;
+        span {
+          flex: 1;
+          font-size: pxToRem(30px);
+          &:first-child {
+            float: left;
+            text-align: left;
+            color: #909090;
+          }
+          &:last-child {
+            float: right;
+            text-align: right;
+            color: #353D44;
+          }
+
+        }
+        &:last-child {
+          border-bottom: 0;
+        }
+        &.load-more {
+          text-align: center;
+          span {
+            float: none;
+            text-align: center;
+            color: #459BF0;
+          }
+        }
+      }
+      .border-handle {
+        @include borderHandle(0010, #dcdcdc)
+      }
+    }
+    .tab-content {
+      position: relative;
+      float: left;
+      width: 100%;
+      border: none;
+      box-sizing: border-box;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
+    }
+    .chart-area{
+      padding: 0 pxToRem(10px);
+      width: 100%;
+      height: pxToRem(448px);
+    }
+  }
+}
+
+
+.fund-common-div {
+
+  .fund-set-button {
+    overflow: hidden;
+    display: flex;
+    background-color: #fff;
+    padding: pxToRem(20px) pxToRem(30px);
+    .set-button-in, .set-button-out {
+      flex: 1;
+      float: left;
+      width: 48%;
+      line-height: pxToRem(70px);
+      text-align: center;
+      border-radius: pxToRem(10px);
+      span {
+        position: relative;
+        top: pxToRem(2px);
+        color: #fff;
+        font-size: pxToRem(35px);
+      }
+      &.set-button-in {
+        background-color: #F2B100;
+        margin-right: pxToRem(10px);
+      }
+      &.set-button-out {
+        margin-left: pxToRem(10px);
+        span {
+          color: #228FFF;
+          &.no-out {
+            color: #dcdcdc;
+          }
+        }
+      }
+      &.border-handle {
+        @include borderHandle(1111, #dcdcdc, pxToRem(5px));
+      }
+    }
+  }
+}
+
+.pop-window .pop-button {
+  .border-handle {
+    @include borderHandle(0100, #dcdcdc)
+  }
+  .confirm-but {
+    border-left: 0 !important;
+  }
+}
+
+.pop-window .pop-button a.cancel-but {
+  color: #333;
+}
+
+
+.fund-swi-nav {
+  position: fixed;
+  max-width: 750px;
+  width: 100%;
+  z-index: 222;
+  overflow: hidden;
+}
+.section_tab_title {
+
+  .fund-switch-nav {
+    display: table;
+    width: 100%;
+    height: pxToRem(88px);
+    line-height: pxToRem(88px);
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    box-sizing: border-box;
+    padding: 0 pxToRem(10px);
+    li {
+      width: 33.3333%;
+      display: table-cell;
+      text-align: center;
+      color: #666;
+      font-size: pxToRem(25px);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: 0 pxToRem(8px);
+      &.on {
+        position: relative;
+        bottom: -1px;
+        color: #459BF0;
+        border-bottom: 2px solid #459BF0;
+      }
+    }
+  }
+
+  ul.hidden {
+    display: none;
+  }
+
+}
+.fund-tip {
+  margin-bottom: pxToRem(100px);
+  .fund-info-tips {
+    padding: 0 pxToRem(30px) pxToRem(30px) pxToRem(30px);
+    color: #999;
+    background-color: #F2F2F2;
+    p {
+      line-height: 1.5;
+      font-size: pxToRem(24px);
+      a {
+        color: #459BF0;
+        font-size: pxToRem(24px);
+      }
+    }
+  }
+}
+
+.pic-bg-color {
+  background-color: #fff;
+}
+
+.all-info-desc {
+  margin-top: pxToRem(20px);
+  margin-bottom: pxToRem(20px);
+  padding: 0 pxToRem(30px);
+  background: #fff;
+  line-height: pxToRem(88px);
+  font-size: pxToRem(28px);
+  p {
+    display: flex;
+    color: #969694;
+    span{
+      flex: 2;
+    }
+    i {
+      text-align: right;
+      margin-right: pxToRem(10px);
+      flex: 1;
+      float: right;
+      &:after {
+        content: '\e602';
+        width: pxToRem(32px);
+        height: pxToRem(32px);
+      }
+    }
+  }
+}
+.fund-set-balance {
+  margin-bottom: pxToRem(20px);
+}
+
+.fund-foot {
+  position: fixed;
+  min-width: 320px;
+  max-width: 750px;
+  width: 100%;
+  z-index: 99;
+  bottom: 0;
+  @include transform(translate3d(0, 100px, 0));
+  @include transition(all 300ms ease);
+  @include borderHandle(1000,#ddd);
+}
+.fund-foot-slideup {
+  @include transform(translate3d(0, 0px, 0));
 }
 
 
