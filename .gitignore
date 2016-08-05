@@ -1,5 +1,5 @@
-.idea/
-components/
-mulProgram/
-program/node_modules
+/.idea/
+/components/
+/mulProgram/
+/program/node_modules
 *.xml
