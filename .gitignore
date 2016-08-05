@@ -3,3 +3,8 @@
 /mulProgram/
 /program/node_modules
 *.xml
+*.zip
+*.rar
+*.via
+*.tmp
+*.err
