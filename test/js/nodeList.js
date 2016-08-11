@@ -55,9 +55,9 @@
 
     NL = NodeList.prototype = {
         includes: ArrayProto.includes ||
-        function includes(element, index) {
-            return this.indexOf(element, index) > -1;
-        },
+                function includes(element, index) {
+                    return this.indexOf(element, index) > -1;
+                },
         forEach: function forEach() {
             ArrayProto.forEach.apply(this, arguments);
             return this;
@@ -81,7 +81,10 @@
             return new NodeList([nodes, this]);
         },
         unshift: function unshift() {
-            var unshift = ArrayProto.unshift.bind(this), i = 0, l = arguments.length, arg;
+            var unshift = ArrayProto.unshift.bind(this),
+                i = 0,
+                l = arguments.length,
+                arg;
             for (; i < l; i++) {
                 arg = arguments[i];
                 if (!( arg instanceof Node )) throw nodeError;

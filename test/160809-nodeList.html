@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html class="index-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="dns-prefetch" href="//res.suning.cn">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>nodeList</title>
+    <script src="js/nodeList.js"></script>
+</head>
+
+<body>
+<div id="container" class="cont">
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
+</div>
+<script>
+    var setCookie = function (name, value, hours) { //写cookie
+        var exp = new Date();
+        exp.setTime(exp.getTime() + hours * 60 * 60 * 1000);
+        if (window.navigator.cookieEnabled) {
+            document.cookie = name + "=" + encodeURI(value) + ";expires=" + exp.toGMTString();
+        }
+    };
+
+    //读取cookie
+    var getCookie = function (name) { //取cookie
+        if (window.navigator.cookieEnabled) {
+            var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+            if (arr != null) return decodeURI(arr[2]);
+        }
+    };
+
+    setCookie('name', 'yinweyi', 1)
+    setCookie('age', '11', 1)
+    setCookie('grade', 'grade', 1)
+
+
+</script>
+</body>
+</html>

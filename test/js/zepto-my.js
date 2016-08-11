@@ -420,7 +420,7 @@ var Zepto = (function () {
     // access className property while respecting SVGAnimatedString
     function className(node, value) {
         var klass = node.className || '',
-            svg = klass && klass.baseVal !== undefined
+            svg = klass && klass.baseVal !== undefined;
 
         if (value === undefined) {
             return svg ? klass.baseVal : klass
@@ -765,10 +765,13 @@ var Zepto = (function () {
         },
         wrapAll: function (structure) {
             if (this[0]) {
-                $(this[0]).before(structure = $(structure))
+                structure = $(structure)
+                $(this[0]).before(structure)
                 var children;
                 // drill down to the inmost element
-                while ((children = structure.children()).length) {
+                while (
+                    (children = structure.children()).length
+                    ) {
                     structure = children.first()
                 }
                 $(structure).append(this)
@@ -889,7 +892,7 @@ var Zepto = (function () {
             if (!this.length) {
                 return null
             }
-            var obj = this[0].getBoundingClientRect()
+            var obj = this[0].getBoundingClientRect();
             return {
                 left: obj.left + window.pageXOffset,
                 top: obj.top + window.pageYOffset,
@@ -901,7 +904,7 @@ var Zepto = (function () {
             
             if (arguments.length < 2) {
                 var computedStyle, 
-                    element = this[0]
+                    element = this[0];
                 if (!element) return;
                 computedStyle = getComputedStyle(element, '');
                 if (typeof property == 'string') {
@@ -957,9 +960,12 @@ var Zepto = (function () {
             return this.each(function (idx) {
                 if (!('className' in this)) return;
                 classList = [];
-                var cls = className(this), newName = funcArg(this, name, idx, cls);
+                var cls = className(this), 
+                    newName = funcArg(this, name, idx, cls);
                 newName.split(/\s+/g).forEach(function (klass) {
-                    if (!$(this).hasClass(klass)) classList.push(klass)
+                    if (!$(this).hasClass(klass)) {
+                        classList.push(klass)
+                    }
                 }, this);
                 classList.length && className(this, cls + (cls ? " " : "") + classList.join(" "))
             })
@@ -1067,7 +1073,8 @@ var Zepto = (function () {
             else {
                 return this.each(function (idx) {
                     el = $(this);
-                    el.css(dimension, funcArg(this, value, idx, el[dimension]()))
+                    var css2 = funcArg(this, value, idx, el[dimension]());
+                    el.css(dimension, css2)
                 })
             }
         }
@@ -1091,7 +1098,8 @@ var Zepto = (function () {
                 nodes = $.map(arguments, function (arg) {
                     argType = type(arg);
                     return argType == "object" || argType == "array" || arg == null ?
-                        arg : zepto.fragment(arg)
+                        arg :
+                        zepto.fragment(arg)
                 }),
                 parent,
                 copyByClone = this.length > 1;
@@ -1115,8 +1123,7 @@ var Zepto = (function () {
                 nodes.forEach(function (node) {
                     if (copyByClone) {
                         node = node.cloneNode(true);
-                    }
-                    else if (!parent) {
+                    } else if (!parent) {
                         return $(node).remove();
                     }
 
@@ -1145,6 +1152,9 @@ var Zepto = (function () {
             $(html)[operator](this);
             return this
         }
+
+
+
     });
 
     zepto.Z.prototype = $.fn;   //note:把 $函数的fn属性(fn是包含很多方法的{}) 赋值给 zepto对象的Z方法原型对象上
@@ -1198,7 +1208,7 @@ window.$ === undefined && (window.$ = Zepto)
     }
 
     function findHandlers(element, event, fn, selector) {
-        event = parse(event)
+        event = parse(event);
         if (event.ns) var matcher = matcherFor(event.ns)
         return (handlers[zid(element)] || []).filter(function (handler) {
             return handler

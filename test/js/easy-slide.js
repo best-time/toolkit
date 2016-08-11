@@ -1,9 +1,9 @@
 ;
-!function () {
+!function (win, doc) {
     'use strict';
 
-    var win = window,
-        doc = document;
+    // var win = window,
+    //     doc = document;
 
     var delayTime = 200
         ;
