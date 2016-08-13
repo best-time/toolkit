@@ -3,7 +3,7 @@
 var Zepto = (function () {
     var undefined,
         key,
-        // $,
+    // $,
         classList,
 
         emptyArray = [],
@@ -51,15 +51,14 @@ var Zepto = (function () {
         },
 
 
-
         simpleSelectorRE = /^[\w-]*$/,
         class2type = {},
         toString = class2type.toString,
 
         zepto = {},
 
-        // camelize,
-        //uniq,
+    // camelize,
+    //uniq,
         tempParent = document.createElement('div'),
         propMap = {
             'tabindex': 'tabIndex',
@@ -86,9 +85,9 @@ var Zepto = (function () {
         }
 
         var matchesSelector = element.webkitMatchesSelector ||
-                                element.mozMatchesSelector ||
-                                element.oMatchesSelector ||
-                                element.matchesSelector;
+            element.mozMatchesSelector ||
+            element.oMatchesSelector ||
+            element.matchesSelector;
 
         if (matchesSelector) {
             return matchesSelector.call(element, selector);
@@ -109,7 +108,7 @@ var Zepto = (function () {
     function type(obj) {
         return obj == null ?
             String(obj) :
-            class2type[toString.call(obj)] || "object"
+        class2type[toString.call(obj)] || "object"
     }
 
     function isFunction(value) {
@@ -129,8 +128,7 @@ var Zepto = (function () {
     }
 
     function isPlainObject(obj) {
-        return isObject(obj) &&
-            !isWindow(obj) &&
+        return isObject(obj) && !isWindow(obj) &&
             Object.getPrototypeOf(obj) == Object.prototype
     }
 
@@ -169,6 +167,7 @@ var Zepto = (function () {
     };
 
     var classCache = {};
+
     function classRE(name) {
         return name in classCache ?
             classCache[name] :
@@ -189,7 +188,7 @@ var Zepto = (function () {
             document.body.appendChild(element);
             display = getComputedStyle(element, '').getPropertyValue("display");
             element.parentNode.removeChild(element);
-            if(display == "none") {
+            if (display == "none") {
                 display = "block"
             }
             elementDisplay[nodeName] = display
@@ -285,7 +284,7 @@ var Zepto = (function () {
             // Note: In both Chrome 21 and Firefox 15, DOM error 12
             // is thrown if the fragment doesn't begin with <
             if (selector[0] == '<' && fragmentRE.test(selector))
-                dom = zepto.fragment(selector, RegExp.$1, context),selector = null
+                dom = zepto.fragment(selector, RegExp.$1, context), selector = null
             // If there's a context, create a collection on that context first, and select
             // nodes from there
             else if (context !== undefined) {
@@ -342,10 +341,10 @@ var Zepto = (function () {
             if (deep &&
                 (isPlainObject(source[key]) || isArray(source[key]))
             ) {
-                if (isPlainObject(source[key]) && !isPlainObject(target[key])){
+                if (isPlainObject(source[key]) && !isPlainObject(target[key])) {
                     target[key] = {}
                 }
-                if (isArray(source[key]) && !isArray(target[key])){
+                if (isArray(source[key]) && !isArray(target[key])) {
                     target[key] = []
                 }
                 extend(target[key], source[key], deep)
@@ -409,10 +408,12 @@ var Zepto = (function () {
             return false
         };
 
+    //参数2是函数 直接调用函数 参数1 参数3 参数4 , 为参数2函数的参数
     function funcArg(context, arg, idx, payload) {
         return isFunction(arg) ? arg.call(context, idx, payload) : arg
     }
 
+    //设置属性
     function setAttribute(node, name, value) {
         value == null ? node.removeAttribute(name) : node.setAttribute(name, value)
     }
@@ -597,13 +598,15 @@ var Zepto = (function () {
         },
         filter: function (selector) {
             if (isFunction(selector)) {
-                return this.not(this.not(selector))
+                var temp3 = this.not(selector);
+                var temp4 = this.not(temp3);
+                return temp4
             }
-            return $(
-                filter.call(this, function (element) {
+            var temp1 = function (element) {
                 return zepto.matches(element, selector)
-            })
-            )
+            };
+            var temp2 = filter.call(this, temp1);
+            return $(temp2)
         },
         add: function (selector, context) {
             return $(uniq(this.concat($(selector, context))))
@@ -619,8 +622,7 @@ var Zepto = (function () {
                         nodes.push(this)
                     }
                 });
-            }
-            else {
+            } else {
                 var excludes = typeof selector == 'string' ? this.filter(selector) :
                     (likeArray(selector) && isFunction(selector.item)) ? slice.call(selector) : $(selector);
 
@@ -678,19 +680,17 @@ var Zepto = (function () {
             if (typeof selector == 'object') {
                 collection = $(selector)
             }
-            while (node &&
-                !(collection ? collection.indexOf(node) >= 0 : zepto.matches(node, selector))
-                ){
+            while (node && !(collection ? collection.indexOf(node) >= 0 : zepto.matches(node, selector))
+                ) {
                 node = node !== context && !isDocument(node) && node.parentNode
             }
             return $(node);
         },
         parents: function (selector) {
             var ancestors = [], nodes = this;
-            while (nodes.length > 0){
+            while (nodes.length > 0) {
                 nodes = $.map(nodes, function (node) {
-                    if ((node = node.parentNode) &&
-                        !isDocument(node) &&
+                    if ((node = node.parentNode) && !isDocument(node) &&
                         ancestors.indexOf(node) < 0) {
                         ancestors.push(node);
                         return node
@@ -727,13 +727,15 @@ var Zepto = (function () {
         },
         // `pluck` is borrowed from Prototype.js
         pluck: function (property) {
-            return $.map(this, function (el) {
+            var temp1 = function (el) {
                 return el[property]
-            })
+            };
+            var temp2 = $.map(this, temp1);
+            return temp2
         },
         show: function () {
             return this.each(function () {
-                if(this.style.display == "none") { //行内样式
+                if (this.style.display == "none") { //行内样式
                     this.style.display = ''
                 }
                 if (
@@ -793,32 +795,40 @@ var Zepto = (function () {
             return this
         },
         clone: function () {
-            return this.map(function () {
+            var temp1 = function () {
                 return this.cloneNode(true)
-            })
+            };
+            var temp2 = this.map(temp1)
+            return temp2
         },
         toggle: function (setting) {
-            return this.each(function () {
-                var el = $(this)
-                    ;
-                (setting === undefined ? el.css("display") == "none" : setting) ? el.show() : el.hide()
-            })
+            var temp1 = function () {
+                var el = $(this);
+                (setting === undefined ? el.css("display") == "none" : setting) ?
+                    el.show() :
+                    el.hide()
+            };
+            var temp2 = this.each(temp1);
+            return temp2
         },
         prev: function (selector) {
-            return $(this.pluck('previousElementSibling')).filter(selector || '*')
+            var temp1 = this.pluck('previousElementSibling');
+            temp1 = $(temp1);
+            return temp1.filter(selector || '*')
         },
         next: function (selector) {
             return $(this.pluck('nextElementSibling')).filter(selector || '*')
         },
-        html: function (html) {
-            return 0 in arguments ?
-                this.each(function (idx) {
-                    var originHtml = this.innerHTML
+        html: function (html) { //innerHTML
+            var temp1 = 0 in arguments; //是否被传参
+            return temp1 ?
+                this.each(function (idx) {          //设置html的时候, 所有被选中的节点 innerHTML 都被赋值
+                    var originHtml = this.innerHTML;
                     $(this).empty().append(funcArg(this, html, idx, originHtml))
                 }) :
-                (0 in this ? this[0].innerHTML : null)
+                (0 in this ? this[0].innerHTML : null);// 返回选中的dom对象 第一个节点的 innerHTML
         },
-        text: function (text) {
+        text: function (text) { //textContent
             return 0 in arguments ?
                 this.each(function (idx) {
                     var newText = funcArg(this, text, idx, this.textContent)
@@ -828,24 +838,38 @@ var Zepto = (function () {
         },
         attr: function (name, value) {
             var result;
-            return (typeof name == 'string' && !(1 in arguments)) ?
-                (!this.length || this[0].nodeType !== 1 ? undefined :
-                        (!(result = this[0].getAttribute(name)) && name in this[0]) ? this[0][name] : result
+            var temp1 = (typeof name == 'string' && !(1 in arguments)); // name 为字符串, 且入参个数为 1
+            return temp1 ?
+                (!this.length || this[0].nodeType !== 1 ? // dom个数为0, 或者不是 元素 类型
+                        undefined :
+                        (!(result = this[0].getAttribute(name)) && name in this[0]) ? //dom 第一个 name属性不为 'false', 则取当前值
+                            this[0][name] :
+                            result
                 ) :
                 this.each(function (idx) {
-                    if (this.nodeType !== 1) return
-                    if (isObject(name)) for (key in name) setAttribute(this, key, name[key])
-                    else setAttribute(this, name, funcArg(this, value, idx, this.getAttribute(name)))
+                    if (this.nodeType !== 1) return;
+                    if (isObject(name)) {
+                        for (key in name) {
+                            setAttribute(this, key, name[key])
+                        }
+                    }
+                    else {
+                        var temp2 = this.getAttribute(name);
+                        var temp3 = funcArg(this, value, idx, temp2);
+                        setAttribute(this, name, temp3)
+                    }
                 })
         },
         removeAttr: function (name) {
             return this.each(function () {
-                this.nodeType === 1 && name.split(' ').forEach(function (attribute) {
-                    setAttribute(this, attribute)
-                }, this)
+                if (this.nodeType === 1) {
+                    name.split(' ').forEach(function (attribute) {
+                        setAttribute(this, attribute)
+                    }, this)
+                }
             })
         },
-        prop: function (name, value) {
+        prop: function (name, value) { // 元素的固有属性时, 使用
             name = propMap[name] || name;
             return (1 in arguments) ?
                 this.each(function (idx) {
@@ -858,7 +882,7 @@ var Zepto = (function () {
 
             var data = (1 in arguments) ?
                 this.attr(attrName, value) :
-                this.attr(attrName)
+                this.attr(attrName);
 
             return data !== null ? deserializeValue(data) : undefined
         },
@@ -901,9 +925,9 @@ var Zepto = (function () {
             }
         },
         css: function (property, value) {
-            
+
             if (arguments.length < 2) {
-                var computedStyle, 
+                var computedStyle,
                     element = this[0];
                 if (!element) return;
                 computedStyle = getComputedStyle(element, '');
@@ -921,7 +945,7 @@ var Zepto = (function () {
 
             var css = '';
             if (type(property) == 'string') {
-                if (!value && value !== 0){
+                if (!value && value !== 0) {
                     this.each(function () {
                         this.style.removeProperty(dasherize(property))
                     });
@@ -960,7 +984,7 @@ var Zepto = (function () {
             return this.each(function (idx) {
                 if (!('className' in this)) return;
                 classList = [];
-                var cls = className(this), 
+                var cls = className(this),
                     newName = funcArg(this, name, idx, cls);
                 newName.split(/\s+/g).forEach(function (klass) {
                     if (!$(this).hasClass(klass)) {
@@ -1044,7 +1068,7 @@ var Zepto = (function () {
         offsetParent: function () {
             return this.map(function () {
                 var parent = this.offsetParent || document.body;
-                while (parent && !rootNodeRE.test(parent.nodeName) && $(parent).css("position") == "static"){
+                while (parent && !rootNodeRE.test(parent.nodeName) && $(parent).css("position") == "static") {
                     parent = parent.offsetParent;
                 }
                 return parent
@@ -1059,8 +1083,8 @@ var Zepto = (function () {
     ;
     ['width', 'height'].forEach(function (dimension) {
         var dimensionProperty = dimension.replace(/./, function (m) {
-                return m[0].toUpperCase()
-            });
+            return m[0].toUpperCase()
+        });
 
         $.fn[dimension] = function (value) {
             var offset,
@@ -1114,7 +1138,7 @@ var Zepto = (function () {
                     target.nextSibling :
                     (
                         operatorIndex == 1 ?
-                        target.firstChild :
+                            target.firstChild :
                             (operatorIndex == 2 ? target : null)
                     );
 
@@ -1133,9 +1157,8 @@ var Zepto = (function () {
                         traverseNode(node, function (el) {
                             if (el.nodeName != null &&
                                 el.nodeName.toUpperCase() === 'SCRIPT' &&
-                                (!el.type || el.type === 'text/javascript') &&
-                                !el.src   //判断是否是js代码,并且 src 为 空
-                            ){
+                                (!el.type || el.type === 'text/javascript') && !el.src   //判断是否是js代码,并且 src 为 空
+                            ) {
                                 window['eval'].call(window, el.innerHTML);  //eval执行
                             }
                         })
@@ -1154,7 +1177,6 @@ var Zepto = (function () {
         }
 
 
-
     });
 
     zepto.Z.prototype = $.fn;   //note:把 $函数的fn属性(fn是包含很多方法的{}) 赋值给 zepto对象的Z方法原型对象上
@@ -1170,22 +1192,7 @@ var Zepto = (function () {
 window.Zepto = Zepto;
 window.$ === undefined && (window.$ = Zepto)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// 事件绑定 实现
 ;
 (function ($) {
     var _zid = 1,
@@ -1229,8 +1236,7 @@ window.$ === undefined && (window.$ = Zepto)
     }
 
     function eventCapture(handler, captureSetting) {
-        return handler.del && (!focusinSupported && (handler.e in focus)) ||
-            !!captureSetting
+        return handler.del && (!focusinSupported && (handler.e in focus)) || !!captureSetting
     }
 
     function realEvent(type) {
@@ -1503,6 +1509,7 @@ window.$ === undefined && (window.$ = Zepto)
 
 })(Zepto)
 
+// ajax 实现
 ;
 (function ($) {
     var jsonpID = 0,
@@ -1828,7 +1835,8 @@ window.$ === undefined && (window.$ = Zepto)
     }
 
     $.get = function (/* url, data, success, dataType */) {
-        return $.ajax(parseArguments.apply(null, arguments))
+        var options = parseArguments.apply(null, arguments);
+        return $.ajax(options)
     };
 
     $.post = function (/* url, data, success, dataType */) {
@@ -1838,7 +1846,7 @@ window.$ === undefined && (window.$ = Zepto)
     };
 
     $.getJSON = function (/* url, data, success */) {
-        var options = parseArguments.apply(null, arguments)
+        var options = parseArguments.apply(null, arguments);
         options.dataType = 'json';
         return $.ajax(options)
     };
@@ -1888,20 +1896,28 @@ window.$ === undefined && (window.$ = Zepto)
     }
 })(Zepto)
 
-
+// form 序列化
 ;
 (function ($) {
     $.fn.serializeArray = function () {
         var name, type, result = [],
             add = function (value) {
-                if (value.forEach) return value.forEach(add)
+                if (value.forEach) {
+                    return value.forEach(add)
+                }
                 result.push({name: name, value: value})
             };
         if (this[0]) $.each(this[0].elements, function (_, field) {
             type = field.type, name = field.name;
-            if (name && field.nodeName.toLowerCase() != 'fieldset' && !field.disabled && type != 'submit' && type != 'reset' && type != 'button' && type != 'file' &&
-                ((type != 'radio' && type != 'checkbox') || field.checked))
+            if (name && field.nodeName.toLowerCase() != 'fieldset' &&
+                !field.disabled &&
+                type != 'submit' &&
+                type != 'reset' &&
+                type != 'button' &&
+                type != 'file' &&
+                ((type != 'radio' && type != 'checkbox') || field.checked)) {
                 add($(field).val())
+            }
         });
         return result
     };
@@ -1915,8 +1931,9 @@ window.$ === undefined && (window.$ = Zepto)
     };
 
     $.fn.submit = function (callback) {
-        if (0 in arguments) this.bind('submit', callback)
-        else if (this.length) {
+        if (0 in arguments) {
+            this.bind('submit', callback);
+        } else if (this.length) {
             var event = $.Event('submit');
             this.eq(0).trigger(event);
             if (!event.isDefaultPrevented()) this.get(0).submit()

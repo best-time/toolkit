@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>0727</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>0727-zepto源码</title>
     <style>
-        html{
-            font-size: 625%;
+        html {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
         }
         body {
-            font-size: .4rem;
+            line-height: 1.6;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
-        .hidden {
-            display: none;
+        * {
+            margin: 0;
+            padding: 0;
         }
-        .p2 {
-            height: 33px;
+        a img {
+            border: 0;
         }
-        .p3 {
-            height: 55px;
+        a {
+            text-decoration: none;
+        }
+        input {
+            border: 1px solid #ccc;
         }
     </style>
     <script src="./js/zepto-my.js"></script>
@@ -38,6 +45,12 @@
     <div class="hidden">hidden-div</div>
     <span class="hidden">hidden-span</span>
     <span class="hidden2" style="display: none">hidden-div2</span>
+    <h2>form</h2>
+    <form action="" id="fform">
+        <input type="hidden" name="hide" data-flag="hide-flag" value="hidden-content">
+        <input type="text" name="user">
+    </form>
+
     <script>
 
     </script>

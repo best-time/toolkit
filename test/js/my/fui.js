@@ -353,3 +353,48 @@
         return win.navigator && win.navigator.cookieEnabled;
     }
 })(F, window, document, undefined);
+
+/**
+ * numberGrow
+ * 数字固定时间内 增长
+ */
+;
+(function() {
+    //<span data-ride="numberGrow" data-value="12345" data-time="1">12345</span>
+    /*
+     setTimeout(function () {
+         $('[data-ride="numberGrow"]').each(function () {
+            numberGrow(this);
+            $(this).removeAttr('data-ride').removeAttr('data-value').removeAttr('data-time');
+         });
+     }, 10);
+     */
+
+    function numberGrow(element, options) {
+        options = options || {};
+
+        var $this = $(element),
+            time = options.time || $this.data('time'),
+            num = options.num || $this.data('value'),
+            step = num * 16 / (time * 1000),//每16ms增加的数值
+            start = 0,//计数器
+            interval,
+            old = 0;
+
+        interval = setInterval(function () {
+            start = start + step;
+            if (start >= num) {
+                clearInterval(interval);
+                interval = null;
+                start = num;
+            }
+
+            var t = (start - 0).toFixed(2);
+
+            if (t == old) return;
+
+            old = t;
+            $this.text(old);
+        }, 16);
+    }
+})();
