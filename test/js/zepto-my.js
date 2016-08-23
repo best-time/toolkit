@@ -1203,10 +1203,7 @@ window.$ === undefined && (window.$ = Zepto)
             return typeof obj == 'string'
         },
         handlers = {},
-        specialEvents = {},
-        focusinSupported = 'onfocusin' in window,
-        focus = {focus: 'focusin', blur: 'focusout'},
-        hover = {mouseenter: 'mouseover', mouseleave: 'mouseout'}
+        specialEvents = {};
 
     specialEvents.click = specialEvents.mousedown = specialEvents.mouseup = specialEvents.mousemove = 'MouseEvents'
 
@@ -1228,17 +1225,24 @@ window.$ === undefined && (window.$ = Zepto)
 
     function parse(event) {
         var parts = ('' + event).split('.')
-        return {e: parts[0], ns: parts.slice(1).sort().join(' ')}
+        return {
+            e: parts[0],
+            ns: parts.slice(1).sort().join(' ')
+        }
     }
 
     function matcherFor(ns) {
         return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)')
     }
 
+    var focusinSupported = 'onfocusin' in window,
+        focus = {focus: 'focusin', blur: 'focusout'};
+
     function eventCapture(handler, captureSetting) {
         return handler.del && (!focusinSupported && (handler.e in focus)) || !!captureSetting
     }
 
+    var hover = {mouseenter: 'mouseover', mouseleave: 'mouseout'};
     function realEvent(type) {
         return hover[type] || (focusinSupported && focus[type]) || type
     }
@@ -1269,16 +1273,21 @@ window.$ === undefined && (window.$ = Zepto)
                     return
                 }
                 e.data = data;
-                var result = callback.apply(element, e._args == undefined ? [e] : [e].concat(e._args))
+                var temp1 = e._args == undefined ? [e] : [e].concat(e._args);
+                var result = callback.apply(element, temp1);
                 if (result === false) {
                     e.preventDefault(), e.stopPropagation()
                 }
                 return result
             };
-            handler.i = set.length
-            set.push(handler)
+            handler.i = set.length;
+            set.push(handler);
             if ('addEventListener' in element) {
-                element.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+                element.addEventListener(
+                    realEvent(handler.e),
+                    handler.proxy,
+                    eventCapture(handler, capture)
+                )
             }
         })
     }
@@ -1288,7 +1297,7 @@ window.$ === undefined && (window.$ = Zepto)
             ;
         (events || '').split(/\s/).forEach(function (event) {
             findHandlers(element, event, fn, selector).forEach(function (handler) {
-                delete handlers[id][handler.i]
+                delete handlers[id][handler.i];
                 if ('removeEventListener' in element)
                     element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
             })
@@ -1353,10 +1362,13 @@ window.$ === undefined && (window.$ = Zepto)
                 event[predicate] = returnFalse
             });
 
-            if (source.defaultPrevented !== undefined ? source.defaultPrevented :
+            if (
+                source.defaultPrevented !== undefined ? source.defaultPrevented :
                     'returnValue' in source ? source.returnValue === false :
-                    source.getPreventDefault && source.getPreventDefault())
+                    source.getPreventDefault && source.getPreventDefault()
+            ) {
                 event.isDefaultPrevented = returnTrue
+            }
         }
         return event
     }
@@ -1389,7 +1401,7 @@ window.$ === undefined && (window.$ = Zepto)
         var autoRemove,
             delegator,
             $this = this;
-        if (event && !isString(event)) {
+        if (event && !isString(event)) { // event 不是字符串
             $.each(event, function (type, fn) {
                 $this.on(type, selector, data, fn, one)
             });
@@ -1417,10 +1429,12 @@ window.$ === undefined && (window.$ = Zepto)
 
             if (selector) {
                 delegator = function (e) {
-                    var evt, match = $(e.target).closest(selector, element).get(0)
+                    var evt,
+                        match = $(e.target).closest(selector, element).get(0);
                     if (match && match !== element) {
-                        evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element})
-                        return (autoRemove || callback).apply(match, [evt].concat(slice.call(arguments, 1)))
+                        evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element});
+                        var temp1 = [evt].concat(slice.call(arguments, 1));
+                        return (autoRemove || callback).apply(match, temp1)
                     }
                 };
             }
@@ -1429,7 +1443,7 @@ window.$ === undefined && (window.$ = Zepto)
         })
     };
     $.fn.off = function (event, selector, callback) {
-        var $this = this
+        var $this = this;
         if (event && !isString(event)) {
             $.each(event, function (type, fn) {
                 $this.off(type, selector, fn)
@@ -1909,8 +1923,7 @@ window.$ === undefined && (window.$ = Zepto)
             };
         if (this[0]) $.each(this[0].elements, function (_, field) {
             type = field.type, name = field.name;
-            if (name && field.nodeName.toLowerCase() != 'fieldset' &&
-                !field.disabled &&
+            if (name && field.nodeName.toLowerCase() != 'fieldset' && !field.disabled &&
                 type != 'submit' &&
                 type != 'reset' &&
                 type != 'button' &&
