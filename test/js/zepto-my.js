@@ -1269,9 +1269,8 @@ window.$ === undefined && (window.$ = Zepto)
             var callback = delegator || fn;
             handler.proxy = function (e) {
                 e = compatible(e);
-                if (e.isImmediatePropagationStopped()) {
-                    return
-                }
+                if (e.isImmediatePropagationStopped()) return
+
                 e.data = data;
                 var temp1 = e._args == undefined ? [e] : [e].concat(e._args);
                 var result = callback.apply(element, temp1);
@@ -1298,8 +1297,13 @@ window.$ === undefined && (window.$ = Zepto)
         (events || '').split(/\s/).forEach(function (event) {
             findHandlers(element, event, fn, selector).forEach(function (handler) {
                 delete handlers[id][handler.i];
-                if ('removeEventListener' in element)
-                    element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+                if ('removeEventListener' in element) {
+                    element.removeEventListener(
+                        realEvent(handler.e),
+                        handler.proxy,
+                        eventCapture(handler, capture)
+                    )
+                }
             })
         })
     }
