@@ -1401,7 +1401,8 @@ window.$ === undefined && (window.$ = Zepto)
 
             if (selector) {
                 delegator = function (e) {
-                    var evt, match = $(e.target).closest(selector, element).get(0)
+                    var evt,
+                        match = $(e.target).closest(selector, element).get(0)
                     if (match && match !== element) {
                         evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element})
                         return (autoRemove || callback).apply(match, [evt].concat(slice.call(arguments, 1)))
