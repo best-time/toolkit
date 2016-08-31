@@ -36,8 +36,34 @@
     <div class="children">子元素水平垂直居中</div>
 </div>
 
+
+
 <h2>两端对齐</h2>
 <div class="justify"><h2>左边对齐</h2><span>右边对齐</span></div>
+
+<style>
+    .sn-nav-back {
+        position: relative;
+        margin-left: 100px;
+    }
+    .sn-nav-back:before {
+        content: "";
+        position: absolute;
+        top: .6rem;
+        left: 0;
+        display: inline-block;
+        width: 1.48rem;
+        height: 1.48rem;
+        border: solid #353d44;
+        border-width: 1px 0 0 1px;
+        -webkit-transform: rotate(-45deg);;
+        -moz-transform: rotate(-45deg);;
+        -ms-transform: rotate(-45deg);;
+        -o-transform: rotate(-45deg);;
+        transform: rotate(-45deg);;
+    }
+</style>
+<div class="sn-nav-back"></div>
 <script>
     window.onload=function(){
         var div2=document.getElementById("div2");
@@ -48,5 +74,7 @@
         }
     }
 </script>
+
+
 </body>
 </html>

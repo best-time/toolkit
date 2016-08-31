@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2><a href="#/name">name</a></h2>
+
+<script src="js/ex/hash-router.js"></script>
+<script>
+    var route = {
+        path: '#/',
+        before: function() {
+            console.log('index-before')
+        },
+        on: function() {
+
+            console.log('index-on')
+        },
+        after: function() {
+
+            console.log('index-after')
+        },
+        config: {
+            namespace:'myNameSpace',
+            controller: 'myController',
+        }
+    };
+    var route2 = {
+        path: '#/name',
+        before: function() {
+            console.log('index-before')
+        },
+        on: function() {
+
+            console.log('index-on')
+        },
+        after: function() {
+
+            console.log('index-after')
+        },
+        config: {
+
+        }
+    };
+
+    Router.add(route);
+    Router.add(route2);
+    Router.init();
+</script>
+</body>
+</html>

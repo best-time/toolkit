@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publish/Subscribe(观察者模式)</title>
+</head>
+<body>
+
+
+<script>
+    // 普通方式
+    var pubsub = {};
+    (function(q) {
+        var topics = {},
+                subUid = -1;
+        //发布方法
+        q.publish = function(topic, args) {
+            if(!topics[topic]) return false;
+
+            setTimeout(function() {
+                var subscribers = topics[topic],
+                        len = subscribers ? subscribers.length : 0;
+
+                while(len--) {
+                    subscribers[len].func(topic, args)
+                }
+            }, 0)
+        };
+        //订阅
+        q.subscribe = function(topic, func) {
+            if(!topics[topic]) {
+                topics[topic] = []
+            }
+
+            var token = (++subUid).toString();
+            topics[topic].push({
+                token: token,
+                func: func
+            });
+            return token;
+        };
+        //退订
+        q.unsubscribe = function(token) {
+            for(var m in topics) {
+                if(topics[m]) {
+                    for(var i = 0, j = topics[m].length; i<j; i++) {
+                        if(topics[m][i].token === token) {
+                            topics[m].splice(i, 1);
+                            return token;
+                        }
+                    }
+                }
+            }
+            return false;
+        };
+    })(pubsub);
+
+
+    pubsub.subscribe('example1', function (topics, data) {
+        console.log(topics + ": " + data);
+    });
+    pubsub.publish('example1', 'hello world!');
+//    pubsub.publish('example1', ['test', 'a', 'b', 'c']);
+//    pubsub.publish('example1', [{ 'color': 'blue' }, { 'text': 'hello'}]);
+
+
+    // 原型特性 实现
+    function Observer() {
+        this.fns = []
+    }
+    Observer.prototype = {
+        constructor: Observer,
+        subscribe : function(fn) {
+            this.fns.push(fn)
+        },
+        unsubscribe: function(fn) {
+            this.fns = this.fns.filter(function(el) {
+                if(el !== fn) {
+                    return el;
+                }
+            })
+        },
+        update: function(o, thisObj) {
+            var scope = thisObj || window;
+            this.fns.forEach(function(el) {
+                el.call(scope, o)
+            })
+        }
+    };
+    var o = new Observer();
+    var f1 = function(data) {
+        console.log('Robbin: ' + data + ', ganhuole');
+    };
+    var f2 = function(data) {
+        console.log('Rat: ' + data + ', jiagongzi');
+    };
+
+//    o.subscribe(f1);
+//    o.subscribe(f2);
+//    o.update("Tom回来了！");
+
+
+    //3 多个对象添加观察者发布订阅
+    var observer = {
+        // 订阅
+        addSubscriber: function(callback) {
+            this.subscribers[this.subscribers.length] = callback
+        },
+        //退订
+        removeSubscriber: function(callback) {
+            for(var i = 0, l = this.subscribers.length; i< l; i++) {
+                if(this.subscribers[i] === callback) {
+                    delete this.subscribers[i]
+                }
+            }
+        },
+        //发布
+        publish: function(what) {
+            for(var i = 0, l = this.subscribers.length; i<l; i++) {
+                if(typeof this.subscribers[i] === 'function') {
+                    this.subscribers[i](what);
+                }
+            }
+        },
+        //给对象添加观察者模式
+        make: function(o) {
+            for(var i in this) {
+                o[i] = this[i];
+                o.subscribers = [];
+            }
+        }
+    };
+
+    var blogger = {
+        recommend: function (id) {
+            var msg = 'dudu 推荐了的帖子:' + id;
+            this.publish(msg);
+        }
+    };
+
+    var user = {
+        vote: function (id) {
+            var msg = '有人投票了!ID=' + id;
+            this.publish(msg);
+        }
+    };
+
+    observer.make(blogger);
+    observer.make(user);
+
+
+    var tom = {
+        read: function (what) {
+            console.log('Tom read如下信息：' + what)
+        }
+    };
+
+    var mm = {
+        show: function (what) {
+            console.log('mm show如下信息：' + what)
+        }
+    };
+    // 订阅
+    blogger.addSubscriber(tom.read);
+    blogger.addSubscriber(mm.show);
+    blogger.recommend(123); //调用发布
+
+//    //退订
+//    blogger.removeSubscriber(mm.show);
+//    blogger.recommend(456); //调用发布
+//
+//    //另外一个对象的订阅
+//    user.addSubscriber(mm.show);
+//    user.vote(789); //调用发布
+
+</script>
+
+
+</body>
+</html>
