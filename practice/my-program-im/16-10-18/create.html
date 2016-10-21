@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Object.create</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        var obj = {
+
+            a:function(){
+                console.log(100)
+            },
+            b:function(){
+                console.log(200)
+            },
+            c:function(){
+                console.log(300)
+            }
+
+        }
+
+/**
+ [[configurable]]   表示能否通过delete删除属性从而重新定义属性，能否修改属性的特性(defineProperty)，能否把属性修改为访问器属性，
+                    如直接定义默认为true
+ [[enumerable]]     表示能够通过for..in循环返回属性,直接在对象上定义为true,如果调用defineProperty未指定就是false
+ [[writtable]]  表示是否能够修改属性的值,直接在对象上定义为true,如果调用defineProperty未指定就是false
+  [[value]]     包含这个属性的值，读取属性的时候从这个位置开始读，写入属性的时候把新值保存在这个位置中，默认为undefined
+
+  修改访问器属性: Object.defineProperty(), 该方法包含三个参数：
+                                    属性所在的对象，属性的名字，描述符对象[configurable|enumerable|writable|value]
+
+  example:
+    Object.defineProperty(person,"name",{
+            configurable:false,
+            writable:false,
+            value:"xiaochang"
+        });
+*/
+/*
+        var newObj = {};
+
+        newObj = Object.create(obj,{
+            t1:{
+                value:'yupeng',
+                //writable: true // 是否可写
+            },
+            bar: {
+                configurable: false,
+                get: function() {
+                        console.log('触发了 _get_ 方法')
+                        return bar; 
+                    },
+                set: function(value) {
+                        console.log('触发了 _set_ 方法')
+                        bar = value 
+                    }
+            }
+        })
+
+        console.log(newObj.a());
+        console.log(newObj.t1);
+
+        newObj.t1='yupeng1111'
+        console.log(newObj.t1);
+        newObj.bar=201;
+        delete newObj.bar
+        console.log(newObj.bar)
+        
+
+        
+        function Parent() {}
+        var parent = new Parent();
+
+        var child = Object.create(parent, {
+              dataDescriptor: {
+                value: "This property uses this string as its value.",
+                writable: true,
+                enumerable: true
+              },
+              accessorDescriptor: {
+                get: function () { return "I am returning: " + accessorDescriptor; },
+                set: function (val) { accessorDescriptor = val; },
+                configurable: true
+              }
+            });
+
+        child.accessorDescriptor = 'YUPENG';
+        console.log(child)
+        console.log(child.accessorDescriptor);
+*/
+
+
+
+        var Car2 = function(){
+            this.name = 'aaaaaa'
+        } 
+        //this is an empty object, like {}
+        Car2.prototype = {
+          getInfo: function() {
+            return 'A ' + this.color + ' ' + this.desc + '.';
+          }
+        };
+
+        var newCar = new Car2();
+         
+        var car2 = Object.create(newCar, {
+          //value properties
+          color:   { 
+              writable: true,  
+                configurable:true, 
+                value: 'red' 
+          },
+          //concrete desc value
+          rawDesc: { 
+              writable: true, 
+              configurable:true, 
+              value: 'Porsche boxter' 
+              },
+          // data properties (assigned using getters and setters)
+          desc: {
+            configurable:true, 
+            get: function() {
+                return this.rawDesc.toUpperCase();
+                },
+            set: function(value) {
+                this.rawDesc = value.toLowerCase();
+                }
+          }
+        }); 
+        console.log(car2)
+        car2.color = 'blue';
+        console.log(car2.getInfo());  // A blue PORSCHE BOXTER
+        car2.desc = "XXXXXXXX";
+        console.log(car2.getInfo());
+        console.log(car2.name);
+
+
+
+    </script>
+</body>
+</html>

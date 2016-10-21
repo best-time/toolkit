@@ -3,9 +3,11 @@ ruby -run -e httpd . -p 9090
 python -m SimpleHTTPServer 8000
 php -S 127.0.0.1:8088 router.php
 
+安装homebrew 443接口报错:
+export ALL_PROXY=proxyIP:port
+
 面试问题:
 http://www.imooc.com/wenda/detail/323379?page=2
-
 
 
 dom 操作

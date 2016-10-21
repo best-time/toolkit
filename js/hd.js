@@ -36,48 +36,48 @@
     // "use strict";
 
 
-    (function(window) {
+    (function (window) {
         if (!window.requestAnimationFrame) {
             var lastTime = 0;
-            window.requestAnimationFrame = window.webkitRequestAnimationFrame || function(callback, element) {
-                    var currTime = +new Date();
-                    var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
-                    var id = window.setTimeout(function() {
-                        callback(currTime + timeToCall);
-                    }, timeToCall);
-                    lastTime = currTime + timeToCall;
-                    return id;
-                };
-            window.cancelAnimationFrame = window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || function(id) {
-                    clearTimeout(id);
-                };
-        };
-    }(window));
-
-    (function(window, undefined) {
-        var offset = function(element) {
-            var box = {
-                top : 0,
-                left : 0
+            window.requestAnimationFrame = window.webkitRequestAnimationFrame || function (callback, element) {
+                var currTime = +new Date();
+                var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+                var id = window.setTimeout(function () {
+                    callback(currTime + timeToCall);
+                }, timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
             };
-            if ( typeof element.getBoundingClientRect !== undefined) {
+            window.cancelAnimationFrame = window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || function (id) {
+                clearTimeout(id);
+            };
+        };
+    } (window));
+
+    (function (window, undefined) {
+        var offset = function (element) {
+            var box = {
+                top: 0,
+                left: 0
+            };
+            if (typeof element.getBoundingClientRect !== undefined) {
                 box = element.getBoundingClientRect();
             }
             return {
-                top : box.top + window.pageYOffset - element.clientTop,
-                left : box.left + window.pageXOffset - element.clientLeft
+                top: box.top + window.pageYOffset - element.clientTop,
+                left: box.left + window.pageXOffset - element.clientLeft
             };
         };
-        var scrollTo = function(scrollTop, duration, callback) {
+        var scrollTo = function (scrollTop, duration, callback) {
             duration = duration || 1000;
-            var scroll = function(duration) {
+            var scroll = function (duration) {
                 if (duration <= 0) {
                     window.scrollTo(0, scrollTop);
                     callback && callback();
                     return;
                 }
                 var distaince = scrollTop - window.scrollY;
-                setTimeout(function() {
+                setTimeout(function () {
                     window.scrollTo(0, window.scrollY + distaince / duration * 10);
                     scroll(duration - 10);
                 }, 16.7);
@@ -217,8 +217,8 @@
 
     //返回当前时间的时间戳(毫秒)
     _.now = Date.now || function () {
-            return +new Date() || new Date() - 0 || new Date().getTime();
-        };
+        return +new Date() || new Date() - 0 || new Date().getTime();
+    };
 
     //返回[min, max)之间的一个随机整数
     _.random = function (min, max) {
@@ -449,8 +449,8 @@
 
     //防节流
     //通俗一点就是函数调用的频度控制器，是连续执行时间间隔控制。主要应用的场景比如：
-//    1.鼠标移动，mousemove 事件
-//    2.DOM 元素动态定位，window对象的resize和scroll 事件
+    //    1.鼠标移动，mousemove 事件
+    //    2.DOM 元素动态定位，window对象的resize和scroll 事件
     function throttle(fn, wait) {
         var timer,
             firstTime = true;
@@ -518,7 +518,7 @@
         var temp = new Date();
         var regex = /\//g;
         return (temp.toLocaleDateString() + ' ' +
-        temp.toLocaleTimeString().slice(2)).replace(regex, '-');
+            temp.toLocaleTimeString().slice(2)).replace(regex, '-');
     };
 
     //数组去重(此方法高效, 但比其他方法占用更多内存)
@@ -589,8 +589,8 @@
     //slice和concat方法。这2个方法的确是最快的把数组成功复制，而不是引用。
     function getType(o) { // [object Array] [object Object] [object Null]
         var _t;
-        return ((_t = typeof(o)) == "object" ?
-        o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
+        return ((_t = typeof (o)) == "object" ?
+            o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
     }
 
     _.extend = function (destination, source) {
@@ -817,6 +817,13 @@
         console.log('一共耗时:' + gapTime + 'ms');
         return gapTime;
     };
+    _.getEfficiency2 = function (name, func, times) {
+        console.time(name);
+        for (i = 0; i < times; i++) {
+            func()
+        };
+        console.timeEnd(name);
+    };
 
     //判断一个值是否存在, javascript中有2个值表示不存在:null undefined
     function existy(value) {
@@ -923,11 +930,11 @@
 
         while (
             div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
-                all[0]
-            );
+            all[0]
+        );
 
         return v > 4 ? v : undef;
-    }());
+    } ());
 
 
     /**
@@ -1045,7 +1052,7 @@
 
     //获取可视宽度
     function getPageViewWidth() {
-        var d = document, 
+        var d = document,
             a = d.compatMode == "BackCompat" ? d.body : d.documentElement;
         return a.clientWidth;
         // return a.clientHeight;
@@ -1053,9 +1060,9 @@
 
     //获取页面宽度
     function getPageWidth() {
-        var g = document, 
-            a = g.body, 
-            f = g.documentElement, 
+        var g = document,
+            a = g.body,
+            f = g.documentElement,
             d = g.compatMode == "BackCompat" ? a : g.documentElement;
         return Math.max(f.scrollWidth, a.scrollWidth, d.clientWidth);
     }
@@ -1125,7 +1132,7 @@
 
     if (!Object.create) {
         Object.create = function (o) {
-            function F() {}
+            function F() { }
             F.prototype = o;
             return new F();
         };
@@ -1134,5 +1141,5 @@
 
     // Browser environment sniffing
     var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
-    
-}();
+
+} ();
