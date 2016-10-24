@@ -1,4 +1,6 @@
 /**
+ * Vue 实例化经过的状态
+ *
  *  beforeCreate created
  *  beforeMount mounted
  *
@@ -41,12 +43,14 @@ import header from './components/header.vue'
 import infiniteScroll from './components/infinite-scroll.vue'
 import alertBox from './components/alert-box.vue'
 import indexList from './components/index-list.vue'
+import cellSwipe from './components/cell-swipe.vue'
+import switchButton from './components/switch.vue'
+import tabContainer from './components/tab-container.vue'
+import loadMoreDown from './components/pull-down.vue'
+import loadMoreUp from './components/pull-up.vue'
 
 
-import swipe from './coms/swipe.vue'
-// import field from './coms/field.vue'
-// import messageBox from './coms/message-box.vue'
-
+// import swipe from './coms/swipe.vue'
 
 
 // swipe
@@ -57,7 +61,12 @@ import {
     Lazyload,
     Header,
     InfiniteScroll,
-     IndexList, IndexSection 
+    IndexList, IndexSection, 
+    CellSwipe,
+    Switch,
+    TabContainer, TabContainerItem,
+
+    Loadmore
 } from 'mint-ui';
 
     Vue.component(Swipe.name, Swipe);
@@ -72,6 +81,15 @@ import {
 
     Vue.component(IndexList.name, IndexList);
     Vue.component(IndexSection.name, IndexSection);
+
+    Vue.component(CellSwipe.name, CellSwipe);
+    Vue.component(Switch.name, Switch);
+
+    Vue.component(TabContainer.name, TabContainer);
+    Vue.component(TabContainerItem.name, TabContainerItem);
+
+    Vue.component(Loadmore.name, Loadmore);
+
 
 
 var router = new VueRouter({
@@ -90,10 +108,10 @@ var router = new VueRouter({
         { path: '/form', component: form },
         { path: '/dataBind', component: dataBind },
 
-        { path: '/swipe', name: 'swipe', component: swipe },        
+        // { path: '/swipe', name: 'swipe', component: swipe },        
         { path: '/swipe2', name: 'swipe2', component: swipe2 },        
-        // { path: '/field', name: 'field', component: field }, 
-        // { path: '/messageBox', name: 'messageBox', component: messageBox }, 
+        
+        
         { path: '/tips', name: 'tips', component: tips }, 
         { path: '/popUp', name: 'popUp', component: popUp }, 
         { path: '/actionsheet2', name: 'actionsheet2', component: actionsheet2 }, 
@@ -102,6 +120,12 @@ var router = new VueRouter({
         { path: '/infiniteScroll', name: 'infiniteScroll', component: infiniteScroll }, 
         { path: '/alertBox', name: 'alertBox', component: alertBox }, 
         { path: '/indexList', name: 'indexList', component: indexList }, 
+        { path: '/cellSwipe', name: 'cellSwipe', component: cellSwipe }, 
+        { path: '/switchButton', name: 'switchButton', component: switchButton }, 
+        { path: '/tabContainer', name: 'tabContainer', component: tabContainer }, 
+
+        { path: '/loadMoreDown', name: 'loadMoreDown', component: loadMoreDown }, 
+        { path: '/loadMoreUp', name: 'loadMoreUp', component: loadMoreUp }, 
 
 
 

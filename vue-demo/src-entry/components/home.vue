@@ -55,11 +55,6 @@ export default{
                 },
                 {
                     path: '',
-                    name: 'swipe',
-                    query: ''
-                },
-                {
-                    path: '',
                     name: 'swipe2',
                     query: ''
                 },{
@@ -95,6 +90,31 @@ export default{
                 {
                     path: '',
                     name: 'indexList',
+                    query: ''
+                },
+                {
+                    path: '',
+                    name: 'cellSwipe',
+                    query: ''
+                },
+                {
+                    path: '',
+                    name: 'switchButton',
+                    query: ''
+                },
+                {
+                    path: '',
+                    name: 'tabContainer',
+                    query: ''
+                },
+                {
+                    path: '',
+                    name: 'loadMoreDown',
+                    query: ''
+                },
+                {
+                    path: '',
+                    name: 'loadMoreUp',
                     query: ''
                 }
                 
