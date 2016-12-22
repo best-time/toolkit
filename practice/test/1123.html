@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>Nav -x 轴 滚动</title>
+    <style>
+        {
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            font-size: 2rem;
+        }
+        a:link {
+            text-decoration: none;
+            color: #0088cc
+        }
+        .rollBox {
+            height: 2rem;
+            line-height: 2rem;
+            clear: both;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scroll-snap-points-x: repeat(100%);
+            scroll-snap-type: mandatory;
+        }
+        /*隐藏滚动条*/
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="rollBox">
+    <a href="###">前端工具</a> <a href="###">Android</a> <a href="###">插件使用</a> <a href="###">git</a> <a href="###">smarty</a> <a href="###">面试</a> <a href="###">linux</a> <a href="###">h5</a> <a href="###">app</a> <a href="###">node</a> <a href="###">部署</a> <a href="###">移动页面</a>
+</div>
+</body>
+</html>
