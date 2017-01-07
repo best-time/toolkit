@@ -323,26 +323,335 @@ CSS鼠标指针事件pointer-events属性非常的有趣，
 .disabled { pointer-events: none; }
 
 
+/*===============================================
+    sass
+  ===============================================*/
+
+@at-root 跳出当前选择器嵌套
+默认@at-root只会跳出选择器嵌套，而不能跳出@media或@support，
+如果要跳出这两种，则需使用@at-root (without: media)，@at-root (without: support)
+这个语法的关键词有四个：all（表示所有），rule（表示常规css），media（表示media），
+support（表示support，因为@support目前还无法广泛使用，所以在此不表）
+我们默认的@at-root其实就是@at-root (without:rule)
+
+ex: .parent-3 {
+      background:#f00;
+      @at-root {
+        .child1 {
+          width:300px;
+        }
+        .child2 {
+          width:400px;
+        }
+      }
+    }
+
+    ======>
+
+    .parent-3 {
+      background: #f00;
+    }
+    .child1 {
+      width: 300px;
+    }
+    .child2 {
+      width: 400px;
+    }
+
+    @media print {
+      .parent2{
+        color:#f00;
+
+        @at-root (without: media) {
+          .child2 {
+            width:200px;
+          }
+        }
+      }
+    }
+
+    ======>
+
+    @media print {
+      .parent2 {
+        color: #f00;
+      }
+    }
+    .parent2 .child2 {
+      width: 200px;
+    }
+    -----------------------------------------------
+    list
+
+    $linkColor: #08c #333 !default;//第一个值为默认值，第二个鼠标滑过值
+    a{
+      color:nth($linkColor,1);
+
+      &:hover{
+        color:nth($linkColor,2);
+      }
+    }
+
+    ========>
+
+    a{
+      color:#08c;
+    }
+    a:hover{
+      color:#333;
+    }
+
+    -----------------------------------------------
+    @mixin
+
+    @mixin center-block {
+        margin-left:auto;
+        margin-right:auto;
+    }
+    .demo{
+        @include center-block;
+    }
+
+    ============>
+
+    .demo{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    带参数:
+
+    @mixin opacity($opacity:50) {
+      opacity: $opacity / 100;
+      filter: alpha(opacity=$opacity);
+    }
+
+    ============>
+
+    .opacity{
+      @include opacity; //参数使用默认值
+    }
+    .opacity-80{
+      @include opacity(80); //传递参数
+    }
+
+    --------------------------------------------------
+    @content
+    可以用来解决css3的@media等带来的问题。它可以使@mixin接受一整块样式，接受的样式从@content开始
+
+    @mixin max-screen($res){
+      @media only screen and ( max-width: $res ) {
+        @content;
+      }
+    }
+
+    @include max-screen(480px) {
+      body { color: red }
+    }
+
+    =============>
+
+    @media only screen and (max-width: 480px) {
+      body { color: red }
+    }
+
+    -------------------------------------------------
+    @for
+
+    @for $i from 1 through 3 {
+      .item-#{$i} { width: 2em * $i; }
+    }
+
+    //css style
+    //-------------------------------
+    .item-1 {
+      width: 2em;
+    }
+    .item-2 {
+      width: 4em;
+    }
+    .item-3 {
+      width: 6em;
+    }
+
+    @each
+
+    $headings: (h1: 2em, h2: 1.5em, h3: 1.2em);
+    @each $header, $size in $headings {
+      #{$header} {
+        font-size: $size;
+      }
+    }
+
+
+    /*===============================================
+        你不知道的javascript 上卷
+      ===============================================*/
 
 
 
+    如果你想禁止一个对象添加新属性并且保留已有属性，可以使用 Object.preventExtensions(..)
+
+    Object.seal(..) 会创建一个“密封”的对象，
+    这个方法实际上会在一个现有对象上调用 Object.preventExtensions(..)
+    并把所有现有属性标记为 configurable:false。
+    所以，密封之后不仅不能添加新属性，也不能重新配置或者删除任何现有属性(虽然可以 修改属性的值)。
+
+    Object.freeze(..) 会创建一个冻结对象，这个方法实际上会在一个现有对象上调用
+    Object.seal(..) 并把所有“数据访问”属性标记为 writable:false，这样就无法修改它们 的值
+
+    Object.keys(..) 会返回一个数组，包含所有可枚举属性，
+    Object.getOwnPropertyNames(..) 会返回一个数组，包含所有属性，无论它们是否可枚举。
+
+    in 和 hasOwnProperty(..) 的区别在于是否查找 [[Prototype]] 链，
+    然而，Object.keys(..) 和 Object.getOwnPropertyNames(..) 都只会查找对象直接包含的属性。
+
+
+    我们来对比一下两种把 Bar.prototype 关联到 Foo.prototype 的方法:
+    // ES6 之前需要抛弃默认的 Bar.prototype
+         Bar.ptototype = Object.create( Foo.prototype );
+    // ES6 开始可以直接修改现有的
+    Bar.prototype Object.setPrototypeOf( Bar.prototype, Foo.prototype );
+
+    //在 a 的整 条 [[Prototype]] 链中是否出现过 Foo.prototype
+    Foo.prototype.isPrototypeOf( a );
+
+    我们也可以直接获取一个对象的 [[Prototype]] 链。
+    在 ES5 中，标准的方法是: Object.getPrototypeOf( a );
+
+    这些特殊的空 [[Prototype]] 对象通常被称作“字典”，
+    它们完全不会受到原 型链的干扰，因此非常适合用来存储数据; 例如: Object.create(null)
+
+    if (!Object.create) {
+        Object.create = function(o) {
+            function F(){}
+            F.prototype = o;
+            return new F();
+        };
+    }
+
+
+    从 ES6 开始，该值定义在 Number.EPSILON 中，我们可以直接拿来用，也可以为 ES6 之前
+    的版本写 polyfill:
+         if (!Number.EPSILON) {
+             Number.EPSILON = Math.pow(2,-52);
+         }
+    可以使用 Number.EPSILON 来比较两个数字是否相等(在指定的误差范围内):
+         function numbersCloseEnoughToEqual(n1,n2) {
+             return Math.abs( n1 - n2 ) < Number.EPSILON;
+         }
+         var a = 0.1 + 0.2;
+         var b = 0.3;
+         numbersCloseEnoughToEqual( a, b );     // true
+         numbersCloseEnoughToEqual( 0.0000001, 0.0000002 );  // false
+
+
+    要检测一个值是否是整数，可以使用 ES6 中的 Number.isInteger(..) 方法:
+     if (!Number.isInteger) {
+              Number.isInteger = function(num) {
+                  return typeof num == "number" && num % 1 == 0;
+              };
+     }
+
+     要检测一个值是否是安全的整数，可以使用 ES6 中的 Number.isSafeInteger(..) 方法:
+     Number.isSafeInteger( Number.MAX_SAFE_INTEGER ); // true
+     Number.isSafeInteger( Math.pow( 2, 53 ) ); // false
+     Number.isSafeInteger( Math.pow( 2, 53 ) - 1 ); // true
 
 
 
+     可以为 ES6 之前的版本 polyfill Number.isSafeInteger(..) 方法:
+          if (!Number.isSafeInteger) {
+              Number.isSafeInteger = function(num) {
+                  return Number.isInteger( num ) &&
+                      Math.abs( num ) <= Number.MAX_SAFE_INTEGER;
+     }; }
 
 
+    从 ES6 开始我们可以使用工具函数 Number.isNaN(..)。ES6 之前的浏览器的 polyfill 如下:
+         if (!Number.isNaN) {
+             Number.isNaN = function(n) {
+                 return (
+                     typeof n === "number" &&
+                     window.isNaN( n )
+                );
+             };
+        }
+
+        if (!Number.isNaN) {
+                 Number.isNaN = function(n) {
+                     return n !== n;
+                 };
+        }
 
 
+    function isNegZero(n) {
+             n = Number( n );
+             return (n === 0) && (1 / n === -Infinity);
+         }
+    isNegZero( -0 );
+    isNegZero( 0 / -3 );
+    isNegZero( 0 );
+    // true
+    // true
+    // false
 
 
+    // ES6 中新加入了一个工具方法 Object.is(..) 来判断两个值是否绝对相等
+     if (!Object.is) {
+         Object.is = function(v1, v2) {
+            // 判断是否是-0
+            if (v1 === 0 && v2 === 0) {
+                 return 1 / v1 === 1 / v2;
+            }
+            // 判断是否是NaN
+            if (v1 !== v1) {
+                  return v2 !== v2;
+              }
+            // 其他情况
+                  return v1 === v2;
+              };
+        }
 
 
+        if (!Date.now) {
+                 Date.now = function(){
+                     return (new Date()).getTime();
+                 };
+        }
 
 
+        var o = { };
+        var a = {
+                b: 42,
+                c: o,
+                 d: function(){}
+             };
+         // 自定义的JSON序列化
+         a.toJSON = function() {
+            // 序列化仅包含b
+              return { b: this.b };
+          };
+          JSON.stringify( a ); // "{"b":42}"
 
+         var a = {
+          b: 42,
+          c: "42",
+          d: [1,2,3]
+          };
+       JSON.stringify( a, ["b","c"] ); // "{"b":42,"c":"42"}"
 
+       JSON.stringify( a, function(k,v){
+           if (k !== "c") return v;
+       } ); // "{"b":42,"d":[1,2,3]}"
 
+       (1) 字符串、数字、布尔值和 null 的 JSON.stringify(..) 规则与 ToString 基本相同。
+       (2) 如果传递给 JSON.stringify(..) 的对象中定义了 toJSON() 方法，那么该方法会在字符
+       串化前调用，以便将对象转换为安全的 JSON 值。
 
+       // 当前页面是否可视
+       $(document).bind("visibilitychange", function(){
+       })
 
 
 
