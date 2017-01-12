@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<style>
+*{ margin:0; padding:0;}
+body{ font-family:"微软雅黑";}
+ul{ list-style:none;}
+.box{width:100%; max-width:640px; margin:0 auto;}
+.timetable{width:100%;}
+.time-title{ text-align:center; background:#390; color:#fff; font-weight:normal; line-height:30px;}
+.time-box{width:96%;height:120px; position:relative; background:#f0f0f0; overflow:hidden; margin:15px 2%; border-radius:8px;}
+.time-choose{width:100%; height:20px; background:#CCC; position:absolute; top:50px; z-index:2;}
+.time-year{ line-height:40px; font-size:14px;width:33%; height:120px; overflow:hidden; text-align:center; z-index:3; position:absolute;}
+.time-year li{ height:40px;}
+.time-month{ line-height:40px; font-size:14px;width:33%; height:120px; overflow:hidden; text-align:center; z-index:3; left:33%; position:absolute;}
+.time-month li{ height:40px;}
+.time-day{ line-height:40px; font-size:14px;width:33%; height:120px; overflow:hidden; text-align:center; z-index:3; left:66%; position:absolute;}
+.time-day li{ height:40px;}
+
+.time-btn{ text-align:center; font-size:48px;}
+.time-btn a{ display:inline-block; padding:4px 10px; background:#390; border-radius:4px; font-size:18px; color:#fff; text-decoration:none;}
+.time-clear{ margin-left:4%;}
+</style>
+<script src="http://7u2sas.com1.z0.glb.clouddn.com/js/iscroll.js"></script>
+<script type="text/javascript">
+
+var myScroll;
+
+function loaded () {
+    myScroll = new IScroll('#year', {
+        scrollY: true,
+        momentum: false,
+        snap: 'li'
+    });
+    myScroll = new IScroll('#month', {
+        scrollY: true,
+        momentum: false,
+        snap: 'li'
+    });
+    myScroll = new IScroll('#day', {
+        scrollY: true,
+        momentum: false,
+        snap: 'li'
+    });
+    myScroll = new IScroll('#hour', {
+        scrollY: true,
+        momentum: false,
+        snap: 'li'
+    });
+    myScroll = new IScroll('#min', {
+        scrollY: true,
+        momentum: false,
+        snap: 'li'
+    });
+    myScroll = new IScroll('#noon', {
+        scrollY: true,
+        momentum: false,
+        snap: 'li'
+    });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+</script>
+</head>
+
+<body onload="loaded()">
+<div class="box">
+<div class="timetable">
+    <h3 class="time-title">选择时间</h3>
+    <div class="time-con">
+        <div class="time-box">
+            <div class="time-choose"></div>
+            <div class="time-year" id="year" >
+                <div >
+                    <ul>
+                        <li></li>
+                        <li>2000年</li>
+                        <li>2001年</li>
+                        <li>2002年</li>
+                        <li>2003年</li>
+                        <li>2004年</li>
+                        <li>2005年</li>
+                        <li>2006年</li>
+                        <li>2007年</li>
+                        <li>2008年</li>
+                        <li>2009年</li>
+                        <li>2010年</li>
+                        <li>2011年</li>
+                        <li>2012年</li>
+                        <li>2013年</li>
+                        <li>2014年</li>
+                        <li>2015年</li>
+                        <li>2016年</li>
+                        <li>2017年</li>
+                        <li>2018年</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-month" id="month" >
+                <div >
+                    <ul>
+                        <li></li>
+                        <li>1月</li>
+                        <li>2月</li>
+                        <li>3月</li>
+                        <li>4月</li>
+                        <li>5月</li>
+                        <li>6月</li>
+                        <li>7月</li>
+                        <li>8月</li>
+                        <li>9月</li>
+                        <li>10月</li>
+                        <li>11月</li>
+                        <li>12月</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-day" id="day" >
+                <div>
+                    <ul>
+                        <li></li>
+                        <li>1日</li>
+                        <li>2日</li>
+                        <li>3日</li>
+                        <li>4日</li>
+                        <li>5日</li>
+                        <li>6日</li>
+                        <li>7日</li>
+                        <li>8日</li>
+                        <li>9日</li>
+                        <li>10日</li>
+                        <li>11日</li>
+                        <li>12日</li>
+                        <li>13日</li>
+                        <li>14日</li>
+                        <li>15日</li>
+                        <li>16日</li>
+                        <li>17日</li>
+                        <li>18日</li>
+                        <li>19日</li>
+                        <li>20日</li>
+                        <li>21日</li>
+                        <li>22日</li>
+                        <li>23日</li>
+                        <li>24日</li>
+                        <li>25日</li>
+                        <li>26日</li>
+                        <li>27日</li>
+                        <li>28日</li>
+                        <li>29日</li>
+                        <li>30日</li>
+                        <li>31日</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="time-box">
+            <div class="time-choose"></div>
+            <div class="time-year" id="hour" >
+                <div >
+                    <ul>
+                        <li></li>
+                        <li>1时</li>
+                        <li>2时</li>
+                        <li>3时</li>
+                        <li>4时</li>
+                        <li>5时</li>
+                        <li>6时</li>
+                        <li>7时</li>
+                        <li>8时</li>
+                        <li>9时</li>
+                        <li>10时</li>
+                        <li>11时</li>
+                        <li>12时</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-month" id="min" >
+                <div >
+                    <ul>
+                        <li></li>
+                        <li>00分</li>
+                        <li>05分</li>
+                        <li>10分</li>
+                        <li>15分</li>
+                        <li>20分</li>
+                        <li>25分</li>
+                        <li>30分</li>
+                        <li>35分</li>
+                        <li>40分</li>
+                        <li>45分</li>
+                        <li>50分</li>
+                        <li>55分</li>
+                        <li>60分</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-day" id="noon" >
+                <div>
+                    <ul>
+                        <li></li>
+                        <li>上午</li>
+                        <li>下午</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="time-btn">
+            <a href="javascript:;" id="sure" class="time-sure">确定</a>
+            <a href="javascript:;" id="clear" class="time-clear">取消</a>
+        </div>
+    </div>
+</div>
+</div>
+<script src="http://7u2sas.com1.z0.glb.clouddn.com/js/jquery.1.8.3.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#sure').click(function(){
+            var year=parseInt(getContent("#year"));
+            var month  =parseInt(getContent("#month"));
+            var day = parseInt(getContent("#day"));
+            var hour = parseInt(getContent("#hour"));
+            var minite = getContent("#min");
+            var noon = getContent("#noon");
+            alert('你选择的时间是：'+year+'-'+month+'-'+day+' '+noon+' '+hour+':'+minite);
+        });
+    });
+    function getContent(ele){
+        var $content = $(ele).find('div');
+        var _height=$(ele).find('li').height();
+        var tran = $content.css('transform');
+        var topArray=[];
+        topArray=tran.split(',');
+        var top=Math.floor(parseFloat(topArray[5]));
+        var num=top/_height-1;
+        //return num;
+        return $(ele+" li").eq(-num).text()
+    }
+
+</script>
+</body>
+</html>

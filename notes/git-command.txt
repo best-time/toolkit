@@ -27,4 +27,32 @@ git rm filename
 
 删除分支：git branch -d name
 
-2016年02月17日20:41:12
+
+删除仓库
+git remote rm origin
+
+//添加远程资源库
+git remote add origin https://www.github.com/best-time/snffe.git
+
+git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git
+
+查看远程资源库
+git remote -v
+//origin  git@github.com:USERNAME/REPOSITORY.git (fetch)
+//origin  git@github.com:USERNAME/REPOSITORY.git (push)
+
+查看代理设置
+git config --global http.proxy
+代理设置
+git config --global http.proxy http://10.19.110.32:1080
+git config --global https.proxy https://10.19.110.32:1080
+
+重置代理
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+删除代理
+npm config delete proxy
+
+git config --global http.proxy 'socks5://127.0.0.1:1080'
+git config --global https.proxy 'socks5://127.0.0.1:1080'
