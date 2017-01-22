@@ -9,3 +9,5 @@
 *.tmp
 *.err
 /vue-demo/node_modules
+/.DS_Store
+.DS_Store

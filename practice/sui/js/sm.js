@@ -4,8 +4,7 @@
  *
  * =====================================================
  */
-; $.smVersion = "0.6.2";
-+function ($) {
+;$.smVersion = "0.6.2";+function ($) {
     "use strict";
 
     //全局配置
@@ -227,14 +226,18 @@
         }
         for (var i = 0; i < this.length; i++) {
             var elStyle = this[i].style;
-            elStyle.webkitTransitionDuration = elStyle.MozTransitionDuration = elStyle.transitionDuration = duration;
+            elStyle.webkitTransitionDuration =
+                elStyle.MozTransitionDuration =
+                elStyle.transitionDuration = duration;
         }
         return this;
     };
     $.fn.transform = function(transform) {
         for (var i = 0; i < this.length; i++) {
             var elStyle = this[i].style;
-            elStyle.webkitTransform = elStyle.MozTransform = elStyle.transform = transform;
+            elStyle.webkitTransform =
+                elStyle.MozTransform =
+                elStyle.transform = transform;
         }
         return this;
     };
@@ -285,8 +288,10 @@
 
         return this.each(function(){
             this.style.display === "none" && (this.style.display = '');
-            if (getComputedStyle(this, '').getPropertyValue("display") === "none");
-            this.style.display = defaultDisplay(this.nodeName);
+            if (getComputedStyle(this, '').getPropertyValue("display") === "none") {
+                this.style.display = defaultDisplay(this.nodeName)
+            }
+            
         });
     };
 })(Zepto);
@@ -1672,6 +1677,7 @@ Device/OS Detection
     };
 }(Zepto);
 
+// picker--
 /*======================================================
 ************   Picker   ************
 ======================================================*/
@@ -1741,7 +1747,10 @@ Device/OS Detection
                 p.params.onChange(p, p.value, p.displayValue);
             }
             if (p.input && p.input.length > 0) {
-                $(p.input).val(p.params.formatValue ? p.params.formatValue(p, p.value, p.displayValue) : p.value.join(' '));
+                var item = p.params.formatValue ?
+                            p.params.formatValue(p, p.value, p.displayValue) :
+                            p.value.join(' ')
+                $(p.input).val(item);
                 $(p.input).trigger('change');
             }
         };
@@ -1907,30 +1916,38 @@ Device/OS Detection
             if (updateItems) col.updateItems(0, maxTranslate, 0);
 
             var allowItemClick = true;
-            var isTouched, isMoved, touchStartY, touchCurrentY, touchStartTime, touchEndTime, startTranslate, returnTo, currentTranslate, prevTranslate, velocityTranslate, velocityTime;
+            var isTouched, isMoved, touchStartY, touchCurrentY,
+                touchStartTime, touchEndTime,
+                startTranslate, returnTo, currentTranslate, prevTranslate,
+                velocityTranslate, velocityTime;
+            
             function handleTouchStart (e) {
                 if (isMoved || isTouched) return;
                 e.preventDefault();
                 isTouched = true;
-                touchStartY = touchCurrentY = e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
+                touchStartY = touchCurrentY = e.type === 'touchstart' ?
+                                e.targetTouches[0].pageY : e.pageY;
                 touchStartTime = (new Date()).getTime();
 
                 allowItemClick = true;
-                startTranslate = currentTranslate = $.getTranslate(col.wrapper[0], 'y');
+                startTranslate = currentTranslate =
+                                $.getTranslate(col.wrapper[0], 'y');
             }
             function handleTouchMove (e) {
                 if (!isTouched) return;
                 e.preventDefault();
                 allowItemClick = false;
-                touchCurrentY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
+                touchCurrentY = e.type === 'touchmove' ?
+                                e.targetTouches[0].pageY : e.pageY;
                 if (!isMoved) {
                     // First move
                     $.cancelAnimationFrame(animationFrameId);
                     isMoved = true;
-                    startTranslate = currentTranslate = $.getTranslate(col.wrapper[0], 'y');
+                    startTranslate = currentTranslate =
+                                    $.getTranslate(col.wrapper[0], 'y');
                     col.wrapper.transition(0);
                 }
-                e.preventDefault();
+                // e.preventDefault();
 
                 var diff = touchCurrentY - touchStartY;
                 currentTranslate = startTranslate + diff;
@@ -1946,7 +1963,7 @@ Device/OS Detection
                     returnTo = 'max';
                 }
                 // Transform wrapper
-                col.wrapper.transform('translate3d(0,' + currentTranslate + 'px,0)');
+                col.wrapper.transform('translate3d(0, ' + currentTranslate + 'px, 0)');
 
                 // Update items
                 col.updateItems(undefined, currentTranslate, 0, p.params.updateValuesOnTouchmove);
@@ -2015,19 +2032,20 @@ Device/OS Detection
                 col.setValue(value);
             }
 
-            col.initEvents = function (detach) {
-                var method = detach ? 'off' : 'on';
-                col.container[method]($.touchEvents.start, handleTouchStart);
-                col.container[method]($.touchEvents.move, handleTouchMove);
-                col.container[method]($.touchEvents.end, handleTouchEnd);
-                col.items[method]('click', handleClick);
-            };
             col.destroyEvents = function () {
                 col.initEvents(true);
             };
 
             col.container[0].f7DestroyPickerCol = function () {
                 col.destroyEvents();
+            };
+
+            col.initEvents = function (detach) {
+                var method = detach ? 'off' : 'on';
+                col.container[method]($.touchEvents.start, handleTouchStart);
+                col.container[method]($.touchEvents.move, handleTouchMove);
+                col.container[method]($.touchEvents.end, handleTouchEnd);
+                col.items[method]('click', handleClick);
             };
 
             col.initEvents();
@@ -2060,7 +2078,6 @@ Device/OS Detection
                 for (var j = 0; j < col.values.length; j++) {
                     columnItemsHTML += '<div class="picker-item" data-picker-value="' + col.values[j] + '">' + (col.displayValues ? col.displayValues[j] : col.values[j]) + '</div>';
                 }
-
                 columnHTML += '<div class="picker-items-col ' + (col.textAlign ? 'picker-items-col-' + col.textAlign : '') + ' ' + (col.cssClass || '') + '"><div class="picker-items-col-wrapper">' + columnItemsHTML + '</div></div>';
             }
             return onlyItems ? columnItemsHTML : columnHTML;
@@ -2123,6 +2140,19 @@ Device/OS Detection
                 }
             }
         }
+
+        if (p.params.input) {
+            p.input = $(p.params.input);
+            if (p.input.length > 0) {
+                if (p.params.inputReadOnly) {
+                    p.input.prop('readOnly', true);
+                }
+                if (!p.inline) {
+                    p.input.on('click', openOnInput);
+                }
+            }
+        }
+
         function closeOnHTMLClick(e) {
             if (!p.opened) return;
             if (p.input && p.input.length > 0) {
@@ -2131,18 +2161,8 @@ Device/OS Detection
             else {
                 if ($(e.target).parents('.picker-modal').length === 0) p.close();
             }
-        }
-
-        if (p.params.input) {
-            p.input = $(p.params.input);
-            if (p.input.length > 0) {
-                if (p.params.inputReadOnly) p.input.prop('readOnly', true);
-                if (!p.inline) {
-                    p.input.on('click', openOnInput);
-                }
-            }
-        }
-
+        }        
+        //关闭弹出层
         if (!p.inline) $('html').on('click', closeOnHTMLClick);
 
         // Open
@@ -2188,7 +2208,9 @@ Device/OS Detection
                 // Init Events
                 p.container.find('.picker-items-col').each(function () {
                     var updateItems = true;
-                    if ((!p.initialized && p.params.value) || (p.initialized && p.value)) updateItems = false;
+                    if ((!p.initialized && p.params.value) || (p.initialized && p.value)) {
+                        updateItems = false;
+                    }
                     p.initPickerCol(this, updateItems);
                 });
 
@@ -2365,7 +2387,2109 @@ Device/OS Detection
 
 }(Zepto);
 
++ function(window) {
 
+    "use strict";
+
+    var rAF = window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+    /*var cRAF = window.cancelRequestAnimationFrame ||
+        window.webkitCancelRequestAnimationFrame ||
+        window.mozCancelRequestAnimationFrame ||
+        window.oCancelRequestAnimationFrame ||
+        window.msCancelRequestAnimationFrame;*/
+
+    var utils = (function() {
+        var me = {};
+
+        var _elementStyle = document.createElement('div').style;
+        var _vendor = (function() {
+            var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
+                transform,
+                i = 0,
+                l = vendors.length;
+
+            for (; i < l; i++) {
+                transform = vendors[i] + 'ransform';
+                if (transform in _elementStyle) return vendors[i].substr(0, vendors[i].length - 1);
+            }
+
+            return false;
+        })();
+
+        function _prefixStyle(style) {
+            if (_vendor === false) return false;
+            if (_vendor === '') return style;
+            return _vendor + style.charAt(0).toUpperCase() + style.substr(1);
+        }
+
+        me.getTime = Date.now || function getTime() {
+            return new Date().getTime();
+        };
+
+        me.extend = function(target, obj) {
+            for (var i in obj) {  // jshint ignore:line
+                    target[i] = obj[i]; 
+            }
+        };
+
+        me.addEvent = function(el, type, fn, capture) {
+            el.addEventListener(type, fn, !!capture);
+        };
+
+        me.removeEvent = function(el, type, fn, capture) {
+            el.removeEventListener(type, fn, !!capture);
+        };
+
+        me.prefixPointerEvent = function(pointerEvent) {
+            return window.MSPointerEvent ?
+                'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10) :
+                pointerEvent;
+        };
+
+        me.momentum = function(current, start, time, lowerMargin, wrapperSize, deceleration, self) {
+            var distance = current - start,
+                speed = Math.abs(distance) / time,
+                destination,
+                duration;
+
+            // var absDistance = Math.abs(distance);
+            speed = speed / 2; //slowdown
+            speed = speed > 1.5 ? 1.5 : speed; //set max speed to 1
+            deceleration = deceleration === undefined ? 0.0006 : deceleration;
+
+            destination = current + (speed * speed) / (2 * deceleration) * (distance < 0 ? -1 : 1);
+            duration = speed / deceleration;
+
+            if (destination < lowerMargin) {
+                destination = wrapperSize ? lowerMargin - (wrapperSize / 2.5 * (speed / 8)) : lowerMargin;
+                distance = Math.abs(destination - current);
+                duration = distance / speed;
+            } else if (destination > 0) {
+                destination = wrapperSize ? wrapperSize / 2.5 * (speed / 8) : 0;
+                distance = Math.abs(current) + destination;
+                duration = distance / speed;
+            }
+
+            //simple trigger, every 50ms
+            var t = +new Date();
+            var l = t;
+
+            function eventTrigger() {
+                if (+new Date() - l > 50) {
+                    self._execEvent('scroll');
+                    l = +new Date();
+                }
+                if (+new Date() - t < duration) {
+                    rAF(eventTrigger);
+                }
+            }
+            rAF(eventTrigger);
+
+            return {
+                destination: Math.round(destination),
+                duration: duration
+            };
+        };
+
+        var _transform = _prefixStyle('transform');
+
+        me.extend(me, {
+            hasTransform: _transform !== false,
+            hasPerspective: _prefixStyle('perspective') in _elementStyle,
+            hasTouch: 'ontouchstart' in window,
+            hasPointer: window.PointerEvent || window.MSPointerEvent, // IE10 is prefixed
+            hasTransition: _prefixStyle('transition') in _elementStyle
+        });
+
+        // This should find all Android browsers lower than build 535.19 (both stock browser and webview)
+        me.isBadAndroid = /Android /.test(window.navigator.appVersion) && !(/Chrome\/\d/.test(window.navigator.appVersion)) && false; //this will cause many android device scroll flash; so set it to false!
+
+        me.extend(me.style = {}, {
+            transform: _transform,
+            transitionTimingFunction: _prefixStyle('transitionTimingFunction'),
+            transitionDuration: _prefixStyle('transitionDuration'),
+            transitionDelay: _prefixStyle('transitionDelay'),
+            transformOrigin: _prefixStyle('transformOrigin')
+        });
+
+        me.hasClass = function(e, c) {
+            var re = new RegExp('(^|\\s)' + c + '(\\s|$)');
+            return re.test(e.className);
+        };
+
+        me.addClass = function(e, c) {
+            if (me.hasClass(e, c)) {
+                return;
+            }
+
+            var newclass = e.className.split(' ');
+            newclass.push(c);
+            e.className = newclass.join(' ');
+        };
+
+        me.removeClass = function(e, c) {
+            if (!me.hasClass(e, c)) {
+                return;
+            }
+
+            var re = new RegExp('(^|\\s)' + c + '(\\s|$)', 'g');
+            e.className = e.className.replace(re, ' ');
+        };
+
+        me.offset = function(el) {
+            var left = -el.offsetLeft,
+                top = -el.offsetTop;
+
+            // jshint -W084
+            while (el = el.offsetParent) {
+                left -= el.offsetLeft;
+                top -= el.offsetTop;
+            }
+            // jshint +W084
+
+            return {
+                left: left,
+                top: top
+            };
+        };
+
+        me.preventDefaultException = function(el, exceptions) {
+            for (var i in exceptions) {
+                if (exceptions[i].test(el[i])) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        me.extend(me.eventType = {}, {
+            touchstart: 1,
+            touchmove: 1,
+            touchend: 1,
+
+            mousedown: 2,
+            mousemove: 2,
+            mouseup: 2,
+
+            pointerdown: 3,
+            pointermove: 3,
+            pointerup: 3,
+
+            MSPointerDown: 3,
+            MSPointerMove: 3,
+            MSPointerUp: 3
+        });
+
+        me.extend(me.ease = {}, {
+            quadratic: {
+                style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                fn: function(k) {
+                    return k * (2 - k);
+                }
+            },
+            circular: {
+                style: 'cubic-bezier(0.1, 0.57, 0.1, 1)', // Not properly 'circular' but this looks better, it should be (0.075, 0.82, 0.165, 1)
+                fn: function(k) {
+                    return Math.sqrt(1 - (--k * k));
+                }
+            },
+            back: {
+                style: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                fn: function(k) {
+                    var b = 4;
+                    return (k = k - 1) * k * ((b + 1) * k + b) + 1;
+                }
+            },
+            bounce: {
+                style: '',
+                fn: function(k) {
+                    if ((k /= 1) < (1 / 2.75)) {
+                        return 7.5625 * k * k;
+                    } else if (k < (2 / 2.75)) {
+                        return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75;
+                    } else if (k < (2.5 / 2.75)) {
+                        return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375;
+                    } else {
+                        return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;
+                    }
+                }
+            },
+            elastic: {
+                style: '',
+                fn: function(k) {
+                    var f = 0.22,
+                        e = 0.4;
+
+                    if (k === 0) {
+                        return 0;
+                    }
+                    if (k === 1) {
+                        return 1;
+                    }
+
+                    return (e * Math.pow(2, -10 * k) * Math.sin((k - f / 4) * (2 * Math.PI) / f) + 1);
+                }
+            }
+        });
+
+        me.tap = function(e, eventName) {
+            var ev = document.createEvent('Event');
+            ev.initEvent(eventName, true, true);
+            ev.pageX = e.pageX;
+            ev.pageY = e.pageY;
+            e.target.dispatchEvent(ev);
+        };
+
+        me.click = function(e) {
+            var target = e.target,
+                ev;
+
+            if (!(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName)) {
+                ev = document.createEvent('MouseEvents');
+                ev.initMouseEvent('click', true, true, e.view, 1,
+                    target.screenX, target.screenY, target.clientX, target.clientY,
+                    e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
+                    0, null);
+
+                ev._constructed = true;
+                target.dispatchEvent(ev);
+            }
+        };
+
+        return me;
+    })();
+
+    function IScroll(el, options) {
+        this.wrapper = typeof el === 'string' ? document.querySelector(el) : el;
+        this.scroller = $(this.wrapper).find('.content-inner')[0]; // jshint ignore:line
+
+
+        this.scrollerStyle = this.scroller&&this.scroller.style; // cache style for better performance
+
+        this.options = {
+
+            resizeScrollbars: true,
+
+            mouseWheelSpeed: 20,
+
+            snapThreshold: 0.334,
+
+            // INSERT POINT: OPTIONS 
+
+            startX: 0,
+            startY: 0,
+            scrollY: true,
+            directionLockThreshold: 5,
+            momentum: true,
+
+            bounce: true,
+            bounceTime: 600,
+            bounceEasing: '',
+
+            preventDefault: true,
+            preventDefaultException: {
+                tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/
+            },
+
+            HWCompositing: true,
+            useTransition: true,
+            useTransform: true,
+
+            //other options
+            eventPassthrough: undefined, //if you  want to use native scroll, you can set to: true or horizontal
+        };
+
+        for (var i in options) {
+                this.options[i] = options[i];
+        }
+
+        // Normalize options
+        this.translateZ = this.options.HWCompositing && utils.hasPerspective ? ' translateZ(0)' : '';
+
+        this.options.useTransition = utils.hasTransition && this.options.useTransition;
+        this.options.useTransform = utils.hasTransform && this.options.useTransform;
+
+        this.options.eventPassthrough = this.options.eventPassthrough === true ? 'vertical' : this.options.eventPassthrough;
+        this.options.preventDefault = !this.options.eventPassthrough && this.options.preventDefault;
+
+        // If you want eventPassthrough I have to lock one of the axes
+        this.options.scrollY = this.options.eventPassthrough === 'vertical' ? false : this.options.scrollY;
+        this.options.scrollX = this.options.eventPassthrough === 'horizontal' ? false : this.options.scrollX;
+
+        // With eventPassthrough we also need lockDirection mechanism
+        this.options.freeScroll = this.options.freeScroll && !this.options.eventPassthrough;
+        this.options.directionLockThreshold = this.options.eventPassthrough ? 0 : this.options.directionLockThreshold;
+
+        this.options.bounceEasing = typeof this.options.bounceEasing === 'string' ? utils.ease[this.options.bounceEasing] || utils.ease.circular : this.options.bounceEasing;
+
+        this.options.resizePolling = this.options.resizePolling === undefined ? 60 : this.options.resizePolling;
+
+        if (this.options.tap === true) {
+            this.options.tap = 'tap';
+        }
+
+        if (this.options.shrinkScrollbars === 'scale') {
+            this.options.useTransition = false;
+        }
+
+        this.options.invertWheelDirection = this.options.invertWheelDirection ? -1 : 1;
+
+        if (this.options.probeType === 3) {
+            this.options.useTransition = false;
+        }
+
+        // INSERT POINT: NORMALIZATION
+
+        // Some defaults    
+        this.x = 0;
+        this.y = 0;
+        this.directionX = 0;
+        this.directionY = 0;
+        this._events = {};
+
+        // INSERT POINT: DEFAULTS
+
+        this._init();
+        this.refresh();
+
+        this.scrollTo(this.options.startX, this.options.startY);
+        this.enable();
+    }
+
+    IScroll.prototype = {
+        version: '5.1.3',
+
+        _init: function() {
+            this._initEvents();
+
+            if (this.options.scrollbars || this.options.indicators) {
+                this._initIndicators();
+            }
+
+            if (this.options.mouseWheel) {
+                this._initWheel();
+            }
+
+            if (this.options.snap) {
+                this._initSnap();
+            }
+
+            if (this.options.keyBindings) {
+                this._initKeys();
+            }
+
+            // INSERT POINT: _init
+
+        },
+
+        destroy: function() {
+            this._initEvents(true);
+
+            this._execEvent('destroy');
+        },
+
+        _transitionEnd: function(e) {
+            if (e.target !== this.scroller || !this.isInTransition) {
+                return;
+            }
+
+            this._transitionTime();
+            if (!this.resetPosition(this.options.bounceTime)) {
+                this.isInTransition = false;
+                this._execEvent('scrollEnd');
+            }
+        },
+
+        _start: function(e) {
+            // React to left mouse button only
+            if (utils.eventType[e.type] !== 1) {
+                if (e.button !== 0) {
+                    return;
+                }
+            }
+
+            if (!this.enabled || (this.initiated && utils.eventType[e.type] !== this.initiated)) {
+                return;
+            }
+
+            if (this.options.preventDefault && !utils.isBadAndroid && !utils.preventDefaultException(e.target, this.options.preventDefaultException)) {
+                e.preventDefault();
+            }
+
+            var point = e.touches ? e.touches[0] : e,
+                pos;
+
+            this.initiated = utils.eventType[e.type];
+            this.moved = false;
+            this.distX = 0;
+            this.distY = 0;
+            this.directionX = 0;
+            this.directionY = 0;
+            this.directionLocked = 0;
+
+            this._transitionTime();
+
+            this.startTime = utils.getTime();
+
+            if (this.options.useTransition && this.isInTransition) {
+                this.isInTransition = false;
+                pos = this.getComputedPosition();
+                this._translate(Math.round(pos.x), Math.round(pos.y));
+                this._execEvent('scrollEnd');
+            } else if (!this.options.useTransition && this.isAnimating) {
+                this.isAnimating = false;
+                this._execEvent('scrollEnd');
+            }
+
+            this.startX = this.x;
+            this.startY = this.y;
+            this.absStartX = this.x;
+            this.absStartY = this.y;
+            this.pointX = point.pageX;
+            this.pointY = point.pageY;
+
+            this._execEvent('beforeScrollStart');
+        },
+
+        _move: function(e) {
+            if (!this.enabled || utils.eventType[e.type] !== this.initiated) {
+                return;
+            }
+
+            if (this.options.preventDefault) { // increases performance on Android? TODO: check!
+                e.preventDefault();
+            }
+
+            var point = e.touches ? e.touches[0] : e,
+                deltaX = point.pageX - this.pointX,
+                deltaY = point.pageY - this.pointY,
+                timestamp = utils.getTime(),
+                newX, newY,
+                absDistX, absDistY;
+
+            this.pointX = point.pageX;
+            this.pointY = point.pageY;
+
+            this.distX += deltaX;
+            this.distY += deltaY;
+            absDistX = Math.abs(this.distX);
+            absDistY = Math.abs(this.distY);
+
+            // We need to move at least 10 pixels for the scrolling to initiate
+            if (timestamp - this.endTime > 300 && (absDistX < 10 && absDistY < 10)) {
+                return;
+            }
+
+            // If you are scrolling in one direction lock the other
+            if (!this.directionLocked && !this.options.freeScroll) {
+                if (absDistX > absDistY + this.options.directionLockThreshold) {
+                    this.directionLocked = 'h'; // lock horizontally
+                } else if (absDistY >= absDistX + this.options.directionLockThreshold) {
+                    this.directionLocked = 'v'; // lock vertically
+                } else {
+                    this.directionLocked = 'n'; // no lock
+                }
+            }
+
+            if (this.directionLocked === 'h') {
+                if (this.options.eventPassthrough === 'vertical') {
+                    e.preventDefault();
+                } else if (this.options.eventPassthrough === 'horizontal') {
+                    this.initiated = false;
+                    return;
+                }
+
+                deltaY = 0;
+            } else if (this.directionLocked === 'v') {
+                if (this.options.eventPassthrough === 'horizontal') {
+                    e.preventDefault();
+                } else if (this.options.eventPassthrough === 'vertical') {
+                    this.initiated = false;
+                    return;
+                }
+
+                deltaX = 0;
+            }
+
+            deltaX = this.hasHorizontalScroll ? deltaX : 0;
+            deltaY = this.hasVerticalScroll ? deltaY : 0;
+
+            newX = this.x + deltaX;
+            newY = this.y + deltaY;
+
+            // Slow down if outside of the boundaries
+            if (newX > 0 || newX < this.maxScrollX) {
+                newX = this.options.bounce ? this.x + deltaX / 3 : newX > 0 ? 0 : this.maxScrollX;
+            }
+            if (newY > 0 || newY < this.maxScrollY) {
+                newY = this.options.bounce ? this.y + deltaY / 3 : newY > 0 ? 0 : this.maxScrollY;
+            }
+
+            this.directionX = deltaX > 0 ? -1 : deltaX < 0 ? 1 : 0;
+            this.directionY = deltaY > 0 ? -1 : deltaY < 0 ? 1 : 0;
+
+            if (!this.moved) {
+                this._execEvent('scrollStart');
+            }
+
+            this.moved = true;
+
+            this._translate(newX, newY);
+
+            /* REPLACE START: _move */
+            if (timestamp - this.startTime > 300) {
+                this.startTime = timestamp;
+                this.startX = this.x;
+                this.startY = this.y;
+
+                if (this.options.probeType === 1) {
+                    this._execEvent('scroll');
+                }
+            }
+
+            if (this.options.probeType > 1) {
+                this._execEvent('scroll');
+            }
+            /* REPLACE END: _move */
+
+        },
+
+        _end: function(e) {
+            if (!this.enabled || utils.eventType[e.type] !== this.initiated) {
+                return;
+            }
+
+            if (this.options.preventDefault && !utils.preventDefaultException(e.target, this.options.preventDefaultException)) {
+                e.preventDefault();
+            }
+
+            var /*point = e.changedTouches ? e.changedTouches[0] : e,*/
+                momentumX,
+                momentumY,
+                duration = utils.getTime() - this.startTime,
+                newX = Math.round(this.x),
+                newY = Math.round(this.y),
+                distanceX = Math.abs(newX - this.startX),
+                distanceY = Math.abs(newY - this.startY),
+                time = 0,
+                easing = '';
+
+            this.isInTransition = 0;
+            this.initiated = 0;
+            this.endTime = utils.getTime();
+
+            // reset if we are outside of the boundaries
+            if (this.resetPosition(this.options.bounceTime)) {
+                return;
+            }
+
+            this.scrollTo(newX, newY); // ensures that the last position is rounded
+
+            // we scrolled less than 10 pixels
+            if (!this.moved) {
+                if (this.options.tap) {
+                    utils.tap(e, this.options.tap);
+                }
+
+                if (this.options.click) {
+                    utils.click(e);
+                }
+
+                this._execEvent('scrollCancel');
+                return;
+            }
+
+            if (this._events.flick && duration < 200 && distanceX < 100 && distanceY < 100) {
+                this._execEvent('flick');
+                return;
+            }
+
+            // start momentum animation if needed
+            if (this.options.momentum && duration < 300) {
+                momentumX = this.hasHorizontalScroll ? utils.momentum(this.x, this.startX, duration, this.maxScrollX, this.options.bounce ? this.wrapperWidth : 0, this.options.deceleration, this) : {
+                    destination: newX,
+                    duration: 0
+                };
+                momentumY = this.hasVerticalScroll ? utils.momentum(this.y, this.startY, duration, this.maxScrollY, this.options.bounce ? this.wrapperHeight : 0, this.options.deceleration, this) : {
+                    destination: newY,
+                    duration: 0
+                };
+                newX = momentumX.destination;
+                newY = momentumY.destination;
+                time = Math.max(momentumX.duration, momentumY.duration);
+                this.isInTransition = 1;
+            }
+
+
+            if (this.options.snap) {
+                var snap = this._nearestSnap(newX, newY);
+                this.currentPage = snap;
+                time = this.options.snapSpeed || Math.max(
+                    Math.max(
+                        Math.min(Math.abs(newX - snap.x), 1000),
+                        Math.min(Math.abs(newY - snap.y), 1000)
+                    ), 300);
+                newX = snap.x;
+                newY = snap.y;
+
+                this.directionX = 0;
+                this.directionY = 0;
+                easing = this.options.bounceEasing;
+            }
+
+            // INSERT POINT: _end
+
+            if (newX !== this.x || newY !== this.y) {
+                // change easing function when scroller goes out of the boundaries
+                if (newX > 0 || newX < this.maxScrollX || newY > 0 || newY < this.maxScrollY) {
+                    easing = utils.ease.quadratic;
+                }
+
+                this.scrollTo(newX, newY, time, easing);
+                return;
+            }
+
+            this._execEvent('scrollEnd');
+        },
+
+        _resize: function() {
+            var that = this;
+
+            clearTimeout(this.resizeTimeout);
+
+            this.resizeTimeout = setTimeout(function() {
+                that.refresh();
+            }, this.options.resizePolling);
+        },
+
+        resetPosition: function(time) {
+            var x = this.x,
+                y = this.y;
+
+            time = time || 0;
+
+            if (!this.hasHorizontalScroll || this.x > 0) {
+                x = 0;
+            } else if (this.x < this.maxScrollX) {
+                x = this.maxScrollX;
+            }
+
+            if (!this.hasVerticalScroll || this.y > 0) {
+                y = 0;
+            } else if (this.y < this.maxScrollY) {
+                y = this.maxScrollY;
+            }
+
+            if (x === this.x && y === this.y) {
+                return false;
+            }
+
+            if (this.options.ptr && this.y > 44 && this.startY * -1 < $(window).height() && !this.ptrLock) {// jshint ignore:line
+                // not trigger ptr when user want to scroll to top
+                y = this.options.ptrOffset || 44;
+                this._execEvent('ptr');
+                // 防止返回的过程中再次触发了 ptr ，导致被定位到 44px（因为可能done事件触发很快，在返回到44px以前就触发done
+                this.ptrLock = true;
+                var self = this;
+                setTimeout(function() {
+                    self.ptrLock = false;
+                }, 500);
+            }
+
+            this.scrollTo(x, y, time, this.options.bounceEasing);
+
+            return true;
+        },
+
+        disable: function() {
+            this.enabled = false;
+        },
+
+        enable: function() {
+            this.enabled = true;
+        },
+
+        refresh: function() {
+            // var rf = this.wrapper.offsetHeight; // Force reflow
+
+            this.wrapperWidth = this.wrapper.clientWidth;
+            this.wrapperHeight = this.wrapper.clientHeight;
+
+            /* REPLACE START: refresh */
+
+            this.scrollerWidth = this.scroller.offsetWidth;
+            this.scrollerHeight = this.scroller.offsetHeight;
+
+            this.maxScrollX = this.wrapperWidth - this.scrollerWidth;
+            this.maxScrollY = this.wrapperHeight - this.scrollerHeight;
+
+            /* REPLACE END: refresh */
+
+            this.hasHorizontalScroll = this.options.scrollX && this.maxScrollX < 0;
+            this.hasVerticalScroll = this.options.scrollY && this.maxScrollY < 0;
+
+            if (!this.hasHorizontalScroll) {
+                this.maxScrollX = 0;
+                this.scrollerWidth = this.wrapperWidth;
+            }
+
+            if (!this.hasVerticalScroll) {
+                this.maxScrollY = 0;
+                this.scrollerHeight = this.wrapperHeight;
+            }
+
+            this.endTime = 0;
+            this.directionX = 0;
+            this.directionY = 0;
+
+            this.wrapperOffset = utils.offset(this.wrapper);
+
+            this._execEvent('refresh');
+
+            this.resetPosition();
+
+            // INSERT POINT: _refresh
+
+        },
+
+        on: function(type, fn) {
+            if (!this._events[type]) {
+                this._events[type] = [];
+            }
+
+            this._events[type].push(fn);
+        },
+
+        off: function(type, fn) {
+            if (!this._events[type]) {
+                return;
+            }
+
+            var index = this._events[type].indexOf(fn);
+
+            if (index > -1) {
+                this._events[type].splice(index, 1);
+            }
+        },
+
+        _execEvent: function(type) {
+            if (!this._events[type]) {
+                return;
+            }
+
+            var i = 0,
+                l = this._events[type].length;
+
+            if (!l) {
+                return;
+            }
+
+            for (; i < l; i++) {
+                this._events[type][i].apply(this, [].slice.call(arguments, 1));
+            }
+        },
+
+        scrollBy: function(x, y, time, easing) {
+            x = this.x + x;
+            y = this.y + y;
+            time = time || 0;
+
+            this.scrollTo(x, y, time, easing);
+        },
+
+        scrollTo: function(x, y, time, easing) {
+            easing = easing || utils.ease.circular;
+
+            this.isInTransition = this.options.useTransition && time > 0;
+
+            if (!time || (this.options.useTransition && easing.style)) {
+                this._transitionTimingFunction(easing.style);
+                this._transitionTime(time);
+                this._translate(x, y);
+            } else {
+                this._animate(x, y, time, easing.fn);
+            }
+        },
+
+        scrollToElement: function(el, time, offsetX, offsetY, easing) {
+            el = el.nodeType ? el : this.scroller.querySelector(el);
+
+            if (!el) {
+                return;
+            }
+
+            var pos = utils.offset(el);
+
+            pos.left -= this.wrapperOffset.left;
+            pos.top -= this.wrapperOffset.top;
+
+            // if offsetX/Y are true we center the element to the screen
+            if (offsetX === true) {
+                offsetX = Math.round(el.offsetWidth / 2 - this.wrapper.offsetWidth / 2);
+            }
+            if (offsetY === true) {
+                offsetY = Math.round(el.offsetHeight / 2 - this.wrapper.offsetHeight / 2);
+            }
+
+            pos.left -= offsetX || 0;
+            pos.top -= offsetY || 0;
+
+            pos.left = pos.left > 0 ? 0 : pos.left < this.maxScrollX ? this.maxScrollX : pos.left;
+            pos.top = pos.top > 0 ? 0 : pos.top < this.maxScrollY ? this.maxScrollY : pos.top;
+
+            time = time === undefined || time === null || time === 'auto' ? Math.max(Math.abs(this.x - pos.left), Math.abs(this.y - pos.top)) : time;
+
+            this.scrollTo(pos.left, pos.top, time, easing);
+        },
+
+        _transitionTime: function(time) {
+            time = time || 0;
+
+            this.scrollerStyle[utils.style.transitionDuration] = time + 'ms';
+
+            if (!time && utils.isBadAndroid) {
+                this.scrollerStyle[utils.style.transitionDuration] = '0.001s';
+            }
+
+
+            if (this.indicators) {
+                for (var i = this.indicators.length; i--;) {
+                    this.indicators[i].transitionTime(time);
+                }
+            }
+
+
+            // INSERT POINT: _transitionTime
+
+        },
+
+        _transitionTimingFunction: function(easing) {
+            this.scrollerStyle[utils.style.transitionTimingFunction] = easing;
+
+
+            if (this.indicators) {
+                for (var i = this.indicators.length; i--;) {
+                    this.indicators[i].transitionTimingFunction(easing);
+                }
+            }
+
+
+            // INSERT POINT: _transitionTimingFunction
+
+        },
+
+        _translate: function(x, y) {
+            if (this.options.useTransform) {
+
+                /* REPLACE START: _translate */
+
+                this.scrollerStyle[utils.style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.translateZ;
+
+                /* REPLACE END: _translate */
+
+            } else {
+                x = Math.round(x);
+                y = Math.round(y);
+                this.scrollerStyle.left = x + 'px';
+                this.scrollerStyle.top = y + 'px';
+            }
+
+            this.x = x;
+            this.y = y;
+
+
+            if (this.indicators) {
+                for (var i = this.indicators.length; i--;) {
+                    this.indicators[i].updatePosition();
+                }
+            }
+
+
+            // INSERT POINT: _translate
+
+        },
+
+        _initEvents: function(remove) {
+            var eventType = remove ? utils.removeEvent : utils.addEvent,
+                target = this.options.bindToWrapper ? this.wrapper : window;
+
+            eventType(window, 'orientationchange', this);
+            eventType(window, 'resize', this);
+
+            if (this.options.click) {
+                eventType(this.wrapper, 'click', this, true);
+            }
+
+            if (!this.options.disableMouse) {
+                eventType(this.wrapper, 'mousedown', this);
+                eventType(target, 'mousemove', this);
+                eventType(target, 'mousecancel', this);
+                eventType(target, 'mouseup', this);
+            }
+
+            if (utils.hasPointer && !this.options.disablePointer) {
+                eventType(this.wrapper, utils.prefixPointerEvent('pointerdown'), this);
+                eventType(target, utils.prefixPointerEvent('pointermove'), this);
+                eventType(target, utils.prefixPointerEvent('pointercancel'), this);
+                eventType(target, utils.prefixPointerEvent('pointerup'), this);
+            }
+
+            if (utils.hasTouch && !this.options.disableTouch) {
+                eventType(this.wrapper, 'touchstart', this);
+                eventType(target, 'touchmove', this);
+                eventType(target, 'touchcancel', this);
+                eventType(target, 'touchend', this);
+            }
+
+            eventType(this.scroller, 'transitionend', this);
+            eventType(this.scroller, 'webkitTransitionEnd', this);
+            eventType(this.scroller, 'oTransitionEnd', this);
+            eventType(this.scroller, 'MSTransitionEnd', this);
+        },
+
+        getComputedPosition: function() {
+            var matrix = window.getComputedStyle(this.scroller, null),
+                x, y;
+
+            if (this.options.useTransform) {
+                matrix = matrix[utils.style.transform].split(')')[0].split(', ');
+                x = +(matrix[12] || matrix[4]);
+                y = +(matrix[13] || matrix[5]);
+            } else {
+                x = +matrix.left.replace(/[^-\d.]/g, '');
+                y = +matrix.top.replace(/[^-\d.]/g, '');
+            }
+
+            return {
+                x: x,
+                y: y
+            };
+        },
+
+        _initIndicators: function() {
+            var interactive = this.options.interactiveScrollbars,
+                customStyle = typeof this.options.scrollbars !== 'string',
+                indicators = [],
+                indicator;
+
+            var that = this;
+
+            this.indicators = [];
+
+            if (this.options.scrollbars) {
+                // Vertical scrollbar
+                if (this.options.scrollY) {
+                    indicator = {
+                        el: createDefaultScrollbar('v', interactive, this.options.scrollbars),
+                        interactive: interactive,
+                        defaultScrollbars: true,
+                        customStyle: customStyle,
+                        resize: this.options.resizeScrollbars,
+                        shrink: this.options.shrinkScrollbars,
+                        fade: this.options.fadeScrollbars,
+                        listenX: false
+                    };
+
+                    this.wrapper.appendChild(indicator.el);
+                    indicators.push(indicator);
+                }
+
+                // Horizontal scrollbar
+                if (this.options.scrollX) {
+                    indicator = {
+                        el: createDefaultScrollbar('h', interactive, this.options.scrollbars),
+                        interactive: interactive,
+                        defaultScrollbars: true,
+                        customStyle: customStyle,
+                        resize: this.options.resizeScrollbars,
+                        shrink: this.options.shrinkScrollbars,
+                        fade: this.options.fadeScrollbars,
+                        listenY: false
+                    };
+
+                    this.wrapper.appendChild(indicator.el);
+                    indicators.push(indicator);
+                }
+            }
+
+            if (this.options.indicators) {
+                // TODO: check concat compatibility
+                indicators = indicators.concat(this.options.indicators);
+            }
+
+            for (var i = indicators.length; i--;) {
+                this.indicators.push(new Indicator(this, indicators[i]));
+            }
+
+            // TODO: check if we can use array.map (wide compatibility and performance issues)
+            function _indicatorsMap(fn) {
+                for (var i = that.indicators.length; i--;) {
+                    fn.call(that.indicators[i]);
+                }
+            }
+
+            if (this.options.fadeScrollbars) {
+                this.on('scrollEnd', function() {
+                    _indicatorsMap(function() {
+                        this.fade();
+                    });
+                });
+
+                this.on('scrollCancel', function() {
+                    _indicatorsMap(function() {
+                        this.fade();
+                    });
+                });
+
+                this.on('scrollStart', function() {
+                    _indicatorsMap(function() {
+                        this.fade(1);
+                    });
+                });
+
+                this.on('beforeScrollStart', function() {
+                    _indicatorsMap(function() {
+                        this.fade(1, true);
+                    });
+                });
+            }
+
+
+            this.on('refresh', function() {
+                _indicatorsMap(function() {
+                    this.refresh();
+                });
+            });
+
+            this.on('destroy', function() {
+                _indicatorsMap(function() {
+                    this.destroy();
+                });
+
+                delete this.indicators;
+            });
+        },
+
+        _initWheel: function() {
+            utils.addEvent(this.wrapper, 'wheel', this);
+            utils.addEvent(this.wrapper, 'mousewheel', this);
+            utils.addEvent(this.wrapper, 'DOMMouseScroll', this);
+
+            this.on('destroy', function() {
+                utils.removeEvent(this.wrapper, 'wheel', this);
+                utils.removeEvent(this.wrapper, 'mousewheel', this);
+                utils.removeEvent(this.wrapper, 'DOMMouseScroll', this);
+            });
+        },
+
+        _wheel: function(e) {
+            if (!this.enabled) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var wheelDeltaX, wheelDeltaY,
+                newX, newY,
+                that = this;
+
+            if (this.wheelTimeout === undefined) {
+                that._execEvent('scrollStart');
+            }
+
+            // Execute the scrollEnd event after 400ms the wheel stopped scrolling
+            clearTimeout(this.wheelTimeout);
+            this.wheelTimeout = setTimeout(function() {
+                that._execEvent('scrollEnd');
+                that.wheelTimeout = undefined;
+            }, 400);
+
+            if ('deltaX' in e) {
+                if (e.deltaMode === 1) {
+                    wheelDeltaX = -e.deltaX * this.options.mouseWheelSpeed;
+                    wheelDeltaY = -e.deltaY * this.options.mouseWheelSpeed;
+                } else {
+                    wheelDeltaX = -e.deltaX;
+                    wheelDeltaY = -e.deltaY;
+                }
+            } else if ('wheelDeltaX' in e) {
+                wheelDeltaX = e.wheelDeltaX / 120 * this.options.mouseWheelSpeed;
+                wheelDeltaY = e.wheelDeltaY / 120 * this.options.mouseWheelSpeed;
+            } else if ('wheelDelta' in e) {
+                wheelDeltaX = wheelDeltaY = e.wheelDelta / 120 * this.options.mouseWheelSpeed;
+            } else if ('detail' in e) {
+                wheelDeltaX = wheelDeltaY = -e.detail / 3 * this.options.mouseWheelSpeed;
+            } else {
+                return;
+            }
+
+            wheelDeltaX *= this.options.invertWheelDirection;
+            wheelDeltaY *= this.options.invertWheelDirection;
+
+            if (!this.hasVerticalScroll) {
+                wheelDeltaX = wheelDeltaY;
+                wheelDeltaY = 0;
+            }
+
+            if (this.options.snap) {
+                newX = this.currentPage.pageX;
+                newY = this.currentPage.pageY;
+
+                if (wheelDeltaX > 0) {
+                    newX--;
+                } else if (wheelDeltaX < 0) {
+                    newX++;
+                }
+
+                if (wheelDeltaY > 0) {
+                    newY--;
+                } else if (wheelDeltaY < 0) {
+                    newY++;
+                }
+
+                this.goToPage(newX, newY);
+
+                return;
+            }
+
+            newX = this.x + Math.round(this.hasHorizontalScroll ? wheelDeltaX : 0);
+            newY = this.y + Math.round(this.hasVerticalScroll ? wheelDeltaY : 0);
+
+            if (newX > 0) {
+                newX = 0;
+            } else if (newX < this.maxScrollX) {
+                newX = this.maxScrollX;
+            }
+
+            if (newY > 0) {
+                newY = 0;
+            } else if (newY < this.maxScrollY) {
+                newY = this.maxScrollY;
+            }
+
+            this.scrollTo(newX, newY, 0);
+
+            this._execEvent('scroll');
+
+            // INSERT POINT: _wheel
+        },
+
+        _initSnap: function() {
+            this.currentPage = {};
+
+            if (typeof this.options.snap === 'string') {
+                this.options.snap = this.scroller.querySelectorAll(this.options.snap);
+            }
+
+            this.on('refresh', function() {
+                var i = 0,
+                    l,
+                    m = 0,
+                    n,
+                    cx, cy,
+                    x = 0,
+                    y,
+                    stepX = this.options.snapStepX || this.wrapperWidth,
+                    stepY = this.options.snapStepY || this.wrapperHeight,
+                    el;
+
+                this.pages = [];
+
+                if (!this.wrapperWidth || !this.wrapperHeight || !this.scrollerWidth || !this.scrollerHeight) {
+                    return;
+                }
+
+                if (this.options.snap === true) {
+                    cx = Math.round(stepX / 2);
+                    cy = Math.round(stepY / 2);
+
+                    while (x > -this.scrollerWidth) {
+                        this.pages[i] = [];
+                        l = 0;
+                        y = 0;
+
+                        while (y > -this.scrollerHeight) {
+                            this.pages[i][l] = {
+                                x: Math.max(x, this.maxScrollX),
+                                y: Math.max(y, this.maxScrollY),
+                                width: stepX,
+                                height: stepY,
+                                cx: x - cx,
+                                cy: y - cy
+                            };
+
+                            y -= stepY;
+                            l++;
+                        }
+
+                        x -= stepX;
+                        i++;
+                    }
+                } else {
+                    el = this.options.snap;
+                    l = el.length;
+                    n = -1;
+
+                    for (; i < l; i++) {
+                        if (i === 0 || el[i].offsetLeft <= el[i - 1].offsetLeft) {
+                            m = 0;
+                            n++;
+                        }
+
+                        if (!this.pages[m]) {
+                            this.pages[m] = [];
+                        }
+
+                        x = Math.max(-el[i].offsetLeft, this.maxScrollX);
+                        y = Math.max(-el[i].offsetTop, this.maxScrollY);
+                        cx = x - Math.round(el[i].offsetWidth / 2);
+                        cy = y - Math.round(el[i].offsetHeight / 2);
+
+                        this.pages[m][n] = {
+                            x: x,
+                            y: y,
+                            width: el[i].offsetWidth,
+                            height: el[i].offsetHeight,
+                            cx: cx,
+                            cy: cy
+                        };
+
+                        if (x > this.maxScrollX) {
+                            m++;
+                        }
+                    }
+                }
+
+                this.goToPage(this.currentPage.pageX || 0, this.currentPage.pageY || 0, 0);
+
+                // Update snap threshold if needed
+                if (this.options.snapThreshold % 1 === 0) {
+                    this.snapThresholdX = this.options.snapThreshold;
+                    this.snapThresholdY = this.options.snapThreshold;
+                } else {
+                    this.snapThresholdX = Math.round(this.pages[this.currentPage.pageX][this.currentPage.pageY].width * this.options.snapThreshold);
+                    this.snapThresholdY = Math.round(this.pages[this.currentPage.pageX][this.currentPage.pageY].height * this.options.snapThreshold);
+                }
+            });
+
+            this.on('flick', function() {
+                var time = this.options.snapSpeed || Math.max(
+                    Math.max(
+                        Math.min(Math.abs(this.x - this.startX), 1000),
+                        Math.min(Math.abs(this.y - this.startY), 1000)
+                    ), 300);
+
+                this.goToPage(
+                    this.currentPage.pageX + this.directionX,
+                    this.currentPage.pageY + this.directionY,
+                    time
+                );
+            });
+        },
+
+        _nearestSnap: function(x, y) {
+            if (!this.pages.length) {
+                return {
+                    x: 0,
+                    y: 0,
+                    pageX: 0,
+                    pageY: 0
+                };
+            }
+
+            var i = 0,
+                l = this.pages.length,
+                m = 0;
+
+            // Check if we exceeded the snap threshold
+            if (Math.abs(x - this.absStartX) < this.snapThresholdX &&
+                Math.abs(y - this.absStartY) < this.snapThresholdY) {
+                return this.currentPage;
+            }
+
+            if (x > 0) {
+                x = 0;
+            } else if (x < this.maxScrollX) {
+                x = this.maxScrollX;
+            }
+
+            if (y > 0) {
+                y = 0;
+            } else if (y < this.maxScrollY) {
+                y = this.maxScrollY;
+            }
+
+            for (; i < l; i++) {
+                if (x >= this.pages[i][0].cx) {
+                    x = this.pages[i][0].x;
+                    break;
+                }
+            }
+
+            l = this.pages[i].length;
+
+            for (; m < l; m++) {
+                if (y >= this.pages[0][m].cy) {
+                    y = this.pages[0][m].y;
+                    break;
+                }
+            }
+
+            if (i === this.currentPage.pageX) {
+                i += this.directionX;
+
+                if (i < 0) {
+                    i = 0;
+                } else if (i >= this.pages.length) {
+                    i = this.pages.length - 1;
+                }
+
+                x = this.pages[i][0].x;
+            }
+
+            if (m === this.currentPage.pageY) {
+                m += this.directionY;
+
+                if (m < 0) {
+                    m = 0;
+                } else if (m >= this.pages[0].length) {
+                    m = this.pages[0].length - 1;
+                }
+
+                y = this.pages[0][m].y;
+            }
+
+            return {
+                x: x,
+                y: y,
+                pageX: i,
+                pageY: m
+            };
+        },
+
+        goToPage: function(x, y, time, easing) {
+            easing = easing || this.options.bounceEasing;
+
+            if (x >= this.pages.length) {
+                x = this.pages.length - 1;
+            } else if (x < 0) {
+                x = 0;
+            }
+
+            if (y >= this.pages[x].length) {
+                y = this.pages[x].length - 1;
+            } else if (y < 0) {
+                y = 0;
+            }
+
+            var posX = this.pages[x][y].x,
+                posY = this.pages[x][y].y;
+
+            time = time === undefined ? this.options.snapSpeed || Math.max(
+                Math.max(
+                    Math.min(Math.abs(posX - this.x), 1000),
+                    Math.min(Math.abs(posY - this.y), 1000)
+                ), 300) : time;
+
+            this.currentPage = {
+                x: posX,
+                y: posY,
+                pageX: x,
+                pageY: y
+            };
+
+            this.scrollTo(posX, posY, time, easing);
+        },
+
+        next: function(time, easing) {
+            var x = this.currentPage.pageX,
+                y = this.currentPage.pageY;
+
+            x++;
+
+            if (x >= this.pages.length && this.hasVerticalScroll) {
+                x = 0;
+                y++;
+            }
+
+            this.goToPage(x, y, time, easing);
+        },
+
+        prev: function(time, easing) {
+            var x = this.currentPage.pageX,
+                y = this.currentPage.pageY;
+
+            x--;
+
+            if (x < 0 && this.hasVerticalScroll) {
+                x = 0;
+                y--;
+            }
+
+            this.goToPage(x, y, time, easing);
+        },
+
+        _initKeys: function() {
+            // default key bindings
+            var keys = {
+                pageUp: 33,
+                pageDown: 34,
+                end: 35,
+                home: 36,
+                left: 37,
+                up: 38,
+                right: 39,
+                down: 40
+            };
+            var i;
+
+            // if you give me characters I give you keycode
+            if (typeof this.options.keyBindings === 'object') {
+                for (i in this.options.keyBindings) {
+                    if (typeof this.options.keyBindings[i] === 'string') {
+                        this.options.keyBindings[i] = this.options.keyBindings[i].toUpperCase().charCodeAt(0);
+                    }
+                }
+            } else {
+                this.options.keyBindings = {};
+            }
+
+            for (i in keys) { // jshint ignore:line
+                    this.options.keyBindings[i] = this.options.keyBindings[i] || keys[i];
+            }
+
+            utils.addEvent(window, 'keydown', this);
+
+            this.on('destroy', function() {
+                utils.removeEvent(window, 'keydown', this);
+            });
+        },
+
+        _key: function(e) {
+            if (!this.enabled) {
+                return;
+            }
+
+            var snap = this.options.snap, // we are using this alot, better to cache it
+                newX = snap ? this.currentPage.pageX : this.x,
+                newY = snap ? this.currentPage.pageY : this.y,
+                now = utils.getTime(),
+                prevTime = this.keyTime || 0,
+                acceleration = 0.250,
+                pos;
+
+            if (this.options.useTransition && this.isInTransition) {
+                pos = this.getComputedPosition();
+
+                this._translate(Math.round(pos.x), Math.round(pos.y));
+                this.isInTransition = false;
+            }
+
+            this.keyAcceleration = now - prevTime < 200 ? Math.min(this.keyAcceleration + acceleration, 50) : 0;
+
+            switch (e.keyCode) {
+                case this.options.keyBindings.pageUp:
+                    if (this.hasHorizontalScroll && !this.hasVerticalScroll) {
+                        newX += snap ? 1 : this.wrapperWidth;
+                    } else {
+                        newY += snap ? 1 : this.wrapperHeight;
+                    }
+                    break;
+                case this.options.keyBindings.pageDown:
+                    if (this.hasHorizontalScroll && !this.hasVerticalScroll) {
+                        newX -= snap ? 1 : this.wrapperWidth;
+                    } else {
+                        newY -= snap ? 1 : this.wrapperHeight;
+                    }
+                    break;
+                case this.options.keyBindings.end:
+                    newX = snap ? this.pages.length - 1 : this.maxScrollX;
+                    newY = snap ? this.pages[0].length - 1 : this.maxScrollY;
+                    break;
+                case this.options.keyBindings.home:
+                    newX = 0;
+                    newY = 0;
+                    break;
+                case this.options.keyBindings.left:
+                    newX += snap ? -1 : 5 + this.keyAcceleration >> 0; // jshint ignore:line
+                    break;
+                case this.options.keyBindings.up:
+                    newY += snap ? 1 : 5 + this.keyAcceleration >> 0; // jshint ignore:line
+                    break;
+                case this.options.keyBindings.right:
+                    newX -= snap ? -1 : 5 + this.keyAcceleration >> 0; // jshint ignore:line
+                    break;
+                case this.options.keyBindings.down:
+                    newY -= snap ? 1 : 5 + this.keyAcceleration >> 0; // jshint ignore:line
+                    break;
+                default:
+                    return;
+            }
+
+            if (snap) {
+                this.goToPage(newX, newY);
+                return;
+            }
+
+            if (newX > 0) {
+                newX = 0;
+                this.keyAcceleration = 0;
+            } else if (newX < this.maxScrollX) {
+                newX = this.maxScrollX;
+                this.keyAcceleration = 0;
+            }
+
+            if (newY > 0) {
+                newY = 0;
+                this.keyAcceleration = 0;
+            } else if (newY < this.maxScrollY) {
+                newY = this.maxScrollY;
+                this.keyAcceleration = 0;
+            }
+
+            this.scrollTo(newX, newY, 0);
+
+            this.keyTime = now;
+        },
+
+        _animate: function(destX, destY, duration, easingFn) {
+            var that = this,
+                startX = this.x,
+                startY = this.y,
+                startTime = utils.getTime(),
+                destTime = startTime + duration;
+
+            function step() {
+                var now = utils.getTime(),
+                    newX, newY,
+                    easing;
+
+                if (now >= destTime) {
+                    that.isAnimating = false;
+                    that._translate(destX, destY);
+
+                    if (!that.resetPosition(that.options.bounceTime)) {
+                        that._execEvent('scrollEnd');
+                    }
+
+                    return;
+                }
+
+                now = (now - startTime) / duration;
+                easing = easingFn(now);
+                newX = (destX - startX) * easing + startX;
+                newY = (destY - startY) * easing + startY;
+                that._translate(newX, newY);
+
+                if (that.isAnimating) {
+                    rAF(step);
+                }
+
+                if (that.options.probeType === 3) {
+                    that._execEvent('scroll');
+                }
+            }
+
+            this.isAnimating = true;
+            step();
+        },
+
+        handleEvent: function(e) {
+            switch (e.type) {
+                case 'touchstart':
+                case 'pointerdown':
+                case 'MSPointerDown':
+                case 'mousedown':
+                    this._start(e);
+                    break;
+                case 'touchmove':
+                case 'pointermove':
+                case 'MSPointerMove':
+                case 'mousemove':
+                    this._move(e);
+                    break;
+                case 'touchend':
+                case 'pointerup':
+                case 'MSPointerUp':
+                case 'mouseup':
+                case 'touchcancel':
+                case 'pointercancel':
+                case 'MSPointerCancel':
+                case 'mousecancel':
+                    this._end(e);
+                    break;
+                case 'orientationchange':
+                case 'resize':
+                    this._resize();
+                    break;
+                case 'transitionend':
+                case 'webkitTransitionEnd':
+                case 'oTransitionEnd':
+                case 'MSTransitionEnd':
+                    this._transitionEnd(e);
+                    break;
+                case 'wheel':
+                case 'DOMMouseScroll':
+                case 'mousewheel':
+                    this._wheel(e);
+                    break;
+                case 'keydown':
+                    this._key(e);
+                    break;
+                case 'click':
+                    if (!e._constructed) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    break;
+            }
+        }
+    };
+
+    function createDefaultScrollbar(direction, interactive, type) {
+        var scrollbar = document.createElement('div'),
+            indicator = document.createElement('div');
+
+        if (type === true) {
+            scrollbar.style.cssText = 'position:absolute;z-index:9999';
+            indicator.style.cssText = '-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;position:absolute;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);border-radius:3px';
+        }
+
+        indicator.className = 'iScrollIndicator';
+
+        if (direction === 'h') {
+            if (type === true) {
+                scrollbar.style.cssText += ';height:5px;left:2px;right:2px;bottom:0';
+                indicator.style.height = '100%';
+            }
+            scrollbar.className = 'iScrollHorizontalScrollbar';
+        } else {
+            if (type === true) {
+                scrollbar.style.cssText += ';width:5px;bottom:2px;top:2px;right:1px';
+                indicator.style.width = '100%';
+            }
+            scrollbar.className = 'iScrollVerticalScrollbar';
+        }
+
+        scrollbar.style.cssText += ';overflow:hidden';
+
+        if (!interactive) {
+            scrollbar.style.pointerEvents = 'none';
+        }
+
+        scrollbar.appendChild(indicator);
+
+        return scrollbar;
+    }
+
+    function Indicator(scroller, options) {
+        this.wrapper = typeof options.el === 'string' ? document.querySelector(options.el) : options.el;
+        this.wrapperStyle = this.wrapper.style;
+        this.indicator = this.wrapper.children[0];
+        this.indicatorStyle = this.indicator.style;
+        this.scroller = scroller;
+
+        this.options = {
+            listenX: true,
+            listenY: true,
+            interactive: false,
+            resize: true,
+            defaultScrollbars: false,
+            shrink: false,
+            fade: false,
+            speedRatioX: 0,
+            speedRatioY: 0
+        };
+
+        for (var i in options) { // jshint ignore:line
+                this.options[i] = options[i];
+
+        }
+
+        this.sizeRatioX = 1;
+        this.sizeRatioY = 1;
+        this.maxPosX = 0;
+        this.maxPosY = 0;
+
+        if (this.options.interactive) {
+            if (!this.options.disableTouch) {
+                utils.addEvent(this.indicator, 'touchstart', this);
+                utils.addEvent(window, 'touchend', this);
+            }
+            if (!this.options.disablePointer) {
+                utils.addEvent(this.indicator, utils.prefixPointerEvent('pointerdown'), this);
+                utils.addEvent(window, utils.prefixPointerEvent('pointerup'), this);
+            }
+            if (!this.options.disableMouse) {
+                utils.addEvent(this.indicator, 'mousedown', this);
+                utils.addEvent(window, 'mouseup', this);
+            }
+        }
+
+        if (this.options.fade) {
+            this.wrapperStyle[utils.style.transform] = this.scroller.translateZ;
+            this.wrapperStyle[utils.style.transitionDuration] = utils.isBadAndroid ? '0.001s' : '0ms';
+            this.wrapperStyle.opacity = '0';
+        }
+    }
+
+    Indicator.prototype = {
+        handleEvent: function(e) {
+            switch (e.type) {
+                case 'touchstart':
+                case 'pointerdown':
+                case 'MSPointerDown':
+                case 'mousedown':
+                    this._start(e);
+                    break;
+                case 'touchmove':
+                case 'pointermove':
+                case 'MSPointerMove':
+                case 'mousemove':
+                    this._move(e);
+                    break;
+                case 'touchend':
+                case 'pointerup':
+                case 'MSPointerUp':
+                case 'mouseup':
+                case 'touchcancel':
+                case 'pointercancel':
+                case 'MSPointerCancel':
+                case 'mousecancel':
+                    this._end(e);
+                    break;
+            }
+        },
+
+        destroy: function() {
+            if (this.options.interactive) {
+                utils.removeEvent(this.indicator, 'touchstart', this);
+                utils.removeEvent(this.indicator, utils.prefixPointerEvent('pointerdown'), this);
+                utils.removeEvent(this.indicator, 'mousedown', this);
+
+                utils.removeEvent(window, 'touchmove', this);
+                utils.removeEvent(window, utils.prefixPointerEvent('pointermove'), this);
+                utils.removeEvent(window, 'mousemove', this);
+
+                utils.removeEvent(window, 'touchend', this);
+                utils.removeEvent(window, utils.prefixPointerEvent('pointerup'), this);
+                utils.removeEvent(window, 'mouseup', this);
+            }
+
+            if (this.options.defaultScrollbars) {
+                this.wrapper.parentNode.removeChild(this.wrapper);
+            }
+        },
+
+        _start: function(e) {
+            var point = e.touches ? e.touches[0] : e;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.transitionTime();
+
+            this.initiated = true;
+            this.moved = false;
+            this.lastPointX = point.pageX;
+            this.lastPointY = point.pageY;
+
+            this.startTime = utils.getTime();
+
+            if (!this.options.disableTouch) {
+                utils.addEvent(window, 'touchmove', this);
+            }
+            if (!this.options.disablePointer) {
+                utils.addEvent(window, utils.prefixPointerEvent('pointermove'), this);
+            }
+            if (!this.options.disableMouse) {
+                utils.addEvent(window, 'mousemove', this);
+            }
+
+            this.scroller._execEvent('beforeScrollStart');
+        },
+
+        _move: function(e) {
+            var point = e.touches ? e.touches[0] : e,
+                deltaX, deltaY,
+                newX, newY,
+                timestamp = utils.getTime();
+
+            if (!this.moved) {
+                this.scroller._execEvent('scrollStart');
+            }
+
+            this.moved = true;
+
+            deltaX = point.pageX - this.lastPointX;
+            this.lastPointX = point.pageX;
+
+            deltaY = point.pageY - this.lastPointY;
+            this.lastPointY = point.pageY;
+
+            newX = this.x + deltaX;
+            newY = this.y + deltaY;
+
+            this._pos(newX, newY);
+
+
+            if (this.scroller.options.probeType === 1 && timestamp - this.startTime > 300) {
+                this.startTime = timestamp;
+                this.scroller._execEvent('scroll');
+            } else if (this.scroller.options.probeType > 1) {
+                this.scroller._execEvent('scroll');
+            }
+
+
+            // INSERT POINT: indicator._move
+
+            e.preventDefault();
+            e.stopPropagation();
+        },
+
+        _end: function(e) {
+            if (!this.initiated) {
+                return;
+            }
+
+            this.initiated = false;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            utils.removeEvent(window, 'touchmove', this);
+            utils.removeEvent(window, utils.prefixPointerEvent('pointermove'), this);
+            utils.removeEvent(window, 'mousemove', this);
+
+            if (this.scroller.options.snap) {
+                var snap = this.scroller._nearestSnap(this.scroller.x, this.scroller.y);
+
+                var time = this.options.snapSpeed || Math.max(
+                    Math.max(
+                        Math.min(Math.abs(this.scroller.x - snap.x), 1000),
+                        Math.min(Math.abs(this.scroller.y - snap.y), 1000)
+                    ), 300);
+
+                if (this.scroller.x !== snap.x || this.scroller.y !== snap.y) {
+                    this.scroller.directionX = 0;
+                    this.scroller.directionY = 0;
+                    this.scroller.currentPage = snap;
+                    this.scroller.scrollTo(snap.x, snap.y, time, this.scroller.options.bounceEasing);
+                }
+            }
+
+            if (this.moved) {
+                this.scroller._execEvent('scrollEnd');
+            }
+        },
+
+        transitionTime: function(time) {
+            time = time || 0;
+            this.indicatorStyle[utils.style.transitionDuration] = time + 'ms';
+
+            if (!time && utils.isBadAndroid) {
+                this.indicatorStyle[utils.style.transitionDuration] = '0.001s';
+            }
+        },
+
+        transitionTimingFunction: function(easing) {
+            this.indicatorStyle[utils.style.transitionTimingFunction] = easing;
+        },
+
+        refresh: function() {
+            this.transitionTime();
+
+            if (this.options.listenX && !this.options.listenY) {
+                this.indicatorStyle.display = this.scroller.hasHorizontalScroll ? 'block' : 'none';
+            } else if (this.options.listenY && !this.options.listenX) {
+                this.indicatorStyle.display = this.scroller.hasVerticalScroll ? 'block' : 'none';
+            } else {
+                this.indicatorStyle.display = this.scroller.hasHorizontalScroll || this.scroller.hasVerticalScroll ? 'block' : 'none';
+            }
+
+            if (this.scroller.hasHorizontalScroll && this.scroller.hasVerticalScroll) {
+                utils.addClass(this.wrapper, 'iScrollBothScrollbars');
+                utils.removeClass(this.wrapper, 'iScrollLoneScrollbar');
+
+                if (this.options.defaultScrollbars && this.options.customStyle) {
+                    if (this.options.listenX) {
+                        this.wrapper.style.right = '8px';
+                    } else {
+                        this.wrapper.style.bottom = '8px';
+                    }
+                }
+            } else {
+                utils.removeClass(this.wrapper, 'iScrollBothScrollbars');
+                utils.addClass(this.wrapper, 'iScrollLoneScrollbar');
+
+                if (this.options.defaultScrollbars && this.options.customStyle) {
+                    if (this.options.listenX) {
+                        this.wrapper.style.right = '2px';
+                    } else {
+                        this.wrapper.style.bottom = '2px';
+                    }
+                }
+            }
+
+            // var r = this.wrapper.offsetHeight; // force refresh
+
+            if (this.options.listenX) {
+                this.wrapperWidth = this.wrapper.clientWidth;
+                if (this.options.resize) {
+                    this.indicatorWidth = Math.max(Math.round(this.wrapperWidth * this.wrapperWidth / (this.scroller.scrollerWidth || this.wrapperWidth || 1)), 8);
+                    this.indicatorStyle.width = this.indicatorWidth + 'px';
+                } else {
+                    this.indicatorWidth = this.indicator.clientWidth;
+                }
+
+                this.maxPosX = this.wrapperWidth - this.indicatorWidth;
+
+                if (this.options.shrink === 'clip') {
+                    this.minBoundaryX = -this.indicatorWidth + 8;
+                    this.maxBoundaryX = this.wrapperWidth - 8;
+                } else {
+                    this.minBoundaryX = 0;
+                    this.maxBoundaryX = this.maxPosX;
+                }
+
+                this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));
+            }
+
+            if (this.options.listenY) {
+                this.wrapperHeight = this.wrapper.clientHeight;
+                if (this.options.resize) {
+                    this.indicatorHeight = Math.max(Math.round(this.wrapperHeight * this.wrapperHeight / (this.scroller.scrollerHeight || this.wrapperHeight || 1)), 8);
+                    this.indicatorStyle.height = this.indicatorHeight + 'px';
+                } else {
+                    this.indicatorHeight = this.indicator.clientHeight;
+                }
+
+                this.maxPosY = this.wrapperHeight - this.indicatorHeight;
+
+                if (this.options.shrink === 'clip') {
+                    this.minBoundaryY = -this.indicatorHeight + 8;
+                    this.maxBoundaryY = this.wrapperHeight - 8;
+                } else {
+                    this.minBoundaryY = 0;
+                    this.maxBoundaryY = this.maxPosY;
+                }
+
+                this.maxPosY = this.wrapperHeight - this.indicatorHeight;
+                this.sizeRatioY = this.options.speedRatioY || (this.scroller.maxScrollY && (this.maxPosY / this.scroller.maxScrollY));
+            }
+
+            this.updatePosition();
+        },
+
+        updatePosition: function() {
+            var x = this.options.listenX && Math.round(this.sizeRatioX * this.scroller.x) || 0,
+                y = this.options.listenY && Math.round(this.sizeRatioY * this.scroller.y) || 0;
+
+            if (!this.options.ignoreBoundaries) {
+                if (x < this.minBoundaryX) {
+                    if (this.options.shrink === 'scale') {
+                        this.width = Math.max(this.indicatorWidth + x, 8);
+                        this.indicatorStyle.width = this.width + 'px';
+                    }
+                    x = this.minBoundaryX;
+                } else if (x > this.maxBoundaryX) {
+                    if (this.options.shrink === 'scale') {
+                        this.width = Math.max(this.indicatorWidth - (x - this.maxPosX), 8);
+                        this.indicatorStyle.width = this.width + 'px';
+                        x = this.maxPosX + this.indicatorWidth - this.width;
+                    } else {
+                        x = this.maxBoundaryX;
+                    }
+                } else if (this.options.shrink === 'scale' && this.width !== this.indicatorWidth) {
+                    this.width = this.indicatorWidth;
+                    this.indicatorStyle.width = this.width + 'px';
+                }
+
+                if (y < this.minBoundaryY) {
+                    if (this.options.shrink === 'scale') {
+                        this.height = Math.max(this.indicatorHeight + y * 3, 8);
+                        this.indicatorStyle.height = this.height + 'px';
+                    }
+                    y = this.minBoundaryY;
+                } else if (y > this.maxBoundaryY) {
+                    if (this.options.shrink === 'scale') {
+                        this.height = Math.max(this.indicatorHeight - (y - this.maxPosY) * 3, 8);
+                        this.indicatorStyle.height = this.height + 'px';
+                        y = this.maxPosY + this.indicatorHeight - this.height;
+                    } else {
+                        y = this.maxBoundaryY;
+                    }
+                } else if (this.options.shrink === 'scale' && this.height !== this.indicatorHeight) {
+                    this.height = this.indicatorHeight;
+                    this.indicatorStyle.height = this.height + 'px';
+                }
+            }
+
+            this.x = x;
+            this.y = y;
+
+            if (this.scroller.options.useTransform) {
+                this.indicatorStyle[utils.style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.scroller.translateZ;
+            } else {
+                this.indicatorStyle.left = x + 'px';
+                this.indicatorStyle.top = y + 'px';
+            }
+        },
+
+        _pos: function(x, y) {
+            if (x < 0) {
+                x = 0;
+            } else if (x > this.maxPosX) {
+                x = this.maxPosX;
+            }
+
+            if (y < 0) {
+                y = 0;
+            } else if (y > this.maxPosY) {
+                y = this.maxPosY;
+            }
+
+            x = this.options.listenX ? Math.round(x / this.sizeRatioX) : this.scroller.x;
+            y = this.options.listenY ? Math.round(y / this.sizeRatioY) : this.scroller.y;
+
+            this.scroller.scrollTo(x, y);
+        },
+
+        fade: function(val, hold) {
+            if (hold && !this.visible) {
+                return;
+            }
+
+            clearTimeout(this.fadeTimeout);
+            this.fadeTimeout = null;
+
+            var time = val ? 250 : 500,
+                delay = val ? 0 : 300;
+
+            val = val ? '1' : '0';
+
+            this.wrapperStyle[utils.style.transitionDuration] = time + 'ms';
+
+            this.fadeTimeout = setTimeout((function(val) {
+                this.wrapperStyle.opacity = val;
+                this.visible = +val;
+            }).bind(this, val), delay);
+        }
+    };
+
+    IScroll.utils = utils;
+
+    window.IScroll = IScroll;
+}(window);
 
 /* ===============================================================================
 ************   scroller   ************
@@ -3398,7 +5522,6 @@ Device/OS Detection
                     }
                 }
                 isTouched = false;
-                console.log(3);
                 isMoved = false;
                 return;
             }
@@ -3542,954 +5665,7 @@ Device/OS Detection
     $.initSwipePanels();
 }(Zepto);
 
-/**
- * 路由
- *
- * 路由功能将接管页面的链接点击行为，最后达到动画切换的效果，具体如下：
- *  1. 链接对应的是另一个页面，那么则尝试 ajax 加载，然后把新页面里的符合约定的结构提取出来，然后做动画切换；如果没法 ajax 或结构不符合，那么则回退为普通的页面跳转
- *  2. 链接是当前页面的锚点，并且该锚点对应的元素存在且符合路由约定，那么则把该元素做动画切入
- *  3. 浏览器前进后退（history.forward/history.back）时，也使用动画效果
- *  4. 如果链接有 back 这个 class，那么则忽略一切，直接调用 history.back() 来后退
- *
- * 路由功能默认开启，如果需要关闭路由功能，那么在 zepto 之后，msui 脚本之前设置 $.config.router = false 即可（intro.js 中会 extend 到 $.smConfig 中）。
- *
- * 可以设置 $.config.routerFilter 函数来设置当前点击链接是否使用路由功能，实参是 a 链接的 zepto 对象；返回 false 表示不使用 router 功能。
- *
- * ajax 载入新的文档时，并不会执行里面的 js。到目前为止，在开启路由功能时，建议的做法是：
- *  把所有页面的 js 都放到同一个脚本里，js 里面的事件绑定使用委托而不是直接的绑定在元素上（因为动态加载的页面元素还不存在），然后所有页面都引用相同的 js 脚本。非事件类可以通过监控 pageInit 事件，根据里面的 pageId 来做对应区别处理。
- *
- * 如果有需要
- *
- * 对外暴露的方法
- *  - load （原 loadPage 效果一致,但后者已标记为待移除）
- *  - forward
- *  - back
- *
- * 事件
- * pageLoad* 系列在发生 ajax 加载时才会触发；当是块切换或已缓存的情况下，不会发送这些事件
- *  - pageLoadCancel: 如果前一个还没加载完,那么取消并发送该事件
- *  - pageLoadStart: 开始加载
- *  - pageLodComplete: ajax complete 完成
- *  - pageLoadError: ajax 发生 error
- *  - pageAnimationStart: 执行动画切换前，实参是 event，sectionId 和 $section
- *  - pageAnimationEnd: 执行动画完毕，实参是 event，sectionId 和 $section
- *  - beforePageRemove: 新 document 载入且动画切换完毕，旧的 document remove 之前在 window 上触发，实参是 event 和 $pageContainer
- *  - pageRemoved: 新的 document 载入且动画切换完毕，旧的 document remove 之后在 window 上触发
- *  - beforePageSwitch: page 切换前，在 pageAnimationStart 前，beforePageSwitch 之后会做一些额外的处理才触发 pageAnimationStart
- *  - pageInitInternal: （经 init.js 处理后，对外是 pageInit）紧跟着动画完成的事件，实参是 event，sectionId 和 $section
- *
- * 术语
- *  - 文档（document），不带 hash 的 url 关联着的应答 html 结构
- *  - 块（section），一个文档内有指定块标识的元素
- *
- * 路由实现约定
- *  - 每个文档的需要展示的内容必需位于指定的标识（routerConfig.sectionGroupClass）的元素里面，默认是: div.page-group （注意,如果改变这个需要同时改变 less 中的命名）
- *  - 每个块必需带有指定的块标识（routerConfig.pageClass），默认是 .page
- *
- *  即，使用路由功能的每一个文档应当是下面这样的结构（省略 <body> 等）:
- *      <div class="page-group">
- *          <div class="page">xxx</div>
- *          <div class="page">yyy</div>
- *      </div>
- *
- * 另，每一个块都应当有一个唯一的 ID，这样才能通过 #the-id 的形式来切换定位。
- * 当一个块没有 id 时，如果是第一个的默认的需要展示的块，那么会给其添加一个随机的 id；否则，没有 id 的块将不会被切换展示。
- *
- * 通过 history.state/history.pushState 以及用 sessionStorage 来记录当前 state 以及最大的 state id 来辅助前进后退的切换效果，所以在不支持 sessionStorage 的情况下，将不开启路由功能。
- *
- * 为了解决 ajax 载入页面导致重复 ID 以及重复 popup 等功能，上面约定了使用路由功能的所有可展示内容都必需位于指定元素内。从而可以在进行文档间切换时可以进行两个文档的整体移动，切换完毕后再把前一个文档的内容从页面之间移除。
- *
- * 默认地过滤了部分协议的链接，包括 tel:, javascript:, mailto:，这些链接将不会使用路由功能。如果有更多的自定义控制需求，可以在 $.config.routerFilter 实现
- *
- * 注: 以 _ 开头的函数标明用于此处内部使用，可根据需要随时重构变更，不对外确保兼容性。
- *
- */
-+function($) {
-    'use strict';
 
-    if (!window.CustomEvent) {
-        window.CustomEvent = function(type, config) {
-            config = config || { bubbles: false, cancelable: false, detail: undefined};
-            var e = document.createEvent('CustomEvent');
-            e.initCustomEvent(type, config.bubbles, config.cancelable, config.detail);
-            return e;
-        };
-
-        window.CustomEvent.prototype = window.Event.prototype;
-    }
-
-    var EVENTS = {
-        pageLoadStart: 'pageLoadStart', // ajax 开始加载新页面前
-        pageLoadCancel: 'pageLoadCancel', // 取消前一个 ajax 加载动作后
-        pageLoadError: 'pageLoadError', // ajax 加载页面失败后
-        pageLoadComplete: 'pageLoadComplete', // ajax 加载页面完成后（不论成功与否）
-        pageAnimationStart: 'pageAnimationStart', // 动画切换 page 前
-        pageAnimationEnd: 'pageAnimationEnd', // 动画切换 page 结束后
-        beforePageRemove: 'beforePageRemove', // 移除旧 document 前（适用于非内联 page 切换）
-        pageRemoved: 'pageRemoved', // 移除旧 document 后（适用于非内联 page 切换）
-        beforePageSwitch: 'beforePageSwitch', // page 切换前，在 pageAnimationStart 前，beforePageSwitch 之后会做一些额外的处理才触发 pageAnimationStart
-        pageInit: 'pageInitInternal' // 目前是定义为一个 page 加载完毕后（实际和 pageAnimationEnd 等同）
-    };
-
-    var Util = {
-        /**
-         * 获取 url 的 fragment（即 hash 中去掉 # 的剩余部分）
-         *
-         * 如果没有则返回空字符串
-         * 如: http://example.com/path/?query=d#123 => 123
-         *
-         * @param {String} url url
-         * @returns {String}
-         */
-        getUrlFragment: function(url) {
-            var hashIndex = url.indexOf('#');
-            return hashIndex === -1 ? '' : url.slice(hashIndex + 1);
-        },
-        /**
-         * 获取一个链接相对于当前页面的绝对地址形式
-         *
-         * 假设当前页面是 http://a.com/b/c
-         * 那么有以下情况:
-         * d => http://a.com/b/d
-         * /e => http://a.com/e
-         * #1 => http://a.com/b/c#1
-         * http://b.com/f => http://b.com/f
-         *
-         * @param {String} url url
-         * @returns {String}
-         */
-        getAbsoluteUrl: function(url) {
-            var link = document.createElement('a');
-            link.setAttribute('href', url);
-            var absoluteUrl = link.href;
-            link = null;
-            return absoluteUrl;
-        },
-        /**
-         * 获取一个 url 的基本部分，即不包括 hash
-         *
-         * @param {String} url url
-         * @returns {String}
-         */
-        getBaseUrl: function(url) {
-            var hashIndex = url.indexOf('#');
-            return hashIndex === -1 ? url.slice(0) : url.slice(0, hashIndex);
-        },
-        /**
-         * 把一个字符串的 url 转为一个可获取其 base 和 fragment 等的对象
-         *
-         * @param {String} url url
-         * @returns {UrlObject}
-         */
-        toUrlObject: function(url) {
-            var fullUrl = this.getAbsoluteUrl(url),
-                baseUrl = this.getBaseUrl(fullUrl),
-                fragment = this.getUrlFragment(url);
-
-            return {
-                base: baseUrl,
-                full: fullUrl,
-                original: url,
-                fragment: fragment
-            };
-        },
-        /**
-         * 判断浏览器是否支持 sessionStorage，支持返回 true，否则返回 false
-         * @returns {Boolean}
-         */
-        supportStorage: function() {
-            var mod = 'sm.router.storage.ability';
-            try {
-                sessionStorage.setItem(mod, mod);
-                sessionStorage.removeItem(mod);
-                return true;
-            } catch(e) {
-                return false;
-            }
-        }
-    };
-
-    var routerConfig = {
-        sectionGroupClass: 'page-group',
-        // 表示是当前 page 的 class
-        curPageClass: 'page-current',
-        // 用来辅助切换时表示 page 是 visible 的,
-        // 之所以不用 curPageClass，是因为 page-current 已被赋予了「当前 page」这一含义而不仅仅是 display: block
-        // 并且，别的地方已经使用了，所以不方便做变更，故新增一个
-        visiblePageClass: 'page-visible',
-        // 表示是 page 的 class，注意，仅是标志 class，而不是所有的 class
-        pageClass: 'page'
-    };
-
-    var DIRECTION = {
-        leftToRight: 'from-left-to-right',
-        rightToLeft: 'from-right-to-left'
-    };
-
-    var theHistory = window.history;
-
-    var Router = function() {
-        this.sessionNames = {
-            currentState: 'sm.router.currentState',
-            maxStateId: 'sm.router.maxStateId'
-        };
-
-        this._init();
-        this.xhr = null;
-        window.addEventListener('popstate', this._onPopState.bind(this));
-    };
-
-    /**
-     * 初始化
-     *
-     * - 把当前文档内容缓存起来
-     * - 查找默认展示的块内容，查找顺序如下
-     *      1. id 是 url 中的 fragment 的元素
-     *      2. 有当前块 class 标识的第一个元素
-     *      3. 第一个块
-     * - 初始页面 state 处理
-     *
-     * @private
-     */
-    Router.prototype._init = function() {
-
-        this.$view = $('body');
-
-        // 用来保存 document 的 map
-        this.cache = {};
-        var $doc = $(document);
-        var currentUrl = location.href;
-        this._saveDocumentIntoCache($doc, currentUrl);
-
-        var curPageId;
-
-        var currentUrlObj = Util.toUrlObject(currentUrl);
-        var $allSection = $doc.find('.' + routerConfig.pageClass);
-        var $visibleSection = $doc.find('.' + routerConfig.curPageClass);
-        var $curVisibleSection = $visibleSection.eq(0);
-        var $hashSection;
-
-        if (currentUrlObj.fragment) {
-            $hashSection = $doc.find('#' + currentUrlObj.fragment);
-        }
-        if ($hashSection && $hashSection.length) {
-            $visibleSection = $hashSection.eq(0);
-        } else if (!$visibleSection.length) {
-            $visibleSection = $allSection.eq(0);
-        }
-        if (!$visibleSection.attr('id')) {
-            $visibleSection.attr('id', this._generateRandomId());
-        }
-
-        if ($curVisibleSection.length &&
-            ($curVisibleSection.attr('id') !== $visibleSection.attr('id'))) {
-            // 在 router 到 inner page 的情况下，刷新（或者直接访问该链接）
-            // 直接切换 class 会有「闪」的现象,或许可以采用 animateSection 来减缓一下
-            $curVisibleSection.removeClass(routerConfig.curPageClass);
-            $visibleSection.addClass(routerConfig.curPageClass);
-        } else {
-            $visibleSection.addClass(routerConfig.curPageClass);
-        }
-        curPageId = $visibleSection.attr('id');
-
-
-        // 新进入一个使用 history.state 相关技术的页面时，如果第一个 state 不 push/replace,
-        // 那么在后退回该页面时，将不触发 popState 事件
-        if (theHistory.state === null) {
-            var curState = {
-                id: this._getNextStateId(),
-                url: Util.toUrlObject(currentUrl),
-                pageId: curPageId
-            };
-
-            theHistory.replaceState(curState, '', currentUrl);
-            this._saveAsCurrentState(curState);
-            this._incMaxStateId();
-        }
-    };
-
-    /**
-     * 切换到 url 指定的块或文档
-     *
-     * 如果 url 指向的是当前页面，那么认为是切换块；
-     * 否则是切换文档
-     *
-     * @param {String} url url
-     * @param {Boolean=} ignoreCache 是否强制请求不使用缓存，对 document 生效，默认是 false
-     */
-    Router.prototype.load = function(url, ignoreCache) {
-        if (ignoreCache === undefined) {
-            ignoreCache = false;
-        }
-
-        if (this._isTheSameDocument(location.href, url)) {
-            this._switchToSection(Util.getUrlFragment(url));
-        } else {
-            this._saveDocumentIntoCache($(document), location.href);
-            this._switchToDocument(url, ignoreCache);
-        }
-    };
-
-    /**
-     * 调用 history.forward()
-     */
-    Router.prototype.forward = function() {
-        theHistory.forward();
-    };
-
-    /**
-     * 调用 history.back()
-     */
-    Router.prototype.back = function() {
-        theHistory.back();
-    };
-
-    //noinspection JSUnusedGlobalSymbols
-    /**
-     * @deprecated
-     */
-    Router.prototype.loadPage = Router.prototype.load;
-
-    /**
-     * 切换显示当前文档另一个块
-     *
-     * 把新块从右边切入展示，同时会把新的块的记录用 history.pushState 来保存起来
-     *
-     * 如果已经是当前显示的块，那么不做任何处理；
-     * 如果没对应的块，那么忽略。
-     *
-     * @param {String} sectionId 待切换显示的块的 id
-     * @private
-     */
-    Router.prototype._switchToSection = function(sectionId) {
-        if (!sectionId) {
-            return;
-        }
-
-        var $curPage = this._getCurrentSection(),
-            $newPage = $('#' + sectionId);
-
-        // 如果已经是当前页，不做任何处理
-        if ($curPage === $newPage) {
-            return;
-        }
-
-        this._animateSection($curPage, $newPage, DIRECTION.rightToLeft);
-        this._pushNewState('#' + sectionId, sectionId);
-    };
-
-    /**
-     * 载入显示一个新的文档
-     *
-     * - 如果有缓存，那么直接利用缓存来切换
-     * - 否则，先把页面加载过来缓存，然后再切换
-     *      - 如果解析失败，那么用 location.href 的方式来跳转
-     *
-     * 注意：不能在这里以及其之后用 location.href 来 **读取** 切换前的页面的 url，
-     *     因为如果是 popState 时的调用，那么此时 location 已经是 pop 出来的 state 的了
-     *
-     * @param {String} url 新的文档的 url
-     * @param {Boolean=} ignoreCache 是否不使用缓存强制加载页面
-     * @param {Boolean=} isPushState 是否需要 pushState
-     * @param {String=} direction 新文档切入的方向
-     * @private
-     */
-    Router.prototype._switchToDocument = function(url, ignoreCache, isPushState, direction) {
-        var baseUrl = Util.toUrlObject(url).base;
-
-        if (ignoreCache) {
-            delete this.cache[baseUrl];
-        }
-
-        var cacheDocument = this.cache[baseUrl];
-        var context = this;
-
-        if (cacheDocument) {
-            this._doSwitchDocument(url, isPushState, direction);
-        } else {
-            this._loadDocument(url, {
-                success: function($doc) {
-                    try {
-                        context._parseDocument(url, $doc);
-                        context._doSwitchDocument(url, isPushState, direction);
-                    } catch (e) {
-                        location.href = url;
-                    }
-                },
-                error: function() {
-                    location.href = url;
-                }
-            });
-        }
-    };
-
-    /**
-     * 利用缓存来做具体的切换文档操作
-     *
-     * - 确定待切入的文档的默认展示 section
-     * - 把新文档 append 到 view 中
-     * - 动画切换文档
-     * - 如果需要 pushState，那么把最新的状态 push 进去并把当前状态更新为该状态
-     *
-     * @param {String} url 待切换的文档的 url
-     * @param {Boolean} isPushState 加载页面后是否需要 pushState，默认是 true
-     * @param {String} direction 动画切换方向，默认是 DIRECTION.rightToLeft
-     * @private
-     */
-    Router.prototype._doSwitchDocument = function(url, isPushState, direction) {
-        if (typeof isPushState === 'undefined') {
-            isPushState = true;
-        }
-
-        var urlObj = Util.toUrlObject(url);
-        var $currentDoc = this.$view.find('.' + routerConfig.sectionGroupClass);
-        var $newDoc = $($('<div></div>').append(this.cache[urlObj.base].$content).html());
-
-        // 确定一个 document 展示 section 的顺序
-        // 1. 与 hash 关联的 element
-        // 2. 默认的标识为 current 的 element
-        // 3. 第一个 section
-        var $allSection = $newDoc.find('.' + routerConfig.pageClass);
-        var $visibleSection = $newDoc.find('.' + routerConfig.curPageClass);
-        var $hashSection;
-
-        if (urlObj.fragment) {
-            $hashSection = $newDoc.find('#' + urlObj.fragment);
-        }
-        if ($hashSection && $hashSection.length) {
-            $visibleSection = $hashSection.eq(0);
-        } else if (!$visibleSection.length) {
-            $visibleSection = $allSection.eq(0);
-        }
-        if (!$visibleSection.attr('id')) {
-            $visibleSection.attr('id', this._generateRandomId());
-        }
-
-        var $currentSection = this._getCurrentSection();
-        $currentSection.trigger(EVENTS.beforePageSwitch, [$currentSection.attr('id'), $currentSection]);
-
-        $allSection.removeClass(routerConfig.curPageClass);
-        $visibleSection.addClass(routerConfig.curPageClass);
-
-        // prepend 而不 append 的目的是避免 append 进去新的 document 在后面，
-        // 其里面的默认展示的(.page-current) 的页面直接就覆盖了原显示的页面（因为都是 absolute）
-        this.$view.prepend($newDoc);
-
-        this._animateDocument($currentDoc, $newDoc, $visibleSection, direction);
-
-        if (isPushState) {
-            this._pushNewState(url, $visibleSection.attr('id'));
-        }
-    };
-
-    /**
-     * 判断两个 url 指向的页面是否是同一个
-     *
-     * 判断方式: 如果两个 url 的 base 形式（不带 hash 的绝对形式）相同，那么认为是同一个页面
-     *
-     * @param {String} url
-     * @param {String} anotherUrl
-     * @returns {Boolean}
-     * @private
-     */
-    Router.prototype._isTheSameDocument = function(url, anotherUrl) {
-        return Util.toUrlObject(url).base === Util.toUrlObject(anotherUrl).base;
-    };
-
-    /**
-     * ajax 加载 url 指定的页面内容
-     *
-     * 加载过程中会发出以下事件
-     *  pageLoadCancel: 如果前一个还没加载完,那么取消并发送该事件
-     *  pageLoadStart: 开始加载
-     *  pageLodComplete: ajax complete 完成
-     *  pageLoadError: ajax 发生 error
-     *
-     *
-     * @param {String} url url
-     * @param {Object=} callback 回调函数配置，可选，可以配置 success\error 和 complete
-     *      所有回调函数的 this 都是 null，各自实参如下：
-     *      success: $doc, status, xhr
-     *      error: xhr, status, err
-     *      complete: xhr, status
-     *
-     * @private
-     */
-    Router.prototype._loadDocument = function(url, callback) {
-        if (this.xhr && this.xhr.readyState < 4) {
-            this.xhr.onreadystatechange = function() {
-            };
-            this.xhr.abort();
-            this.dispatch(EVENTS.pageLoadCancel);
-        }
-
-        this.dispatch(EVENTS.pageLoadStart);
-
-        callback = callback || {};
-        var self = this;
-
-        this.xhr = $.ajax({
-            url: url,
-            success: $.proxy(function(data, status, xhr) {
-                // 给包一层 <html/>，从而可以拿到完整的结构
-                var $doc = $('<html></html>');
-                $doc.append(data);
-                callback.success && callback.success.call(null, $doc, status, xhr);
-            }, this),
-            error: function(xhr, status, err) {
-                callback.error && callback.error.call(null, xhr, status, err);
-                self.dispatch(EVENTS.pageLoadError);
-            },
-            complete: function(xhr, status) {
-                callback.complete && callback.complete.call(null, xhr, status);
-                self.dispatch(EVENTS.pageLoadComplete);
-            }
-        });
-    };
-
-    /**
-     * 对于 ajax 加载进来的页面，把其缓存起来
-     *
-     * @param {String} url url
-     * @param $doc ajax 载入的页面的 jq 对象，可以看做是该页面的 $(document)
-     * @private
-     */
-    Router.prototype._parseDocument = function(url, $doc) {
-        var $innerView = $doc.find('.' + routerConfig.sectionGroupClass);
-
-        if (!$innerView.length) {
-            throw new Error('missing router view mark: ' + routerConfig.sectionGroupClass);
-        }
-
-        this._saveDocumentIntoCache($doc, url);
-    };
-
-    /**
-     * 把一个页面的相关信息保存到 this.cache 中
-     *
-     * 以页面的 baseUrl 为 key,而 value 则是一个 DocumentCache
-     *
-     * @param {*} doc doc
-     * @param {String} url url
-     * @private
-     */
-    Router.prototype._saveDocumentIntoCache = function(doc, url) {
-        var urlAsKey = Util.toUrlObject(url).base;
-        var $doc = $(doc);
-
-        this.cache[urlAsKey] = {
-            $doc: $doc,
-            $content: $doc.find('.' + routerConfig.sectionGroupClass)
-        };
-    };
-
-    /**
-     * 从 sessionStorage 中获取保存下来的「当前状态」
-     *
-     * 如果解析失败，那么认为当前状态是 null
-     *
-     * @returns {State|null}
-     * @private
-     */
-    Router.prototype._getLastState = function() {
-        var currentState = sessionStorage.getItem(this.sessionNames.currentState);
-        try {
-            currentState = JSON.parse(currentState);
-        } catch(e) {
-            currentState = null;
-        }
-
-        return currentState;
-    };
-
-    /**
-     * 把一个状态设为当前状态，保存仅 sessionStorage 中
-     *
-     * @param {State} state
-     * @private
-     */
-    Router.prototype._saveAsCurrentState = function(state) {
-        sessionStorage.setItem(this.sessionNames.currentState, JSON.stringify(state));
-    };
-
-    /**
-     * 获取下一个 state 的 id
-     *
-     * 读取 sessionStorage 里的最后的状态的 id，然后 + 1；如果原没设置，那么返回 1
-     *
-     * @returns {number}
-     * @private
-     */
-    Router.prototype._getNextStateId = function() {
-        var maxStateId = sessionStorage.getItem(this.sessionNames.maxStateId);
-        return maxStateId ? parseInt(maxStateId, 10) + 1 : 1;
-    };
-
-    /**
-     * 把 sessionStorage 里的最后状态的 id 自加 1
-     *
-     * @private
-     */
-    Router.prototype._incMaxStateId = function() {
-        sessionStorage.setItem(this.sessionNames.maxStateId, this._getNextStateId());
-    };
-
-    /**
-     * 从一个文档切换为显示另一个文档
-     *
-     * @param $from 目前显示的文档
-     * @param $to 待切换显示的新文档
-     * @param $visibleSection 新文档中展示的 section 元素
-     * @param direction 新文档切入方向
-     * @private
-     */
-    Router.prototype._animateDocument = function($from, $to, $visibleSection, direction) {
-        var sectionId = $visibleSection.attr('id');
-
-
-        var $visibleSectionInFrom = $from.find('.' + routerConfig.curPageClass);
-        $visibleSectionInFrom.addClass(routerConfig.visiblePageClass).removeClass(routerConfig.curPageClass);
-
-        $visibleSection.trigger(EVENTS.pageAnimationStart, [sectionId, $visibleSection]);
-
-        this._animateElement($from, $to, direction);
-
-        $from.animationEnd(function() {
-            $visibleSectionInFrom.removeClass(routerConfig.visiblePageClass);
-            // 移除 document 前后，发送 beforePageRemove 和 pageRemoved 事件
-            $(window).trigger(EVENTS.beforePageRemove, [$from]);
-            $from.remove();
-            $(window).trigger(EVENTS.pageRemoved);
-        });
-
-        $to.animationEnd(function() {
-            $visibleSection.trigger(EVENTS.pageAnimationEnd, [sectionId, $visibleSection]);
-            // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
-            $visibleSection.trigger(EVENTS.pageInit, [sectionId, $visibleSection]);
-        });
-    };
-
-    /**
-     * 把当前文档的展示 section 从一个 section 切换到另一个 section
-     *
-     * @param $from
-     * @param $to
-     * @param direction
-     * @private
-     */
-    Router.prototype._animateSection = function($from, $to, direction) {
-        var toId = $to.attr('id');
-        $from.trigger(EVENTS.beforePageSwitch, [$from.attr('id'), $from]);
-
-        $from.removeClass(routerConfig.curPageClass);
-        $to.addClass(routerConfig.curPageClass);
-        $to.trigger(EVENTS.pageAnimationStart, [toId, $to]);
-        this._animateElement($from, $to, direction);
-        $to.animationEnd(function() {
-            $to.trigger(EVENTS.pageAnimationEnd, [toId, $to]);
-            // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
-            $to.trigger(EVENTS.pageInit, [toId, $to]);
-        });
-    };
-
-    /**
-     * 切换显示两个元素
-     *
-     * 切换是通过更新 class 来实现的，而具体的切换动画则是 class 关联的 css 来实现
-     *
-     * @param $from 当前显示的元素
-     * @param $to 待显示的元素
-     * @param direction 切换的方向
-     * @private
-     */
-    Router.prototype._animateElement = function($from, $to, direction) {
-        // todo: 可考虑如果入参不指定，那么尝试读取 $to 的属性，再没有再使用默认的
-        // 考虑读取点击的链接上指定的方向
-        if (typeof direction === 'undefined') {
-            direction = DIRECTION.rightToLeft;
-        }
-
-        var animPageClasses = [
-            'page-from-center-to-left',
-            'page-from-center-to-right',
-            'page-from-right-to-center',
-            'page-from-left-to-center'].join(' ');
-
-        var classForFrom, classForTo;
-        switch(direction) {
-            case DIRECTION.rightToLeft:
-                classForFrom = 'page-from-center-to-left';
-                classForTo = 'page-from-right-to-center';
-                break;
-            case DIRECTION.leftToRight:
-                classForFrom = 'page-from-center-to-right';
-                classForTo = 'page-from-left-to-center';
-                break;
-            default:
-                classForFrom = 'page-from-center-to-left';
-                classForTo = 'page-from-right-to-center';
-                break;
-        }
-
-        $from.removeClass(animPageClasses).addClass(classForFrom);
-        $to.removeClass(animPageClasses).addClass(classForTo);
-
-        $from.animationEnd(function() {
-            $from.removeClass(animPageClasses);
-        });
-        $to.animationEnd(function() {
-            $to.removeClass(animPageClasses);
-        });
-    };
-
-    /**
-     * 获取当前显示的第一个 section
-     *
-     * @returns {*}
-     * @private
-     */
-    Router.prototype._getCurrentSection = function() {
-        return this.$view.find('.' + routerConfig.curPageClass).eq(0);
-    };
-
-    /**
-     * popState 事件关联着的后退处理
-     *
-     * 判断两个 state 判断是否是属于同一个文档，然后做对应的 section 或文档切换；
-     * 同时在切换后把新 state 设为当前 state
-     *
-     * @param {State} state 新 state
-     * @param {State} fromState 旧 state
-     * @private
-     */
-    Router.prototype._back = function(state, fromState) {
-        if (this._isTheSameDocument(state.url.full, fromState.url.full)) {
-            var $newPage = $('#' + state.pageId);
-            if ($newPage.length) {
-                var $currentPage = this._getCurrentSection();
-                this._animateSection($currentPage, $newPage, DIRECTION.leftToRight);
-                this._saveAsCurrentState(state);
-            } else {
-                location.href = state.url.full;
-            }
-        } else {
-            this._saveDocumentIntoCache($(document), fromState.url.full);
-            this._switchToDocument(state.url.full, false, false, DIRECTION.leftToRight);
-            this._saveAsCurrentState(state);
-        }
-    };
-
-    /**
-     * popState 事件关联着的前进处理,类似于 _back，不同的是切换方向
-     *
-     * @param {State} state 新 state
-     * @param {State} fromState 旧 state
-     * @private
-     */
-    Router.prototype._forward = function(state, fromState) {
-        if (this._isTheSameDocument(state.url.full, fromState.url.full)) {
-            var $newPage = $('#' + state.pageId);
-            if ($newPage.length) {
-                var $currentPage = this._getCurrentSection();
-                this._animateSection($currentPage, $newPage, DIRECTION.rightToLeft);
-                this._saveAsCurrentState(state);
-            } else {
-                location.href = state.url.full;
-            }
-        } else {
-            this._saveDocumentIntoCache($(document), fromState.url.full);
-            this._switchToDocument(state.url.full, false, false, DIRECTION.rightToLeft);
-            this._saveAsCurrentState(state);
-        }
-    };
-
-    /**
-     * popState 事件处理
-     *
-     * 根据 pop 出来的 state 和当前 state 来判断是前进还是后退
-     *
-     * @param event
-     * @private
-     */
-    Router.prototype._onPopState = function(event) {
-        var state = event.state;
-        // if not a valid state, do nothing
-        if (!state || !state.pageId) {
-            return;
-        }
-
-        var lastState = this._getLastState();
-
-        if (!lastState) {
-            console.error && console.error('Missing last state when backward or forward');
-            return;
-        }
-
-        if (state.id === lastState.id) {
-            return;
-        }
-
-        if (state.id < lastState.id) {
-            this._back(state, lastState);
-        } else {
-            this._forward(state, lastState);
-        }
-    };
-
-    /**
-     * 页面进入到一个新状态
-     *
-     * 把新状态 push 进去，设置为当前的状态，然后把 maxState 的 id +1。
-     *
-     * @param {String} url 新状态的 url
-     * @param {String} sectionId 新状态中显示的 section 元素的 id
-     * @private
-     */
-    Router.prototype._pushNewState = function(url, sectionId) {
-        var state = {
-            id: this._getNextStateId(),
-            pageId: sectionId,
-            url: Util.toUrlObject(url)
-        };
-
-        theHistory.pushState(state, '', url);
-        this._saveAsCurrentState(state);
-        this._incMaxStateId();
-    };
-
-    /**
-     * 生成一个随机的 id
-     *
-     * @returns {string}
-     * @private
-     */
-    Router.prototype._generateRandomId = function() {
-        return "page-" + (+new Date());
-    };
-
-    Router.prototype.dispatch = function(event) {
-        var e = new CustomEvent(event, {
-            bubbles: true,
-            cancelable: true
-        });
-
-        //noinspection JSUnresolvedFunction
-        window.dispatchEvent(e);
-    };
-
-    /**
-     * 判断一个链接是否使用 router 来处理
-     *
-     * @param $link
-     * @returns {boolean}
-     */
-    function isInRouterBlackList($link) {
-        var classBlackList = [
-            'external',
-            'tab-link',
-            'open-popup',
-            'close-popup',
-            'open-panel',
-            'close-panel'
-        ];
-
-        for (var i = classBlackList.length -1 ; i >= 0; i--) {
-            if ($link.hasClass(classBlackList[i])) {
-                return true;
-            }
-        }
-
-        var linkEle = $link.get(0);
-        var linkHref = linkEle.getAttribute('href');
-
-        var protoWhiteList = [
-            'http',
-            'https'
-        ];
-
-        //如果非noscheme形式的链接，且协议不是http(s)，那么路由不会处理这类链接
-        if (/^(\w+):/.test(linkHref) && protoWhiteList.indexOf(RegExp.$1) < 0) {
-            return true;
-        }
-
-        //noinspection RedundantIfStatementJS
-        if (linkEle.hasAttribute('external')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * 自定义是否执行路由功能的过滤器
-     *
-     * 可以在外部定义 $.config.routerFilter 函数，实参是点击链接的 Zepto 对象。
-     *
-     * @param $link 当前点击的链接的 Zepto 对象
-     * @returns {boolean} 返回 true 表示执行路由功能，否则不做路由处理
-     */
-    function customClickFilter($link) {
-        var customRouterFilter = $.smConfig.routerFilter;
-        if ($.isFunction(customRouterFilter)) {
-            var filterResult = customRouterFilter($link);
-            if (typeof filterResult === 'boolean') {
-                return filterResult;
-            }
-        }
-
-        return true;
-    }
-
-    $(function() {
-        // 用户可选关闭router功能
-        if (!$.smConfig.router) {
-            return;
-        }
-
-        if (!Util.supportStorage()) {
-            return;
-        }
-
-        var $pages = $('.' + routerConfig.pageClass);
-        if (!$pages.length) {
-            var warnMsg = 'Disable router function because of no .page elements';
-            if (window.console && window.console.warn) {
-                console.warn(warnMsg);
-            }
-            return;
-        }
-
-        var router = $.router = new Router();
-
-        $(document).on('click', 'a', function(e) {
-            var $target = $(e.currentTarget);
-
-            var filterResult = customClickFilter($target);
-            if (!filterResult) {
-                return;
-            }
-
-            if (isInRouterBlackList($target)) {
-                return;
-            }
-
-            e.preventDefault();
-
-            if ($target.hasClass('back')) {
-                router.back();
-            } else {
-                var url = $target.attr('href');
-                if (!url || url === '#') {
-                    return;
-                }
-
-                var ignoreCache = $target.attr('data-no-cache') === 'true';
-
-                router.load(url, ignoreCache);
-            }
-        });
-    });
-}(Zepto);
 
 /**
  * @typedef {Object} State

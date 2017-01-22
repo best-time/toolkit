@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>左侧栏</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">-->
+
+    <link rel="stylesheet" href="./css/sm.css">
+    <link rel="stylesheet" href="./css/sm-extend.css">
+
+  </head>
+  <body>
+  
+  
+  <header class="bar bar-nav">
+  <h1 class='title'>搜索栏</h1>
+</header>
+<div class="bar bar-header-secondary">
+  <div class="searchbar">
+    <a class="searchbar-cancel">取消</a>
+    <div class="search-input">
+      <label class="icon icon-search" for="search"></label>
+      <input type="search" id='search' placeholder='输入关键字...'/>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="buttons-tab">
+    <a href="#tab1" class="tab-link active button">全部</a>
+    <a href="#tab2" class="tab-link button">待付款</a>
+    <a href="#tab3" class="tab-link button">待发货</a>
+  </div>
+  <div class="content-block">
+    <div class="tabs">
+      <div id="tab1" class="tab active">
+        <div class="content-block">
+          <p>This is tab 1 content</p>
+        </div>
+      </div>
+      <div id="tab2" class="tab">
+        <div class="content-block">
+          <p>This is tab 2 content</p>
+        </div>
+      </div>
+      <div id="tab3" class="tab">
+        <div class="content-block">
+          <p>This is tab 3 content</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!--alert-box-->
+<div class="content-block">
+      <p><a href="#" class="alert-text">Alert With Text</a></p>
+      <p><a href="#" class="alert-text-title">Alert With Text and Title</a></p>
+      <p><a href="#" class="alert-text-title-callback">Alert With Text and Title and Callback</a></p>
+      <p><a href="#" class="alert-text-callback">Alert With Text and Callback</a></p>
+    </div>
+
+<!--Preloader-->
+<div class="content-block">
+      <p><a href="#" class="open-preloader">Open Preloader</a></p>
+      <p><a href="#" class="open-preloader-title">Open Preloader with custom title</a></p>
+    </div>
+
+
+    
+
+</div>
+
+
+
+
+
+
+
+
+
+<!--<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.js' charset='utf-8'></script>-->
+<script src="./js/zepto.js"></script>
+<script src="./js/fastClick.js"></script>
+<script src="./js/iScroll.js"></script>
+
+<script src="./js/sm.js"></script>
+<script src="./js/sm-extend.js"></script>
+<!--<script src="./js/eruda.min.js"></script>-->
+
+    <script>
+    $(function() {
+      $(document).on('click','.alert-text',function () {
+        $.alert('Here goes alert text');
+     });
+
+    $(document).on('click','.alert-text-title', function () {
+        $.alert('Here goes alert text', 'Custom Title!');
+    });
+
+    $(document).on('click', '.alert-text-title-callback',function () {
+        $.alert('Here goes alert text', 'Custom Title!', function () {
+            $.alert('Button clicked!')
+        });
+    });
+
+    $(document).on('click', '.alert-text-callback',function () {
+        $.alert('Here goes alert text', function () {
+            $.alert('Button clicked!')
+        });
+    });
+
+    // preloader
+    $(document).on('click', '.open-preloader', function () {
+    $.showPreloader();
+    setTimeout(function () {
+        $.hidePreloader();
+    }, 200000);
+  });
+  $(document).on('click','.open-preloader-title', function () {
+    $.showPreloader('Custom Title')
+    setTimeout(function () {
+        $.hidePreloader();
+    }, 2000);
+  });
+
+
+//picker  
+$("#picker").picker({
+  toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-left">按钮</button>\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">标题</h1>\
+  </header>',
+  cols: [
+    {
+      textAlign: 'center',
+      values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus']
+    }
+  ]
+});
+
+    })
+
+</script>
+
+
+  </body>
+</html>

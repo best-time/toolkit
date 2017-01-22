@@ -17,32 +17,40 @@
 
   </head>
   <body>
-    <header class="bar bar-nav">
-    <h1 class="title">Popup(JavaScript)</h1>
+      
+      <header class="bar bar-nav">
+  <button class="button button-link button-nav pull-left">
+    <span class="icon icon-left"></span>
+    返回
+  </button>
+  <button class="button button-link button-nav pull-right">
+    下一步
+    <span class="icon icon-right"></span>
+  </button>
+  <h1 class="title">标题</h1>
 </header>
 
 <div class="content">
-    <div class="content-block">
-      <p><a href="#" class="open-about">Open About Popup </a></p>
-      <p><a href="#" class="open-services">Open Services Popup </a></p>
-    </div>
-       
-</div> 
-<!-- About Popup -->
-<div class="popup popup-about" style="top: 400px; height: 200px">
-  <div class="content-block">
-    <p>About</p>
-    <p><a href="#" class="close-popup">Close popup</a></p>
-    <p>Lorem ipsum dolor11111111 ...</p>
+  <div class="list-block">
+    <ul>
+      
+      <!-- Switch (Checkbox) -->
+      <li>
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-input">
+              <label class="label-switch">
+                <input type="checkbox">
+                <div class="checkbox"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+    </ul>
   </div>
-</div>
-<!-- Services Popup -->
-<div class="popup popup-services">
-  <div class="content-block">
-    <p>Services</p>
-    <p><a href="#" class="close-popup">Close popup</a></p>
-    <p>Lorem ipsum dolor222222 ...</p>
-  </div>
+  
 </div>
 
 
@@ -60,15 +68,7 @@
 <!--<script src="./js/eruda.min.js"></script>-->
 
     <script>
-$(document).on('click','.open-about', function () {
-  $.popup('.popup-about');
-});
- 
-$(document).on('click','.open-services', function () {
-  $.popup('.popup-services');
-});
-
-// eruda.init()
+    
 
 </script>
 
