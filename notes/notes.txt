@@ -655,5 +655,6 @@ ex: .parent-3 {
 
 
 
-
+       // touchStart 
+       e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
 
