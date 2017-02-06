@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <title></title>
+</head>
+<body>
+	<div class="page-group">
+		<div class="page page-current" id="index222">
+			<header class="bar bar-nav">
+				<h1 class="title">ajax路由</h1>
+			</header>
+			<div class="content">
+				<div class="content-inner">
+					<div class="content-block">
+						<a href="ex/router2/index.html">跳转到ajax界面</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="js/zepto.js"></script>
+<script src="//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js"></script>
+<script>
+
+    $(function() {
+        $(document).on('pageInit',function(e,id,$page) {
+            console.log(e)
+            console.log(id)
+            console.log($page)
+            if(id=='index'){
+                console.log('这里执行的是index的函数')
+            };
+            if(id=='ajax-page') {
+                console.log('这里执行的是ajax-page的事件函数');
+            }
+        });
+        
+        $.init();
+    })
+
+</script>
+</html>
