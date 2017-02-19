@@ -8,7 +8,8 @@
  *  3. 浏览器前进后退（history.forward/history.back）时，也使用动画效果
  *  4. 如果链接有 back 这个 class，那么则忽略一切，直接调用 history.back() 来后退
  *
- * 路由功能默认开启，如果需要关闭路由功能，那么在 zepto 之后，msui 脚本之前设置 $.config.router = false 即可（intro.js 中会 extend 到 $.smConfig 中）。
+ * 路由功能默认开启，如果需要关闭路由功能，那么在 zepto 之后，
+ * msui 脚本之前设置 $.config.router = false 即可（intro.js 中会 extend 到 $.smConfig 中）。
  *
  * 可以设置 $.config.routerFilter 函数来设置当前点击链接是否使用路由功能，实参是 a 链接的 zepto 对象；返回 false 表示不使用 router 功能。
  *
@@ -52,9 +53,11 @@
  * 另，每一个块都应当有一个唯一的 ID，这样才能通过 #the-id 的形式来切换定位。
  * 当一个块没有 id 时，如果是第一个的默认的需要展示的块，那么会给其添加一个随机的 id；否则，没有 id 的块将不会被切换展示。
  *
- * 通过 history.state/history.pushState 以及用 sessionStorage 来记录当前 state 以及最大的 state id 来辅助前进后退的切换效果，所以在不支持 sessionStorage 的情况下，将不开启路由功能。
+ * 通过 history.state/history.pushState 以及用 sessionStorage 来记录当前 state 以及最大的 state id 来辅助前进后退的切换效果，
+ * 所以在不支持 sessionStorage 的情况下，将不开启路由功能。
  *
- * 为了解决 ajax 载入页面导致重复 ID 以及重复 popup 等功能，上面约定了使用路由功能的所有可展示内容都必需位于指定元素内。从而可以在进行文档间切换时可以进行两个文档的整体移动，切换完毕后再把前一个文档的内容从页面之间移除。
+ * 为了解决 ajax 载入页面导致重复 ID 以及重复 popup 等功能，上面约定了使用路由功能的所有可展示内容都必需位于指定元素内。
+ * 从而可以在进行文档间切换时可以进行两个文档的整体移动，切换完毕后再把前一个文档的内容从页面之间移除。
  *
  * 默认地过滤了部分协议的链接，包括 tel:, javascript:, mailto:，这些链接将不会使用路由功能。如果有更多的自定义控制需求，可以在 $.config.routerFilter 实现
  *
@@ -234,7 +237,7 @@
         } else if (!$visibleSection.length) {
             $visibleSection = $allSection.eq(0);
         }
-        if (!$visibleSection.attr('id')) {
+        if (!$visibleSection.attr('id')) { // 没有id
             $visibleSection.attr('id', this._generateRandomId());
         }
 
@@ -770,11 +773,10 @@
      */
     Router.prototype._onPopState = function(event) {
         var state = event.state;
-        // if not a valid state, do nothing
-        if (!state || !state.pageId) {
-            return;
-        }
 
+        // if not a valid state, do nothing
+        if (!state || !state.pageId) return;
+        
         var lastState = this._getLastState();
 
         if (!lastState) {
@@ -782,9 +784,8 @@
             return;
         }
 
-        if (state.id === lastState.id) {
-            return;
-        }
+        if (state.id === lastState.id) return;
+        
 
         if (state.id < lastState.id) {
             this._back(state, lastState);
@@ -898,20 +899,19 @@
     }
 
     $(function() {
-        // 用户可选关闭router功能
-        if (!$.smConfig.router) {
+        
+        if (!$.smConfig.router) {   // 用户可选关闭router功能
+            return;
+        }
+        
+        if (!Util.supportStorage()) { // 不支持sessionStorage
             return;
         }
 
-        if (!Util.supportStorage()) {
-            return;
-        }
-
-        var $pages = $('.' + routerConfig.pageClass);
+        var $pages = $('.' + routerConfig.pageClass); // $('.page')
         if (!$pages.length) {
-            var warnMsg = 'Disable router function because of no .page elements';
             if (window.console && window.console.warn) {
-                console.warn(warnMsg);
+                console.warn('Disable router function because of no .page elements');
             }
             return;
         }
@@ -922,13 +922,11 @@
             var $target = $(e.currentTarget);
 
             var filterResult = customClickFilter($target);
-            if (!filterResult) {
-                return;
-            }
+            if (!filterResult) return;
+            
 
-            if (isInRouterBlackList($target)) {
-                return;
-            }
+            if (isInRouterBlackList($target)) return;
+            
 
             e.preventDefault();
 
@@ -936,10 +934,8 @@
                 router.back();
             } else {
                 var url = $target.attr('href');
-                if (!url || url === '#') {
-                    return;
-                }
-
+                if (!url || url === '#') return;
+                
                 var ignoreCache = $target.attr('data-no-cache') === 'true';
 
                 router.load(url, ignoreCache);

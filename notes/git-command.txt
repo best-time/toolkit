@@ -1,3 +1,12 @@
+##############  gulp 全局 ############
+
+sudo npm install -g gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html gulp-rename gulp-ruby-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch
+
+
+sudo npm link gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html gulp-rename gulp-ruby-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch
+
+
+
 git status
 
 git log
@@ -51,8 +60,11 @@ git config --global https.proxy https://10.19.110.32:1080
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 
-删除代理
+
+
+npm 删除代理
 npm config delete proxy
 
-git config --global http.proxy 'socks5://127.0.0.1:1080'
-git config --global https.proxy 'socks5://127.0.0.1:1080'
+npm 设置代理
+npm config set proxy http://10.19.110.32:1080
+npm config set https-proxy https://10.19.110.32:1080

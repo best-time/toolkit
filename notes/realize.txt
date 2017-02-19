@@ -3,6 +3,16 @@ ruby -run -e httpd . -p 9090
 python -m SimpleHTTPServer 8000
 php -S 127.0.0.1:8088 router.php
 
+
+
+1.位置属性(position, top, right, z-index, display, float等)
+2.大小(width, height, padding, margin)
+3.文字系列(font, line-height, letter-spacing, color- text-align等)
+4.背景(background, border等)
+5.其他(animation, transition等)
+
+
+
 安装homebrew 443接口报错:
 export ALL_PROXY=proxyIP:port
 

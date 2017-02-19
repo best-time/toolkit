@@ -658,3 +658,61 @@ ex: .parent-3 {
        // touchStart 
        e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
 
+
+
+       /*----------创建模拟时间和自定义时间*/
+
+       MouseEvent:
+
+       var btn = document.querySelector('.button');
+      btn.addEventListener('click', function (event) {
+          console.log('OH~!You clicked me~!');
+      }, false);
+      var ev = new MouseEvent('click', {
+          cancelable: true,
+          bubble: true,
+          view: window
+      });
+      btn.dispatchEvent(ev);
+
+
+      KeyboardEvent: 
+
+      var btn = document.querySelector('.button');
+     document.addEventListener('keyup', function (event) {
+         console.log(String.fromCharCode(event.keyCode));
+     }, false);
+     var ev = new KeyboardEvent('keyup', {
+         keyCode: 65
+     });
+     document.dispatchEvent(ev);
+
+
+     自定义事件有两种方法,一种是使用new Event(),另一种是new customEvent()
+
+     var btn = document.querySelector('.button');
+      var ev = new Event('test', {
+          bubbles: 'true',
+          cancelable: 'true'
+      });
+      btn.addEventListener('test', function (event) {
+          console.log(event.bubbles);
+          console.log(event.cancelable);
+          console.log(event.detail);
+      }, false);
+      btn.dispatchEvent(ev);
+
+
+      var btn = document.querySelector('.button');
+
+      var ev = new CustomEvent('test', {
+          bubbles: 'true',
+          cancelable: 'true',
+          detail: 'tcstory'
+      });
+      btn.addEventListener('test', function (event) {
+          console.log(event.bubbles);
+          console.log(event.cancelable);
+          console.log(event.detail);
+      }, false);
+      btn.dispatchEvent(ev);
