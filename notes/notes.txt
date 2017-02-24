@@ -716,3 +716,19 @@ ex: .parent-3 {
           console.log(event.detail);
       }, false);
       btn.dispatchEvent(ev);
+
+
+
+      // 弹出层 禁止页面滚动
+
+      body加上：
+
+      position: fixed;
+      height: 100%;
+      left: 0;
+      overflow-y: scroll;
+
+
+      之后使用jQuery设置body样式的top值：
+
+      让 top 为 $( window ).scrollTop() + "px"
