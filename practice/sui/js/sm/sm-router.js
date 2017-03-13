@@ -171,8 +171,7 @@
 
     var routerConfig = {
         sectionGroupClass: 'page-group',
-        // 表示是当前 page 的 class
-        curPageClass: 'page-current',
+        curPageClass: 'page-current',// 表示是当前 page 的 class
         // 用来辅助切换时表示 page 是 visible 的,
         // 之所以不用 curPageClass，是因为 page-current 已被赋予了「当前 page」这一含义而不仅仅是 display: block
         // 并且，别的地方已经使用了，所以不方便做变更，故新增一个
@@ -225,8 +224,8 @@
 
         var currentUrlObj = Util.toUrlObject(currentUrl);
         var $allSection = $doc.find('.' + routerConfig.pageClass);
-        var $visibleSection = $doc.find('.' + routerConfig.curPageClass);
-        var $curVisibleSection = $visibleSection.eq(0);
+        var $visibleSection = $doc.find('.' + routerConfig.curPageClass);   // 可视page
+        var $curVisibleSection = $visibleSection.eq(0);     //可视当前page
         var $hashSection;
 
         if (currentUrlObj.fragment) {
@@ -308,7 +307,7 @@
     /**
      * @deprecated
      */
-    Router.prototype.loadPage = Router.prototype.load;
+    // Router.prototype.loadPage = Router.prototype.load;
 
     /**
      * 切换显示当前文档另一个块
@@ -322,18 +321,14 @@
      * @private
      */
     Router.prototype._switchToSection = function(sectionId) {
-        if (!sectionId) {
-            return;
-        }
-
+        if (!sectionId) return;
+        
         var $curPage = this._getCurrentSection(),
             $newPage = $('#' + sectionId);
 
         // 如果已经是当前页，不做任何处理
-        if ($curPage === $newPage) {
-            return;
-        }
-
+        if ($curPage === $newPage) return;
+        
         this._animateSection($curPage, $newPage, DIRECTION.rightToLeft);
         this._pushNewState('#' + sectionId, sectionId);
     };
@@ -452,8 +447,10 @@
      * @returns {Boolean}
      * @private
      */
-    Router.prototype._isTheSameDocument = function(url, anotherUrl) {
-        return Util.toUrlObject(url).base === Util.toUrlObject(anotherUrl).base;
+    Router.prototype._isTheSameDocument = function (url, anotherUrl) {
+        var tmp1 = Util.toUrlObject(url).base,
+            tmp2 = Util.toUrlObject(anotherUrl).base
+        return tmp1 === tmp2;
     };
 
     /**
@@ -900,14 +897,9 @@
 
     $(function() {
         
-        if (!$.smConfig.router) {   // 用户可选关闭router功能
-            return;
-        }
-        
-        if (!Util.supportStorage()) { // 不支持sessionStorage
-            return;
-        }
-
+        if (!$.smConfig.router) return;   // 用户可选关闭router功能
+        if (!Util.supportStorage()) return; // 不支持sessionStorage
+            
         var $pages = $('.' + routerConfig.pageClass); // $('.page')
         if (!$pages.length) {
             if (window.console && window.console.warn) {

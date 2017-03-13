@@ -29,11 +29,11 @@ if(_has.call(obj, 'xxx')) //查看某个对象上是否有xxx属性
 跳过了 _.findIndex和 _.findLastIndex 
 ******************看到_.first  方法  2015年10月25日00:44:25
 
-$.type()  jquery 获取数据类型
 
 /============
 function(a){}.length   // 1
 function(a, b){}.length   // 2
+
 note: 函数的 length 得到的是形参个数
 arguments.length   得到实参个数
 
@@ -47,8 +47,7 @@ arguments.length   得到实参个数
 
 *****************_.where 2015年10月31日22:18:45
 
-只有函数被调用时,arguments对象才会被创建,未调用时其值为 null
-函数 arguments 保存实参
+只有函数被调用时,arguments对象才会被创建,未调用时其值为 null, 函数 arguments 保存实参
 
 在一个函数调用另一个函数时,被调用的函数会自动生成一个caller属性,指向调用它的函数对象.
 如果该函数当前未被调用,或并非被其他函数调用,则caller为null
@@ -77,34 +76,12 @@ port: 端口号
 protocol: url协议
 search: ?号开始的url
 
-js正则函数详细使用 没理清
-页面宽度, div宽度等获取 浏览器差异没理清
-
 =======================================/
 
 
 *****************_.isArguments 2015年11月02日23:23:16
 *****************_.add 2015年11月6日00:08:12
 
-vue.js 笔记
-
-实例属性: http://cn.vuejs.org/api/instance-properties.html
-实例方法: http://cn.vuejs.org/api/instance-methods.html
-全局api: http://cn.vuejs.org/api/global-api.html
-组件选项: http://cn.vuejs.org/api/options.html
-
-注意: 以 _ 或 $ 开头的属性将不会被代理在 Vue 实例上
-
-
-//============================
-
-
-vue.js 看到条件渲染  2015年11月6日23:36:56
-
-vue 指令只封装 DOM 操作，而组件代表一个自给自足的独立单元
-
-
-vue.js 看到过渡  2015年11月8日22:34:47
 
 //=================================
 ES5中新增了写数组方法，如下：
@@ -186,7 +163,7 @@ slice()对象array中的某一段做浅复制
 
 
 //=========== javascript模式 P52 2015年11月26日23:20:51
-=======
+
 //=========== javascript模式 P19 2015年11月26日23:20:51
 使用var创建的全局变量(这类变量在函数外部创建)不能删除.
 不适用var创建的隐含全局变量(尽管它是在函数内部创建)可以被删除.
@@ -199,15 +176,6 @@ slice()对象array中的某一段做浅复制
 //=========== javascript模式 P159 2015年12月8日15:49:01
 
 //=========== javascript模式 2015年12月14日15:26:47  第一遍
-
-
-//=========== javascript-mode.html  line-368
-
-
-getBoundingClientRect()来获取页面元素的位置, 注意兼容性
-
-
-//=========== javascript-mode.html  line-368
 
 
  不需要第三个变量的转换2个变量值:
@@ -732,3 +700,25 @@ ex: .parent-3 {
       之后使用jQuery设置body样式的top值：
 
       让 top 为 $( window ).scrollTop() + "px"
+
+
+      // 函数柯理化
+      var currying = function(fn) {
+          var args = [].slice.call(arguments, 1);
+
+          return function() {
+              // 主要还是收集所有需要的参数到一个数组中，便于统一计算
+              var _args = args.concat([].slice.call(arguments));
+              return fn.apply(null, _args);
+          }
+      }
+
+      var sum = currying(function() {
+          var args = [].slice.call(arguments);
+          return args.reduce(function(a, b) {
+              return a + b;
+          })
+      }, 10)
+
+      console.log(sum(20, 10));  // 40
+      console.log(sum(10, 5));   // 25

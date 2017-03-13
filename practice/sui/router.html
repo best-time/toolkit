@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <title></title>
+    <link rel="stylesheet" href="./css/sm.css">
+    <title>router</title>
 </head>
 <body>
 
@@ -20,6 +20,19 @@
 						<a href="ex/router2/index.html">跳转到ajax界面</a>
 					</div>
 				</div>
+
+
+<style>
+  .button {
+      width: 200px;
+      height: 200px;
+      background-color: antiquewhite;
+      margin: 20px;
+      text-align: center;
+      line-height: 200px;
+  }
+</style>
+<div class="button">Button</div>
 			</div>
 		</div>
 	</div>
@@ -58,4 +71,34 @@
     })
 
 </script>
+
+
+<script>
+//   "use strict";
+//   var btn = document.querySelector('.button');
+
+//   var ev = new CustomEvent('test', {
+//       bubbles: 'true',
+//       cancelable: 'true',
+//       detail: 'tcstory'
+//   });
+//   btn.addEventListener('test', function (event) {
+//       console.log('bubbles: ' +event.bubbles + ' | ', 'cancelable: ' +event.cancelable);
+//       console.log(event.detail);
+//   }, false);
+//   btn.dispatchEvent(ev);
+
+"use strict";
+     var btn = document.querySelector('.button');
+     btn.addEventListener('click', function (event) {
+         console.log('OH~!You clicked me~!');
+     }, false);
+     var ev = new MouseEvent('click', {
+         cancelable: true,
+         bubble: true,
+         view: window
+     });
+    //  btn.dispatchEvent(ev);
+</script>
+
 </html>
