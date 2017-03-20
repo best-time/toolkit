@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta http-equiv="description" content="移动端浮层内部滚动窗体不滚动的JS处理 » 张鑫旭-鑫空间-鑫生活" />
+<meta name="description" content="张鑫旭web前端学习实例页面 移动端浮层内部滚动窗体不滚动的JS处理" />
+<meta name="keywords" content="移动端，android, 兼容性, window, scroll, 滚动" />
+<meta name="author" content="张鑫旭, zhangxixnu" />
+<title>移动端浮层内部滚动窗体不滚动的JS处理 » 张鑫旭-鑫空间-鑫生活</title>
+<style>
+    body{background:#a0b3d6; font-size:87.5%; margin:0; line-height:1.5; color:#333; font-family:Arial, sans-serif;}
+a{color:#34538b; text-decoration:none;}a:hover{text-decoration:underline;}
+a img { border: 0; }
+input,select,textarea{font-size:100%;}
+#header{height:60px; padding:0 0 0 40px;}
+#header .logo{margin-top:12px; overflow:hidden; float:left;}
+#main{width:100%; background:#beceeb; overflow:hidden;}
+#main h1{line-height:40px; margin:0; text-align:center; font-size:18px; background:#c1d5eb; font-family:'kaiti','microsoft yahei'; text-shadow:0px 1px 0px #f2f2f2;}
+#body{padding:0; overflow:hidden;}
+#body .part{width:50%; min-height:500px; _height:500px; background:white;}
+#code{float:left; margin-left:-1px; margin-bottom:-999em; padding-bottom:999em;}
+#effect{float:right; margin-right:-1px; margin-bottom:-999em; padding-bottom:999em;}
+#body h3{line-height:30px; margin:0; font-size:15px; background:#f0f3f9; padding-left:10px; border-bottom:1px solid #ededed; color:#4e4e4e; text-shadow:0px 1px 0px white; font-family: 'microsoft yahei';}
+#footer{line-height:1.4; font-size:12px; padding:15px 0; border-top:1px solid #486aaa; font-family:'Lucida Grande',Verdana, Sans-Serif; text-align:center; text-shadow:1px 1px #cad5eb;}
+#footer:before{display:block; height:1px; content:''; background-color:#909BAF; color:#aaa; overflow:hidden; position:relative; top:-15px;}
+#footer img{margin-bottom:-3px;}
+.show{padding-bottom:20px;}
+.show h5{font-size:13px; line-height:20px; padding:10px 0 2px 2px; margin:0 0 0 8px;}
+.demo{padding:10px; *zoom:1;}
+.demo:after{display:table; content:""; clear:both;}
+pre{
+  font:14px/1.3 Consolas, Monaco, monospace;
+  padding:5px 10px;
+  margin:0;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+}
+#ad {display:block!important; text-align:center; }
+.ad { height:60px; position: absolute; top: 0; right: 0; left: 250px; text-align:right; overflow:hidden; }
+@media screen and (max-width: 700px) {
+   .ad { display: none; }
+}
+.light{background:#f0f3f9;}
+#content{min-height:500px; _height:500px; background:white; border:solid #cad5eb; border-width:0 2px; font-family:'Lucida Grande',Verdana;}
+.article{font-family:Arial; padding:10px 0; font-size:12px; clear:both;}
+.article_new{ margin:-31px 10px 0 0; line-height: 20px; font-family:Arial; padding:5px 0; font-size:12px; clear:both; text-align:right;}
+.article_new a { display: inline-block; }
+#back{line-height:40px;margin-top:-40px; position:absolute; right:0; padding: 0 10px 0 13px; font-size: 12px; background-color: #fff;}
+</style>
+<style>
+.button {
+	display: block;
+	width: 240px; line-height: 30px;
+	margin: 20px auto;
+	background-color: #cd0000;
+	color: #fff;
+	text-align: center;
+}
+.button:hover {
+	text-decoration: none;
+}
+.aside,
+.aside-overlay {
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+}
+.aside {
+    -webkit-transition: visibility .25s;
+    transition: visibility .25s;
+    z-index: 3;
+    visibility: hidden;
+    overflow: hidden;
+}
+.aside.active {
+	-webkit-transition: none;
+	transition: none;   
+	visibility: visible;
+}
+.aside-overlay {
+    background-color: black;
+    opacity: 0;
+    -webkit-transition: opacity .25s;
+    transition: opacity .25s;
+}
+.active > .aside-overlay {
+	opacity: .6;
+}
+.aside .module-footer {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+}
+.aside .module-footer .btn-primary:only-child {
+    margin-bottom: 12px;
+}
+.aside .module-header {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+}
+.aside .module-history {
+    margin: 0;
+    position: absolute;
+    left: 0; top: 0; bottom: 0; right: 0;
+}
+.aside .module-main {
+    position: absolute;
+    left: 0; right: 0;
+    top: 44px; bottom: 92px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.aside .scrollable {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.aside-content {
+    position: absolute;
+    bottom: 0; right: 0;
+    background-color: white;
+    -webkit-transition: transform .15s;
+    transition: transform .15s;
+    left: 40px; top: 0;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}
+.active > .aside-content {
+	-webkit-transform: translate(0%, 0%);
+	transform: translate(0%, 0%);
+}
+.module-header {
+    height: 28px;
+    border-top: 16px solid transparent;
+    padding: 0 1rem;
+}
+.module-header::after {
+    content: '';
+    display:table;
+    clear:both;
+}
+.module-header-l {
+    float: left;
+}
+.module-header-r {
+    float: right;
+    position: relative;
+    min-width: 4rem;
+}
+.module-title {
+    display: inline;
+    font-weight: normal;
+}
+.module-title::before {
+    content: '';
+    height: 1em; width: 10px;
+    display: inline-block;
+    box-sizing: border-box;
+    border-left: 2px solid red;
+    color: transparent;
+    vertical-align: -.22ex;
+}
+.btn-tag {
+    display: inline-block;
+    line-height: 27px;
+	margin: 10px 10px 10px 0;
+    border: 1px solid;
+    border-radius: 99px;
+    padding: 0 10px;
+    font-size: 13px;
+    text-align: center;
+	line-height: 20px;
+	color: gray;
+}
+.btn-group {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin-left: auto; margin-right: auto;
+}
+.btn-group-cell {
+    display: table-cell;
+    font-size: 100%;
+    font-weight: 400;
+}
+.btn-reset,
+.btn-submit {
+	display: block;
+	text-align: center;
+	line-height: 44px;
+	color: white;
+	font-size: 16px;
+}
+.btn-reset {
+	background-color: gray;	
+}
+.btn-submit {
+	background-color: red;	
+}
+aside a:hover {
+	text-decoration: none;
+}
+
+.noscroll,
+.noscroll body {
+    overflow: hidden;
+}
+.noscroll body {
+    position: relative;
+}
+</style>
+</head>
+
+<body>
+<div id="main">
+	<h1>移动端浮层内滚动窗体不滚动的JS处理</h1>
+    <div id="body" class="light">
+    	<div id="content" class="show">
+            <div class="demo">
+                <a href="javascript:" id="button" class="button">点击出现浮层容器滚动没有阻止</a>
+                <a href="javascript:" id="buttonWith" class="button">点击出现浮层并 开启 阻止容器滚动</a>
+            </div>
+            <h3>代码</h3>
+            <h5>CSS代码：</h5>
+            <pre name="code" class="css">.noscroll,
+.noscroll body {
+    overflow: hidden;
+}
+.noscroll body {
+    position: relative;
+}</pre>
+            <h5>JS代码：</h5>
+            <pre name="code" class="js">
+                $.smartScroll = function(container, selectorScrollable) {
+    // 如果没有滚动容器选择器，或者已经绑定了滚动时间，忽略
+    if (!selectorScrollable || container.data('isBindScroll')) {
+        return;
+    }
+
+    // 是否是搓浏览器
+    // 自己在这里添加判断和筛选
+    var isSBBrowser;
+
+    var data = {
+        posY: 0,
+        maxscroll: 0
+    };
+
+    // 事件处理
+    container.on({
+        touchstart: function (event) {
+            var events = event.touches[0] || event;
+            
+            // 先求得是不是滚动元素或者滚动元素的子元素
+            var elTarget = $(event.target);
+            
+            if (!elTarget.length) {
+                return;    
+            }
+            
+            var elScroll;
+            
+            // 获取标记的滚动元素，自身或子元素皆可
+            if (elTarget.is(selectorScrollable)) {
+                elScroll = elTarget;
+            } else if ((elScroll = elTarget.parents(selectorScrollable)).length == 0) {
+                elScroll = null;
+            }
+            
+            if (!elScroll) {
+                return;
+            }
+            
+            // 当前滚动元素标记
+            data.elScroll = elScroll;
+            
+            // 垂直位置标记
+            data.posY = events.pageY;
+            data.scrollY = elScroll.scrollTop();
+            // 是否可以滚动
+            data.maxscroll = elScroll[0].scrollHeight - elScroll[0].clientHeight;
+        },
+        touchmove: function () {
+            // 如果不足于滚动，则禁止触发整个窗体元素的滚动
+            if (data.maxscroll &lt;= 0 || isSBBrowser) {
+                // 禁止滚动
+                event.preventDefault();
+            }
+            // 滚动元素
+            var elScroll = data.elScroll;
+            // 当前的滚动高度
+            var scrollTop = elScroll.scrollTop();
+    
+            // 现在移动的垂直位置，用来判断是往上移动还是往下
+            var events = event.touches[0] || event;
+            // 移动距离
+            var distanceY = events.pageY - data.posY;
+    
+            if (isSBBrowser) {
+                elScroll.scrollTop(data.scrollY - distanceY);
+                elScroll.trigger('scroll');
+                return;
+            }
+    
+            // 上下边缘检测
+            if (distanceY &gt; 0 &amp;&amp; scrollTop == 0) {
+                // 往上滑，并且到头
+                // 禁止滚动的默认行为
+                event.preventDefault();
+                return;
+            }
+    
+            // 下边缘检测
+            if (distanceY &lt; 0 &amp;&amp; (scrollTop + 1 &gt;= data.maxscroll)) {
+                // 往下滑，并且到头
+                // 禁止滚动的默认行为
+                event.preventDefault();
+                return;
+            }
+        },
+        touchend: function () {
+            data.maxscroll = 0;
+        }    
+    });
+
+    // 防止多次重复绑定
+    container.data('isBindScroll', true);
+};
+            </pre>
+        </div>       
+    </div>
+</div>
+
+<aside id="aside" class="aside">
+    <i class="aside-overlay hideAside"></i>
+    <div class="aside-content">
+        <div class="module module-filter-list">
+            <div class="module-header">
+                <h3 class="module-title">筛选</h3>
+            </div>
+            <div class="module-main scrollable">
+                <ul id="filters" class="sort-ul">
+                    <li class="sort-li">
+                        <h3 class="sort-li-title">属性</h3>
+                        <div class="sort-li-detail">
+                            <a href="javascript:" class="btn-tag">免费</a><a href="javascript:" class="btn-tag">VIP</a>
+                        </div>
+                    </li>
+                    <li class="sort-li">
+                        <h3 class="sort-li-title">字数</h3>
+                        <div class="sort-li-detail">
+                            <a href="javascript:" class="btn-tag">30万以下</a><a href="javascript:" class="btn-tag">30~50万</a><a href="javascript:" class="btn-tag">50~100万</a><a href="javascript:" class="btn-tag">100-200万</a><a href="javascript:" class="btn-tag">200万以上</a>
+                        </div>
+                    </li>   
+                    <li class="sort-li">
+                        <h3 class="sort-li-title">状态</h3>
+                        <div class="sort-li-detail">
+                            <a href="javascript:" class="btn-tag">连载</a><a href="javascript:" class="btn-tag">完本</a>
+                        </div>
+                    </li>
+                    <li class="sort-li">
+                        <h3 class="sort-li-title">品质</h3>
+                        <div class="sort-li-detail">
+                            <a href="javascript:" class="btn-tag">签约作品</a><a href="javascript:" class="btn-tag">精品小说</a>
+                        </div>
+                    </li>
+                    <li class="sort-li">
+                        <h3 class="sort-li-title">更新时间</h3>
+                        <div class="sort-li-detail">
+                            <a href="javascript:" class="btn-tag">三日内</a><a href="javascript:" class="btn-tag">七日内</a><a href="javascript:" class="btn-tag">半月内</a><a href="javascript:" class="btn-tag">一月内</a>
+                        </div>
+                    </li>
+                    <li class="sort-li">
+                        <h3 class="sort-li-title">类型</h3>
+                        <div class="sort-li-detail">
+                            <a href="javascript:" class="btn-tag">武侠</a><a href="javascript:" class="btn-tag">仙侠</a><a href="javascript:" class="btn-tag">玄幻</a><a href="javascript:" class="btn-tag">魔幻</a><a href="javascript:" class="btn-tag">都市</a><a href="javascript:" class="btn-tag">校园</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="module-footer">
+                <nav class="btn-group">
+                     <div class="btn-group-cell"><a href="javascript:" class="btn-reset hideAside">重置</a></div>
+                     <div class="btn-group-cell"><a href="javascript:" class="btn-submit hideAside">完成</a></div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<script src="./js/zepto.js"></script>
+<script>
+    var elButton = $('#button'), 
+        elButtonWith = $('#buttonWith');
+    var elAside = $('#aside');
+
+    elButton.on('click', function () {
+        elAside.addClass('active');
+        $('html').addClass('noscroll');
+    });
+
+    elButtonWith.on('click', function() {
+        elAside.addClass('active');
+        $.smartScroll(elAside, '.scrollable');
+        elButton.html(elButton.html().replace('没有', '已经'));
+        $('html').addClass('noscroll');
+    });
+
+    $('.hideAside').on('click', function () {
+        $('html').removeClass('noscroll');
+        elAside.removeClass('active');
+    });
+
+
+$.smartScroll = function(container, selectorScrollable) {
+	// 如果没有滚动容器选择器，或者已经绑定了滚动时间，忽略
+	if (!selectorScrollable || container.data('isBindScroll')) return;
+	
+
+	// 是否是搓浏览器
+	// 自己在这里添加判断和筛选
+	// var isSBBrowser;
+
+	var data = {
+		posY: 0,
+		maxscroll: 0
+	};
+
+	// 事件处理
+	container.on({
+		touchstart: function (event) {
+			var events = event.touches[0] || event;
+			
+			// 先求得是不是滚动元素或者滚动元素的子元素
+			var elTarget = $(event.target);
+			
+			if (!elTarget.length) return;	
+			
+			var elScroll;
+			
+			// 获取标记的滚动元素，自身或子元素皆可
+			if (elTarget.is(selectorScrollable)) {
+				elScroll = elTarget;
+			} else if ( (elScroll = elTarget.parents(selectorScrollable)).length == 0 ) {
+				elScroll = null;
+			}
+			
+			if (!elScroll) return;
+			
+			// 当前滚动元素标记
+			data.elScroll = elScroll;
+			
+			// 垂直位置标记
+			data.posY = events.pageY;
+			data.scrollY = elScroll.scrollTop();
+			// 是否可以滚动
+			data.maxscroll = elScroll[0].scrollHeight - elScroll[0].clientHeight; // dom高度 - 可视高度
+		},
+		touchmove: function () {
+			// 如果不足于滚动，则禁止触发整个窗体元素的滚动
+			if (data.maxscroll <= 0) {
+				event.preventDefault(); // 禁止滚动
+			}
+			// 滚动元素
+			var elScroll = data.elScroll; 
+			// 当前的滚动高度
+			var scrollTop = elScroll && elScroll.scrollTop();
+	
+			// 现在移动的垂直位置，用来判断是往上移动还是往下
+			var events = event.touches[0] || event;
+			// 移动距离
+			var distanceY = events.pageY - data.posY;
+
+			// if (isSBBrowser) {
+			// 	elScroll.scrollTop(data.scrollY - distanceY);
+			// 	elScroll.trigger('scroll');
+			// 	return;
+			// }
+	
+			// 上 / 下 边缘检测
+			if ( (distanceY > 0 && scrollTop == 0) || (distanceY < 0 && (scrollTop + 1 >= data.maxscroll)) ) {
+				// 上边缘                                  // 下边缘
+				event.preventDefault(); // 禁止滚动的默认行为
+				return;
+			}
+	
+		},
+		touchend: function () {
+			data.maxscroll = 0;
+		}	
+	});
+
+	// 防止多次重复绑定
+	container.data('isBindScroll', true);
+};
+</script>
+
+<script>
+
+    var fnJsLoad = function(url, callback) {
+        callback = callback || function() {};
+        var doc = document, eleScript = doc.createElement('script');
+        
+        eleScript.onload = function() { console.log(eleScript.isInited)
+            if (!eleScript.isInited) {
+                eleScript.isInited = true;
+                callback();
+            }
+        };
+
+        // 一般而言，低版本IE走这个
+        eleScript.onreadystatechange = function() {
+            if (!eleScript.isInited && /^loaded|complete$/.test(eleScript.readyState)) {
+                eleScript.isInited = true;
+                callback();
+            }
+        };
+
+        eleScript.src = url;
+        doc.getElementsByTagName('head')[0].appendChild(eleScript);
+    };
+
+    //然后，我们就可以加载Zepto或者jQuery了：
+
+    // IE10+加载zepto.js
+    // IE7-IE9加载jQuery
+    var URLLIB = './js/aa.js';
+
+    if (!history.pushState) {
+        URLLIB = './js/jquery.js';
+    }
+
+    fnJsLoad(URLLIB, function() {
+        // 业务脚本初始化
+        aa.say()
+    });
+</script>
+
+</body>
+</html>
