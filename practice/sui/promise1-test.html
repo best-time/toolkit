@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>popup</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>promise1</title>
+    <script>
+    </script>
+    <script src="js/es6-promise.min.js"></script>
+    <script src="js/promise.js"></script>
+    <!--<script src="js/zepto.min.js"></script>-->
+    <!--<script src="js/eruda.min.js"></script>-->
+    <!--<script src="js/vconsole.min.js"></script>-->
+    <script src="js/no$.js"></script>
+    <script src="js/query.js"></script>
+    
+    <form action="">
+        text: <input type="text" name="text">
+    </form>
+<!--
+    <script src="js/fetch.js"></script>
+    <script src="js/fetch-jsonp.js"></script>-->
+</head>
+<body>
+    <p>
+    <button id="box1">点击</button></p>
+    <p id="ff" class="aa bb cc" style="opacity: 0;">fadeIn</p>
+
+
+
+    <!--children-->
+    <div id="child">
+        <p id="a">1111</p>
+        <span>222</span>
+        <i>333</i>
+        <div class="adb">
+            <ul>
+                <li>2233</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        // eruda.init()
+
+
+        // 实际上， .then 中指定的方法调用是异步进行的。
+
+        // var context = {name: 'Evandro', year: 27};
+
+        //     var p = P.init(context);
+        // function load(delay) {
+
+        //     // console.log(p)
+        //     // setTimeout(function(){
+        //     //     p.resolve();
+        //     // }, delay);
+        //     $.ajax({
+        //             url: 'js/data.json',
+        //             data: {},
+        //             dataType: 'json',
+        //             type: 'get',
+        //             success: function(res) {
+        //                 // console.log(res)
+        //                 p.resolve(res);
+        //             },
+        //             error: function(error) {
+        //                 // resolve(error);
+        //             }
+        //         });
+
+        //     return p;
+        // };
+
+        // load(1000).then(function(res) {
+        //     console.info(res)
+        //     setTimeout(function() {
+        //         console.log('name= ', this.name + ' |  ' + 'year= ', this.year);
+        //     }, 1000)
+        // }).then(function() {
+        //     // p.resolve();
+        //     console.log('222222222222222')
+        // });
+
+        /**
+         *  resolve 方法可以使 Promise 对象的状态改变成成功，同时传递一个参数用于后续成功后的操作，在这个例子当中就是 Hello World! 字符串。
+
+            reject 方法则是将 Promise 对象的状态改变为失败，同时将错误的信息传递到后续错误处理的操作。
+
+            Promise 对象有三种状态：
+
+            Fulfilled 可以理解为成功的状态
+            Rejected 可以理解为失败的状态
+            Pending 既不是 Fulfilld 也不是 Rejected 的状态，可以理解为 Promise 对象实例创建时候的初始状态
+
+
+            helloWorld 的例子中的 then 方法就是根据 Promise 对象的状态来确定执行的操作，
+            resolve 时执行第一个函数（onFulfilled），
+            reject 时执行第二个函数（onRejected）
+         */
+
+        // function helloWorld (ready) {
+        //     return new Promise(function (resolve, reject) {
+        //         if (ready) {
+        //             resolve("Hello World!");
+        //         } else {
+        //             reject("Good bye!");
+        //         }
+        //     });
+        // }
+
+        // helloWorld(true).then(function (message) {
+        //     alert(message);
+        // }, function (error) {
+        //     alert(error);
+        // });
+
+        // function printHello (ready) {
+        //     return new Promise(function (resolve, reject) {
+        //         if (ready) {
+        //             resolve("Hello");
+        //         } else {
+        //             reject("Good bye!");
+        //         }
+        //     });
+        // }
+
+        // function printWorld () {
+        //     console.info("World");
+        // }
+
+        // function printExclamation () {
+        //     console.info("!");
+        // }
+
+        // printHello(true)
+        //     .then(function(message){
+        //         console.info(message);
+        //     })
+        //     .then(printWorld)
+        //     .then(printExclamation);
+
+            /*
+                then 可以使用链式调用的写法原因在于，每一次执行该方法时总是会返回一个 Promise 对象。
+                另外，在 then onFulfilled 的函数当中的返回值，
+                可以作为后续操作的参数，因此上面的例子也可以写成：
+
+                
+            */
+
+            // printHello(true).then(function (message) {
+            //     return message;
+            // }).then(function (message) {
+            //     return message  + ' World';
+            // }).then(function (message) {
+            //     return message + '!!!!!';
+            // }).then(function (message) {
+            //     // console.error(message);
+            // });
+
+            /*
+                catch
+
+                catch 方法是 then(onFulfilled, onRejected) 方法当中 onRejected 函数的一个简单的写法，
+                也就是说可以写成 then(fn).catch(fn)，相当于 then(fn).then(null, fn)。
+                使用 catch 的写法比一般的写法更加清晰明确。
+            
+            */
+
+            /*
+                还有一个和 Promise.all 相类似的方法 Promise.race，
+                它同样接收一个数组，不同的是只要该数组中的 Promise 对象的状态发生变化（无论是 resolve 还是 reject）该方法都会返回。
+            */
+            // Promise.all
+            // var p1 = new Promise(function (resolve, reject) {
+            //     setTimeout(function () {
+            //         resolve("Hello");
+            //     }, 3000);
+            // });
+
+            // var p2 = new Promise(function (resolve, reject) {
+            //     setTimeout(function () {
+            //         resolve("World");
+            //     }, 1000);
+            // });
+
+            // Promise.all([p1, p2]).then(function (result) {
+            //     console.log(result);    // ["Hello", "World"]
+            // });
+
+
+
+            // var promise = new Promise(function(resolve) {
+            //     setTimeout(function() {
+            //         console.log('a');
+            //         resolve();
+            //     }, 3000);
+            // });
+
+            // promise
+            // .then(function() {
+            //     return new Promise(function(resolve, reject) {
+            //         setTimeout(function(res) {
+            //             console.log('b')
+            //             resolve();
+            //         }, 2000);
+            //     });
+                
+            // })
+            // .then(function() {
+            //     return new Promise(function(resolve, reject) {
+            //         setTimeout(function(res) {
+            //             console.log('c')
+            //             resolve();
+            //         }, 1000);
+            //     });
+            // })
+            // .then(function() {
+            //     console.log('d');
+            // });
+
+
+            // function getUserId() {
+            //     return new Promise(function (resolve) {
+            //         // 异步请求
+            //         $.ajax({
+            //             url: 'http://10.25.59.112:11111/toolkit/practice/sui/js/data.json',
+            //             data: {},
+            //             dataType: 'json',
+            //             type: 'get',
+            //             success: function(res) {
+            //                 resolve(res);
+            //             },
+            //             error: function(error) {
+            //                 resolve(error);
+            //             }
+            //         });
+            //     });
+            // }
+
+            // getUserId().then(function (res) {
+            //     // do sth with id
+            //     console.log(res)
+            // }).catch(function(error) {
+            //     alert(error)
+            // });
+
+
+
+
+            /* -------------------- */
+            // function getURL(URL) {
+            //     return new Promise(function (resolve, reject) {
+            //         var req = new XMLHttpRequest();
+            //         req.open('GET', URL, true);
+            //         req.onload = function () {
+            //             if (req.status === 200) {
+            //                 resolve(req.responseText);
+            //             } else {
+            //                 reject(new Error(req.statusText));
+            //             }
+            //         };
+            //         req.onerror = function () {
+            //             reject(new Error(req.statusText));
+            //         };
+            //         req.send();
+            //     });
+            // }
+            // // 运行示例
+            // var URL = "http://httpbin.org/get";
+            // getURL(URL).then(function onFulfilled(value){
+            //     console.log(JSON.parse(value));
+            // }).catch(function onRejected(error){
+            //     console.error(error);
+            // });
+
+
+
+            // promise.js
+
+            // function late(n) {
+            //     var p = new promise.Promise();
+            //     console.log(n)
+            //     setTimeout(function() {
+            //         p.done(null, n);
+            //     }, n);
+            //     return p;
+            // }
+
+            // late(100).then(
+            //     function(err, n) {
+            //         return late(n + 200);
+            //     }
+            // ).then(
+            //     function(err, n) {
+            //         return late(n + 300);
+            //     }
+            // ).then(
+            //     function(err, n) {
+            //         return late(n + 400);
+            //     }
+            // ).then(
+            //     function(err, n) {
+            //         // alert(n);
+            //         console.log(n)
+            //     }
+            // );
+
+            // setTimeout(function() {
+            //     console.log('nnnnnnnnnn')
+            // }, 1900)
+
+
+
+            // fetch.js
+
+            fetch('./js/data.json')
+            .then(function(response) {
+                console.log(response)
+                console.log('Content-Type: ' + response.headers.get('Content-Type'))
+                console.log('Date: ' + response.headers.get('Date'))
+                console.log('status: ' + response.status)
+                console.log('statusText: ' +response.statusText)
+                return response.json()
+            }).then(function(body) {
+                // document.body.innerHTML = body
+                console.log(body)
+            }).catch(function(ex) {
+                console.log('parsing failed', ex)
+            })
+
+            // var form = document.querySelector('form')
+
+            // fetch('./js/data.json', {
+            //     method: 'get',
+            //     body: new FormData(form)
+            // })
+            // function jsonpCallbackFunction(res) {
+            //     console.log(res)
+            // }
+
+            // fetchJsonp('./js/jsonp.json', {
+            //     // timeout: 3000,
+            //     // jsonpCallback: 'custom_callback'
+            // })
+            // .then(function(response) {
+            //     return response.json()
+            // }).then(function(json) {
+            //     console.log('parsed json', json)
+            // }).catch(function(ex) {
+            //     console.log('parsing failed', ex)
+            // })
+
+// function cb(res) {
+//     console.log(res)
+// }
+//             var result = fetchJsonp('./js/jsonp.json', {
+//       jsonpCallback: 'cb',
+//       timeout: 10000
+//     })
+//     result.then(function(response) {
+//       return response.json()
+//     }).then(function(json) {
+//       document.body.innerHTML = JSON.stringify(json);
+//     })['catch'](function(ex) {
+//       document.body.innerHTML = 'failed:' + ex;
+//     })
+
+    as.get({
+        url: './js/data.json',
+        success: function(res) {
+            console.log(res)
+        }
+    })
+
+    as.getId('box1').addEventListener('click', function() {
+        as.fadeIn(as.getId('#ff'))
+
+    }, false)
+
+    </script>
+</body>
+</html>
