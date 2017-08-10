@@ -1,9 +1,9 @@
 ##############  gulp 全局 ############
 
-sudo npm install -g gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html gulp-minify-css gulp-postcss autoprefixer gulp-rename gulp-ruby-sass browser-sync gulp-sourcemaps gulp-uglify gulp-util gulp-watch gulp-connect gulp-postcss gulp-linker gulp-load-plugins gulp-babel gulp-plumber babel-preset-es2015 gulp-browserify babelify browserify vinyl-source-stream
+sudo npm install -g gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html  gulp-postcss autoprefixer gulp-rename gulp-ruby-sass browser-sync gulp-sourcemaps gulp-uglify gulp-util gulp-watch gulp-connect gulp-linker gulp-load-plugins gulp-babel babel-preset-es2015 gulp-browserify babelify browserify vinyl-source-stream
 
 
-sudo npm link gulp gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html gulp-rename gulp-ruby-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch browser-sync gulp-connect autoprefixer gulp-postcss gulp-minify-css gulp-linker gulp-load-plugins gulp-babel gulp-plumber babel-preset-es2015 gulp-browserify babelify browserify vinyl-source-stream
+sudo npm link gulp gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html gulp-rename gulp-ruby-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch browser-sync gulp-connect autoprefixer gulp-postcss gulp-linker gulp-load-plugins gulp-babel babel-preset-es2015 gulp-browserify babelify browserify vinyl-source-stream
 
 
 
