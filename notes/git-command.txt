@@ -10,6 +10,13 @@ browser-sync start  --server --files "**"
 
 
 // git 命令
+【Python】python -m SimpleHTTPServer 8080
+【PHP】php -S 0.0.0.0:8080
+【Ruby】ruby -run -e httpd -- ./ -p 8080
+【Node】npm i simplehttpserver -g; simlehttpserver -p 8080 ​
+python3 -m http.server 8081
+
+
 
 git status
 
