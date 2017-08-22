@@ -5,7 +5,11 @@ sudo npm install -g gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gul
 
 sudo npm link gulp gulp-clean gulp-clean-css gulp-concat gulp-html-minifier gulp-htmlmin gulp-imagemin gulp-jshint gulp-livereload gulp-minify-html gulp-rename gulp-ruby-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch browser-sync gulp-connect autoprefixer gulp-postcss gulp-linker gulp-load-plugins gulp-babel babel-preset-es2015 gulp-browserify babelify browserify vinyl-source-stream
 
+// 实时刷新
+browser-sync start  --server --files "**"
 
+
+// git 命令
 
 git status
 
